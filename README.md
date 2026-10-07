@@ -1,6 +1,5 @@
 # HCRAPP
-
-> `https://youtube.com/@developerhcr?si=tTU8wtTVLBvdqUX8`
+> (Channel) https://youtube.com/@developerhcr si=tTU8wtTVLBvdqUX8
 
 HCRAPP is a professional AI-powered developer workspace designed for Android and desktop-style environments.
 
@@ -145,7 +144,7 @@ HCRAPP/
 ├── settings.gradle
 ├── build.gradle
 └── gradlew
-
+```
 # > OLD
 **Web OS**
 
