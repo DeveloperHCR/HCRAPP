@@ -1,5 +1,7 @@
 # HCRAPP
 
+> `https://youtube.com/@developerhcr?si=tTU8wtTVLBvdqUX8`
+
 HCRAPP is a professional AI-powered developer workspace designed for Android and desktop-style environments.
 
 It combines AI assistance, coding tools, file management, a virtual desktop, terminal utilities, project management, and system settings in one application.
@@ -143,3 +145,11 @@ HCRAPP/
 ├── settings.gradle
 ├── build.gradle
 └── gradlew
+
+# > OLD
+**Web OS**
+
+<img width="1079" height="609" alt="Screenshot_2026-10-07-19-15-29-15_f9ee0578fe1cc94de7482bd41accb329" src="https://github.com/user-attachments/assets/7eae4781-84d0-46da-8124-65165c8ad108" />
+
+> https://youtu.be/fNrx3FiA4iE?si=KxXxxqQHEy__iOg-
+
