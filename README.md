@@ -1,5 +1,5 @@
 # HCRAPP
-> (Channel) https://youtube.com/@developerhcr si=tTU8wtTVLBvdqUX8
+> (Channel) https://youtube.com/@developerhcr
 
 HCRAPP is a professional AI-powered developer workspace designed for Android and desktop-style environments.
 
