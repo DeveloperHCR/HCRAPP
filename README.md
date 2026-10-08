@@ -1,8 +1,5 @@
 # HCRAPP
 > (Channel) https://youtube.com/@developerhcr
---
-
-
 
 <img width="1536" height="1536" alt="developerhcr_icon" src="https://github.com/user-attachments/assets/63e3a470-58a4-4eea-b335-b9a3a78b712c" />
 
