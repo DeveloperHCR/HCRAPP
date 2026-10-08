@@ -5,7 +5,7 @@
 
 > [Download apk](https://github.com/DeveloperHCR/HCRAPP/releases/download/DevXOS/DevXOS.apk)
 
---
+
 HCRAPP is a professional AI-powered developer workspace designed for Android and desktop-style environments.
 
 It combines AI assistance, coding tools, file management, a virtual desktop, terminal utilities, project management, and system settings in one application.
