@@ -1,9 +1,7 @@
 # HCRAPP
 > (Channel) https://youtube.com/@developerhcr
 
-
-
-> `Download APK ↓`
+> `Download Stable APK ↓`
 
 > [Download apk](https://github.com/DeveloperHCR/HCRAPP/releases/download/DevXOS/DevXOS.apk)
 
