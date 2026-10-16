@@ -1,44 +1,255 @@
-<section id="docs" style="display:none">
-  <h2>DeveloperHCR | HCRAPP</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080d18">
+<title>DeveloperHCR | HCRAPP</title>
 
-  <div style="padding:18px;background:#101a2c;border:1px solid #283b59;border-radius:14px">
-    <h3>🚧 Website Under Development</h3>
-    <p>Data is still being processed.</p>
-    <p>This website is not fully completed yet.</p>
-    <p><b>Development period:</b> 17 October – 21 October</p>
-    <h3 id="timer">Calculating remaining time...</h3>
-    <p>We are working to complete the HCRAPP website.</p>
-    <a href="https://github.com/DeveloperHCR/HCRAPP">
-      View DeveloperHCR on GitHub ↗
-    </a>
-  </div>
-</section>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080d18;color:#edf3ff;font-family:Arial,sans-serif}
+header{padding:18px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #26334a}
+.logo{font-size:21px;font-weight:bold;color:#7aa7ff}
+.badge{font-size:12px;color:#8be6bd}
+main{max-width:900px;margin:35px auto;padding:16px}
+.card{background:#111b2e;border:1px solid #2a3b57;border-radius:16px;padding:22px;margin-bottom:18px}
+h1{text-align:center;font-size:32px;margin:5px 0 25px}
+h1 span{color:#7aa7ff}
+#process{font-size:15px;text-align:left;color:#c6d5f0}
+.track{height:7px;background:#293750;border-radius:20px;overflow:hidden;margin:18px 0 10px}
+#bar{height:100%;width:0;background:linear-gradient(90deg,#548bff,#65e7cf);transition:width .1s}
+#percent{text-align:right;font-size:12px;color:#9eb1d0}
+.timer-title{font-size:13px;color:#a8bbd9;margin:0 0 10px}
+.timer{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.unit{background:#0a1221;border:1px solid #293b58;border-radius:10px;padding:12px 4px;text-align:center}
+.unit strong{display:block;font-size:25px;color:#82acff}
+.unit small{font-size:11px;color:#9eafcc}
+#timerStatus{font-size:13px;color:#9fb5d8;margin-top:13px}
+.notice{border-left:4px solid #f2b95d;background:#292316;padding:14px;border-radius:5px;color:#f6ddb0}
+#documentation{display:none}
+h2{color:#8ab1ff}
+h3{color:#dce8ff}
+p,li{line-height:1.7;color:#d0daeb}
+ul{padding-left:22px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.feature{background:#0b1424;border:1px solid #293851;border-radius:11px;padding:14px}
+.feature h3{margin-top:0}
+a{color:#8bb7ff;text-decoration:none}
+a:hover{text-decoration:underline}
+.button{display:inline-block;background:#24477d;color:white;padding:12px 16px;border-radius:9px;margin:5px 6px 0 0}
+footer{text-align:center;font-size:12px;color:#71829e;padding:25px}
+@keyframes blink{50%{opacity:.45}}
+#title{animation:blink 1.5s infinite}
+@media(max-width:550px){
+ main{margin:18px auto;padding:12px}
+ .card{padding:17px}
+ h1{font-size:27px}
+ .unit strong{font-size:21px}
+ .grid{grid-template-columns:1fr}
+ header{padding:15px}
+}
+@media(prefers-reduced-motion:reduce){
+ #title{animation:none}
+ #bar{transition:none}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">DeveloperHCR</div>
+  <div class="badge">● HCRAPP PROJECT</div>
+</header>
+
+<main>
+
+  <!-- Processing animation -->
+  <section class="card" id="loader">
+    <h1 id="title"><span>Creating</span>...</h1>
+    <div id="process">Process data...</div>
+    <div class="track"><div id="bar"></div></div>
+    <div id="percent">Preparing project details... 0%</div>
+  </section>
+
+  <!-- Date countdown: visible even during processing -->
+  <section class="card">
+    <p class="timer-title">HCRAPP DEVELOPMENT SCHEDULE</p>
+    <div class="timer">
+      <div class="unit"><strong id="days">--</strong><small>Days</small></div>
+      <div class="unit"><strong id="hours">--</strong><small>Hours</small></div>
+      <div class="unit"><strong id="minutes">--</strong><small>Minutes</small></div>
+      <div class="unit"><strong id="seconds">--</strong><small>Seconds</small></div>
+    </div>
+    <div id="timerStatus">Development window: 17–21 October 2026</div>
+  </section>
+
+  <!-- Project status -->
+  <section class="card">
+    <div class="notice">
+      <strong>🚧 Website Under Development</strong>
+      <p>HCRAPP is not fully completed yet. Project information is being prepared, and this page does not indicate that development is finished.</p>
+      <p><strong>Target period:</strong> 17 October – 21 October 2026</p>
+    </div>
+  </section>
+
+  <!-- Real project details based on the repository README -->
+  <section class="card" id="documentation">
+    <h2>HCRAPP Documentation</h2>
+    <p>A professional AI-powered developer workspace intended for Android and desktop-style environments.</p>
+
+    <h2>Project Features</h2>
+    <div class="grid">
+
+      <div class="feature">
+        <h3>🤖 AI Assistant</h3>
+        <ul>
+          <li>HCR AI and AI Chat</li>
+          <li>Hindi, English and Hinglish support</li>
+          <li>Code generation and explanation</li>
+          <li>Error analysis and bug-fixing assistance</li>
+          <li>Local and API-based AI support</li>
+        </ul>
+      </div>
+
+      <div class="feature">
+        <h3>💻 Developer Tools</h3>
+        <ul>
+          <li>Code editor</li>
+          <li>HTML, CSS and JavaScript</li>
+          <li>Python, Java, C and C++</li>
+          <li>JSON and XML</li>
+          <li>Project management and code search</li>
+        </ul>
+      </div>
+
+      <div class="feature">
+        <h3>📁 File Manager</h3>
+        <ul>
+          <li>Internal storage and projects</li>
+          <li>Create files and folders</li>
+          <li>Rename, copy, move and delete</li>
+          <li>File preview and search</li>
+          <li>ZIP creation and extraction</li>
+        </ul>
+      </div>
+
+      <div class="feature">
+        <h3>🖥️ Virtual Desktop</h3>
+        <ul>
+          <li>Desktop icons and taskbar</li>
+          <li>Start menu</li>
+          <li>Window minimize and maximize</li>
+          <li>Touch, mouse and keyboard support</li>
+          <li>Fullscreen mode</li>
+        </ul>
+      </div>
+
+      <div class="feature">
+        <h3>🛠️ Utilities</h3>
+        <ul>
+          <li>Calculator and text editor</li>
+          <li>Image and PDF viewers</li>
+          <li>Downloader and system monitor</li>
+          <li>Network and QR tools</li>
+        </ul>
+      </div>
+
+      <div class="feature">
+        <h3>⚙️ Settings & Security</h3>
+        <ul>
+          <li>Themes and wallpaper</li>
+          <li>AI, API and model settings</li>
+          <li>Storage and performance settings</li>
+          <li>PIN/password protection</li>
+          <li>Privacy and permissions controls</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <h2>System Requirements</h2>
+    <p><strong>Android:</strong> Recommended Android 8.0 or newer, 4 GB RAM or more, and at least 2 GB free storage.</p>
+    <p><strong>Desktop:</strong> Recommended Windows 10 or newer, 4 GB RAM or more, and at least 2 GB free storage.</p>
+
+    <h2>Repository</h2>
+    <p>View the official repository and its latest documentation on GitHub.</p>
+    <a class="button" href="https://github.com/DeveloperHCR/HCRAPP" target="_blank" rel="noopener">Open GitHub ↗</a>
+    <a class="button" href="https://github.com/DeveloperHCR/HCRAPP/blob/main/README.md" target="_blank" rel="noopener">Read README ↗</a>
+
+    <p style="font-size:12px;color:#95a8c8">Note: These are project details described in the repository README. They do not necessarily mean every listed feature is already implemented.</p>
+  </section>
+
+</main>
+
+<footer>DeveloperHCR · HCRAPP · Project information</footer>
 
 <script>
-function updateTimer(){
-  const now = new Date();
-  let end = new Date(now.getFullYear(), 9, 21, 23, 59, 59);
+(function(){
+  "use strict";
 
-  if(now > end)
-    end = new Date(now.getFullYear()+1, 9, 21, 23, 59, 59);
+  // Countdown uses India Standard Time (IST).
+  const start = new Date("2026-10-17T00:00:00+05:30").getTime();
+  const end   = new Date("2026-10-21T23:59:59+05:30").getTime();
 
-  const start = new Date(now.getFullYear(), 9, 17);
+  const $ = id => document.getElementById(id);
+  const pad = n => String(n).padStart(2,"0");
 
-  if(now < start){
-    document.getElementById("timer").textContent =
-      "Countdown starts 17 October";
-    return;
+  function updateTimer(){
+    const now = Date.now();
+    let target;
+
+    if(now < start){
+      target = start;
+      $("timerStatus").textContent =
+        "Countdown to the development period: 17 October 2026";
+    }else if(now <= end){
+      target = end;
+      $("timerStatus").textContent =
+        "Development period is active · Target end: 21 October 2026";
+    }else{
+      ["days","hours","minutes","seconds"].forEach(id => $(id).textContent="00");
+      $("timerStatus").textContent =
+        "The scheduled period has ended. The project status must be updated manually.";
+      return;
+    }
+
+    let diff = Math.max(0,target-now);
+    const days = Math.floor(diff/86400000);
+    diff %= 86400000;
+    const hours = Math.floor(diff/3600000);
+    diff %= 3600000;
+    const minutes = Math.floor(diff/60000);
+    const seconds = Math.floor((diff%60000)/1000);
+
+    $("days").textContent = pad(days);
+    $("hours").textContent = pad(hours);
+    $("minutes").textContent = pad(minutes);
+    $("seconds").textContent = pad(seconds);
   }
 
-  const diff = end - now;
-  const days = Math.floor(diff / 86400000);
-  const hours = Math.floor(diff % 86400000 / 3600000);
-  const minutes = Math.floor(diff % 3600000 / 60000);
-  const seconds = Math.floor(diff % 60000 / 1000);
+  updateTimer();
+  setInterval(updateTimer,1000);
 
-  document.getElementById("timer").textContent =
-    `${days}d ${hours}h ${minutes}m ${seconds}s remaining`;
-}
-updateTimer();
-setInterval(updateTimer,1000);
+  // Run an 8-second visual loading sequence, then reveal documentation.
+  const duration = 8000;
+  const began = Date.now();
+
+  const loading = setInterval(function(){
+    const elapsed = Date.now()-began;
+    const progress = Math.min(100,elapsed/duration*100);
+
+    $("bar").style.width = progress+"%";
+    $("percent").textContent =
+      "Preparing project details... "+Math.floor(progress)+"%";
+
+    if(elapsed >= duration){
+      clearInterval(loading);
+      $("loader").style.display = "none";
+      $("documentation").style.display = "block";
+    }
+  },50);
+})();
 </script>
+</body>
+</html>
