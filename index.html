@@ -1,16 +1,44 @@
+<section id="docs" style="display:none">
+  <h2>DeveloperHCR | HCRAPP</h2>
 
-<!DOCTYPE html>
-<html>
-<body>
-<center>
-<h1 style="animation: blink 2s infinite;">Creating...</h1>
-</center>
-<style>
-@keyframes blink {50%{opacity:0.3;}}
-</style>
-  <h2 style="animation: blink 8s;">Process data...
-    
-  </h2>
-  
-</body>
-</html>
+  <div style="padding:18px;background:#101a2c;border:1px solid #283b59;border-radius:14px">
+    <h3>🚧 Website Under Development</h3>
+    <p>Data is still being processed.</p>
+    <p>This website is not fully completed yet.</p>
+    <p><b>Development period:</b> 17 October – 21 October</p>
+    <h3 id="timer">Calculating remaining time...</h3>
+    <p>We are working to complete the HCRAPP website.</p>
+    <a href="https://github.com/DeveloperHCR/HCRAPP">
+      View DeveloperHCR on GitHub ↗
+    </a>
+  </div>
+</section>
+
+<script>
+function updateTimer(){
+  const now = new Date();
+  let end = new Date(now.getFullYear(), 9, 21, 23, 59, 59);
+
+  if(now > end)
+    end = new Date(now.getFullYear()+1, 9, 21, 23, 59, 59);
+
+  const start = new Date(now.getFullYear(), 9, 17);
+
+  if(now < start){
+    document.getElementById("timer").textContent =
+      "Countdown starts 17 October";
+    return;
+  }
+
+  const diff = end - now;
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor(diff % 86400000 / 3600000);
+  const minutes = Math.floor(diff % 3600000 / 60000);
+  const seconds = Math.floor(diff % 60000 / 1000);
+
+  document.getElementById("timer").textContent =
+    `${days}d ${hours}h ${minutes}m ${seconds}s remaining`;
+}
+updateTimer();
+setInterval(updateTimer,1000);
+</script>
