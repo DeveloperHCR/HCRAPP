@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HCRAPP Portal</title>
+<style>
+  :root{
+    --bg:#0b0e17; --card:#161b29; --text:#eef1f8; --muted:#8b91a7;
+    --accent:#6c5ce7; --accent2:#00d2d3; --border:#262c3e; --danger:#ff5e62; --ok:#2ed573;
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; min-height:100vh;
+    background:
+      radial-gradient(1200px 500px at 20% -10%, #241b47 0%, transparent 60%),
+      radial-gradient(900px 400px at 100% 0%, #0d2f33 0%, transparent 55%),
+      var(--bg);
+    color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+    overflow-x:hidden;
+  }
+  .wrap{max-width:480px; margin:0 auto; padding:16px 18px 60px;}
+  .brand{display:flex; align-items:center; gap:10px; margin-bottom:10px;}
+  .brand .logo{width:38px; height:38px; border-radius:11px; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1rem;}
+  .brand .name{font-weight:700; font-size:1.05rem;}
+
+  /* ---- Pull-cord RGB light ---- */
+  .light-widget{position:relative; height:150px; display:flex; align-items:center; justify-content:center; margin-bottom:6px; touch-action:none;}
+  .beam{position:absolute; top:50%; width:46%; height:10px; transform:translateY(-50%) scaleX(0); opacity:0; border-radius:6px; filter:blur(1px);
+    background:repeating-linear-gradient(90deg,#ff3b5c 0 8%, #ffb703 8% 16%, #2ed573 16% 24%, #00d2d3 24% 32%, #6c5ce7 32% 40%, #ff3b5c 40% 48%);
+    background-size:200% 100%;
+    transition:transform .45s cubic-bezier(.2,1.4,.4,1), opacity .35s ease;
+  }
+  .beam-left{left:4%; transform-origin:right center; transform:translateY(-50%) scaleX(0);}
+  .beam-right{right:4%; transform-origin:left center; transform:translateY(-50%) scaleX(0);}
+  .light-widget.lit .beam-left{transform:translateY(-50%) scaleX(1); opacity:1; animation:slide 2.4s linear infinite;}
+  .light-widget.lit .beam-right{transform:translateY(-50%) scaleX(1); opacity:1; animation:slide 2.4s linear infinite;}
+  @keyframes slide{ to{ background-position:200% 0; } }
+  .bulb{position:relative; z-index:2; font-size:1.8rem; filter:grayscale(1) brightness(.6); transition:filter .3s ease, transform .2s ease;}
+  .light-widget.lit .bulb{filter:grayscale(0) brightness(1.3) drop-shadow(0 0 18px #ffd166); transform:scale(1.12);}
+  .cord{position:absolute; top:-6px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; cursor:grab; z-index:3;}
+  .cord-line{width:2px; background:#4a5068; transition:height .25s ease;}
+  .cord-handle{width:20px; height:20px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--accent2)); margin-top:-2px; box-shadow:0 2px 8px rgba(0,0,0,.4); border:2px solid #fff2;}
+  .hint{text-align:center; font-size:.72rem; color:var(--muted); margin-bottom:14px;}
+
+  h1{font-size:1.45rem; margin:0 0 4px; font-weight:800;}
+  .sub{color:var(--muted); font-size:.88rem; margin-bottom:18px;}
+  .card{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:22px; margin-bottom:16px; box-shadow:0 10px 30px -15px rgba(0,0,0,.6);}
+  .tabs{display:flex; background:#10141f; border:1px solid var(--border); border-radius:11px; padding:4px; margin-bottom:18px;}
+  .tab{flex:1; text-align:center; padding:9px; border-radius:8px; font-size:.88rem; font-weight:600; color:var(--muted); cursor:pointer;}
+  .tab.active{background:linear-gradient(135deg,var(--accent),#8a5cf6); color:#fff;}
+  label{display:block; font-size:.8rem; color:var(--muted); margin:14px 0 6px; font-weight:600;}
+  input{width:100%; padding:12px 13px; border-radius:10px; border:1px solid var(--border); background:#10141f; color:var(--text); font-size:1rem; outline:none;}
+  input:focus{border-color:var(--accent);}
+  button{width:100%; padding:13px; border:none; border-radius:10px; background:linear-gradient(135deg,var(--accent),#8a5cf6); color:#fff; font-size:.98rem; font-weight:700; margin-top:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;}
+  button:disabled{opacity:.6; cursor:not-allowed;}
+  button.secondary{background:transparent; border:1px solid var(--border); color:var(--text); box-shadow:none;}
+  button.ghost{background:transparent; color:var(--accent2); margin-top:10px; font-weight:600; font-size:.85rem; padding:6px;}
+  .spin{width:16px; height:16px; border-radius:50%; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; animation:sp .7s linear infinite;}
+  @keyframes sp{to{transform:rotate(360deg);}}
+  .perm-row{display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border); font-size:.92rem;}
+  .perm-row:last-child{border-bottom:none;}
+  .perm-row .left{display:flex; align-items:center; gap:10px;}
+  .icon-box{width:34px; height:34px; border-radius:9px; background:#10141f; display:flex; align-items:center; justify-content:center; font-size:1rem;}
+  .tag{font-size:.72rem; padding:4px 10px; border-radius:20px; font-weight:700;}
+  .tag.ok{background:rgba(46,213,115,.15); color:var(--ok);}
+  .tag.no{background:rgba(255,94,98,.15); color:var(--danger);}
+  .tag.wait{background:rgba(139,145,167,.15); color:var(--muted);}
+  table{width:100%; border-collapse:collapse; font-size:.8rem;}
+  th,td{text-align:left; padding:9px 6px; border-bottom:1px solid var(--border); vertical-align:top;}
+  th{color:var(--muted); font-weight:700; font-size:.72rem; text-transform:uppercase;}
+  .overflow{overflow-x:auto;}
+  .banner{padding:12px 14px; border-radius:10px; font-size:.84rem; margin-bottom:14px;}
+  .banner.err{background:rgba(255,94,98,.12); color:#ff8084; border:1px solid rgba(255,94,98,.25);}
+  .banner.ok{background:rgba(46,213,115,.12); color:#5ee697; border:1px solid rgba(46,213,115,.25);}
+  .banner.warn{background:rgba(255,183,3,.12); color:#ffd166; border:1px solid rgba(255,183,3,.25);}
+  .steps{display:flex; gap:6px; margin-bottom:18px;}
+  .step{flex:1; height:4px; border-radius:3px; background:var(--border);}
+  .step.done{background:linear-gradient(135deg,var(--accent),var(--accent2));}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><div class="logo">H</div><div class="name">HCRAPP</div></div>
+
+  <div class="light-widget" id="lightWidget">
+    <div class="beam beam-left"></div>
+    <div class="bulb" id="bulb">💡</div>
+    <div class="beam beam-right"></div>
+    <div class="cord" id="cord">
+      <div class="cord-line" id="cordLine" style="height:34px;"></div>
+      <div class="cord-handle" id="cordHandle"></div>
+    </div>
+  </div>
+  <div class="hint">Pull the cord to toggle the light</div>
+
+  <div id="app"></div>
+</div>
+
+<!-- Classic (non-module) scripts load reliably even when this file is opened directly, unlike ES module imports. -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
+/* ---------------- Pull-cord RGB light (manual only) ---------------- */
+(function(){
+  const widget = document.getElementById("lightWidget");
+  const handle = document.getElementById("cordHandle");
+  const line = document.getElementById("cordLine");
+  let dragging = false, startY = 0, baseHeight = 34, lit = false;
+
+  function setHeight(h){ line.style.height = Math.max(20, h) + "px"; }
+
+  function onDown(e){
+    dragging = true;
+    startY = (e.touches ? e.touches[0].clientY : e.clientY);
+    handle.style.cursor = "grabbing";
+  }
+  function onMove(e){
+    if(!dragging) return;
+    const y = (e.touches ? e.touches[0].clientY : e.clientY);
+    const delta = Math.max(0, y - startY);
+    setHeight(baseHeight + Math.min(delta, 90));
+  }
+  function onUp(e){
+    if(!dragging) return;
+    dragging = false;
+    handle.style.cursor = "grab";
+    const y = (e.changedTouches ? e.changedTouches[0].clientY : e.clientY);
+    const delta = y - startY;
+    setHeight(baseHeight);
+    if(delta > 55){
+      lit = !lit;
+      widget.classList.toggle("lit", lit);
+    }
+  }
+  handle.addEventListener("mousedown", onDown);
+  window.addEventListener("mousemove", onMove);
+  window.addEventListener("mouseup", onUp);
+  handle.addEventListener("touchstart", onDown, {passive:true});
+  window.addEventListener("touchmove", onMove, {passive:true});
+  window.addEventListener("touchend", onUp);
+})();
+
+/* ---------------- App ---------------- */
+const firebaseConfig = {
+  apiKey: "AIzaSyAnokW2B50oPr6peGPZmrKy8h_5ue3LJIQ",
+  authDomain: "hcrapp-34cb3.firebaseapp.com",
+  projectId: "hcrapp-34cb3",
+  storageBucket: "hcrapp-34cb3.firebasestorage.app",
+  messagingSenderId: "930051953066",
+  appId: "1:930051953066:web:4b69dbf37aa1a3adfe9bd3",
+};
+
+// Create this user in Firebase Console -> Authentication -> Users
+const ADMIN_EMAIL = "admin@hcrapp.app";
+const ADMIN_DISPLAY_NAME = "Abhimanyu Verma";
+
+let fbReady = false, auth = null, db = null, fbLoadMsg = "";
+try{
+  if(typeof firebase === "undefined"){
+    fbLoadMsg = "Firebase scripts could not load (no internet, or the CDN is blocked on this network).";
+  } else {
+    firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    db = firebase.firestore();
+    fbReady = true;
+  }
+}catch(e){
+  fbLoadMsg = "Firebase failed to initialize: " + e.message;
+}
+
+let state = {
+  view: "signup", authTab: "signup", msg: fbReady ? "" : fbLoadMsg, msgType: fbReady ? "err" : "warn",
+  loading: false, perms: { location: "wait", notif: "wait" }, locationData: null,
+  currentUser: null, allSubs: null
+};
+
+function friendlyError(code, raw){
+  const map = {
+    "auth/operation-not-allowed": "Go to Firebase Console -> Authentication -> Sign-in method, and enable Email/Password.",
+    "auth/email-already-in-use": "This email is already registered - try the Log In tab instead.",
+    "auth/invalid-email": "That email address isn't valid.",
+    "auth/weak-password": "Password must be at least 6 characters.",
+    "auth/wrong-password": "Incorrect password.",
+    "auth/invalid-credential": "Email or password is incorrect.",
+    "auth/user-not-found": "No account found - please sign up first.",
+    "auth/network-request-failed": "Check your internet connection.",
+    "auth/configuration-not-found": "Email/Password sign-in isn't enabled for this Firebase project yet.",
+    "permission-denied": "Firestore Security Rules are blocking this request - check your rules.",
+    "unavailable": "Firestore database may not be created yet - Firebase Console -> Firestore Database -> Create database."
+  };
+  return map[code] || raw;
+}
+function errCode(e){
+  const m = (e && e.message || "").match(/\(([a-z-]+\/[a-z-]+)\)/);
+  return m ? m[1] : (e && e.code) || "";
+}
+function esc(s){ return (s||"").toString().replace(/[<>&]/g, c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c])); }
+
+function render(){
+  const el = document.getElementById("app");
+  if (state.view === "signup") el.innerHTML = authView();
+  else if (state.view === "permissions") el.innerHTML = permissionsView();
+  else if (state.view === "adminLogin") el.innerHTML = adminLoginView();
+  else if (state.view === "adminDash") el.innerHTML = adminDashView();
+  bind();
+}
+
+function banner(){
+  if(!state.msg) return "";
+  const icon = state.msgType === "ok" ? "✅" : state.msgType === "warn" ? "⚠️" : "⚠️";
+  return `<div class="banner ${state.msgType}">${icon} ${esc(state.msg)}</div>`;
+}
+function spinBtn(label, loadingLabel){
+  return state.loading ? `<span class="spin"></span> ${loadingLabel || "Please wait..."}` : label;
+}
+
+function authView(){
+  const isSignup = state.authTab === "signup";
+  return `
+  <h1>${isSignup ? "Create Account" : "Welcome Back"}</h1>
+  <div class="sub">${isSignup ? "Create a new account" : "Log in to your account"} - works for new and existing users</div>
+  <div class="card">
+    <div class="tabs">
+      <div class="tab ${isSignup?'active':''}" id="tab-signup">Sign Up</div>
+      <div class="tab ${!isSignup?'active':''}" id="tab-login">Log In</div>
+    </div>
+    ${banner()}
+    <label>Email</label>
+    <input id="f-email" type="email" placeholder="you@example.com" autocomplete="email">
+    <label>Password</label>
+    <input id="f-pass" type="password" placeholder="min 6 characters" autocomplete="${isSignup?'new-password':'current-password'}">
+    <button id="btn-auth" ${state.loading || !fbReady?'disabled':''}>${spinBtn(isSignup?"Sign Up & Continue":"Log In", isSignup?"Creating account...":"Logging in...")}</button>
+    <button class="ghost" id="go-admin">Admin Login →</button>
+  </div>`;
+}
+
+function permissionsView(){
+  const loc = state.perms.location, notif = state.perms.notif;
+  const tagClass = v => v==='granted'?'ok':v==='denied'?'no':'wait';
+  const tagText = v => v==='granted'?'Allowed':v==='denied'?'Denied':'Not set';
+  return `
+  <div class="steps"><div class="step done"></div><div class="step done"></div><div class="step"></div></div>
+  <h1>Permissions Required</h1>
+  <div class="sub">${esc(state.currentUser?.email || "")} - allow these to continue</div>
+  <div class="card">
+    ${banner()}
+    <div class="perm-row"><div class="left"><div class="icon-box">📍</div>Location</div><span class="tag ${tagClass(loc)}">${tagText(loc)}</span></div>
+    <div class="perm-row"><div class="left"><div class="icon-box">🔔</div>Notifications</div><span class="tag ${tagClass(notif)}">${tagText(notif)}</span></div>
+    <div class="perm-row"><div class="left"><div class="icon-box">🖥️</div>Device Info</div><span class="tag ok">Auto-collected</span></div>
+    <button id="btn-allow" ${state.loading?'disabled':''}>${spinBtn("Allow Permissions","Requesting...")}</button>
+    <button class="secondary" id="btn-submit" ${state.loading || !fbReady?'disabled':''}>${spinBtn("Save & Finish","Saving...")}</button>
+    <button class="ghost" id="btn-logout">Logout</button>
+  </div>`;
+}
+
+function adminLoginView(){
+  return `
+  <h1>Admin Login</h1>
+  <div class="sub">${ADMIN_DISPLAY_NAME} - admin access only</div>
+  <div class="card">
+    ${banner()}
+    <label>Admin Email</label>
+    <input id="a-email" placeholder="admin@hcrapp.app" value="${ADMIN_EMAIL}">
+    <label>Password</label>
+    <input id="a-pass" type="password" placeholder="••••••••">
+    <button id="btn-admin-login" ${state.loading || !fbReady?'disabled':''}>${spinBtn("Login","Checking...")}</button>
+    <button class="ghost" id="go-signup">← Back</button>
+  </div>`;
+}
+
+function adminDashView(){
+  const rows = (state.allSubs||[]).map(s => `
+    <tr>
+      <td>${esc(s.email||"-")}</td>
+      <td>${s.location ? s.location.lat.toFixed(4)+", "+s.location.lng.toFixed(4) : "—"}</td>
+      <td style="max-width:120px">${esc((s.device||"-").slice(0,50))}</td>
+      <td>${s.time && s.time.toDate ? s.time.toDate().toLocaleString() : "-"}</td>
+    </tr>`).join("");
+  return `
+  <h1>Admin Dashboard</h1>
+  <div class="sub">Total submissions: ${state.allSubs ? state.allSubs.length : 0}</div>
+  <div class="card overflow">
+    ${banner()}
+    <table><tr><th>Email</th><th>Location</th><th>Device</th><th>Time</th></tr>
+      ${rows || `<tr><td colspan="4" style="color:var(--muted)">No data yet</td></tr>`}
+    </table>
+  </div>
+  <button class="secondary" id="btn-refresh">Refresh</button>
+  <button class="ghost" id="btn-logout">Logout</button>`;
+}
+
+function bind(){
+  const by = id => document.getElementById(id);
+  if(by("tab-signup")) by("tab-signup").onclick = () => { state.authTab="signup"; state.msg=fbReady?"":fbLoadMsg; render(); };
+  if(by("tab-login")) by("tab-login").onclick = () => { state.authTab="login"; state.msg=fbReady?"":fbLoadMsg; render(); };
+  if(by("btn-auth")) by("btn-auth").onclick = doAuth;
+  if(by("go-admin")) by("go-admin").onclick = () => { state.view="adminLogin"; state.msg=fbReady?"":fbLoadMsg; render(); };
+  if(by("go-signup")) by("go-signup").onclick = () => { state.view="signup"; state.msg=fbReady?"":fbLoadMsg; render(); };
+  if(by("btn-allow")) by("btn-allow").onclick = allowPermissions;
+  if(by("btn-submit")) by("btn-submit").onclick = saveSubmission;
+  if(by("btn-admin-login")) by("btn-admin-login").onclick = adminLogin;
+  if(by("btn-refresh")) by("btn-refresh").onclick = refreshAdmin;
+  if(by("btn-logout")) by("btn-logout").onclick = async () => {
+    try{ if(auth) await auth.signOut(); }catch(e){}
+    state.view="signup"; state.msg=fbReady?"":fbLoadMsg; state.currentUser=null; render();
+  };
+}
+
+async function doAuth(){
+  if(!fbReady){ state.msg = fbLoadMsg; state.msgType = "warn"; render(); return; }
+  const email = document.getElementById("f-email").value.trim();
+  const pass = document.getElementById("f-pass").value;
+  if(!email || pass.length < 6){ state.msg = "Enter a valid email and a password of 6+ characters"; state.msgType="err"; render(); return; }
+  state.loading = true; state.msg=""; render();
+  try{
+    const cred = state.authTab === "signup"
+      ? await auth.createUserWithEmailAndPassword(email, pass)
+      : await auth.signInWithEmailAndPassword(email, pass);
+    state.currentUser = cred.user;
+    state.msg = ""; state.loading = false;
+    state.view = "permissions";
+  }catch(e){
+    state.loading = false;
+    state.msg = friendlyError(errCode(e), e.message); state.msgType="err";
+  }
+  render();
+}
+
+async function allowPermissions(){
+  state.loading = true; state.msg=""; render();
+
+  const locDone = new Promise(resolve => {
+    if(!("geolocation" in navigator)){
+      state.perms.location = "denied";
+      state.msg = "This browser doesn't support location.";
+      state.msgType = "err";
+      resolve(); return;
+    }
+    if(window.isSecureContext === false){
+      state.perms.location = "denied";
+      state.msg = "Location requires a secure page (https://) - it won't work opened as a local file.";
+      state.msgType = "err";
+      resolve(); return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        state.perms.location = "granted";
+        state.locationData = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        resolve();
+      },
+      err => {
+        state.perms.location = "denied";
+        const reasons = {
+          1: "Location permission was denied.",
+          2: "Location is currently unavailable on this device.",
+          3: "Getting your location timed out - try again."
+        };
+        state.msg = reasons[err.code] || "Could not get your location.";
+        state.msgType = "err";
+        resolve();
+      },
+      { timeout: 10000, enableHighAccuracy: true }
+    );
+  });
+
+  const notifDone = (async () => {
+    if(!("Notification" in window)){ state.perms.notif = "denied"; return; }
+    try{
+      const res = await Notification.requestPermission();
+      state.perms.notif = res === "granted" ? "granted" : "denied";
+    }catch(e){ state.perms.notif = "denied"; }
+  })();
+
+  await Promise.all([locDone, notifDone]);
+  state.loading = false;
+  render();
+}
+
+async function saveSubmission(){
+  if(!fbReady){ state.msg = fbLoadMsg; state.msgType = "warn"; render(); return; }
+  state.loading = true; state.msg=""; render();
+  try{
+    await db.collection("submissions").add({
+      uid: state.currentUser.uid,
+      email: state.currentUser.email,
+      location: state.locationData || null,
+      device: navigator.userAgent,
+      screen: screen.width + "x" + screen.height,
+      lang: navigator.language,
+      tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      time: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    state.msg = "Data saved"; state.msgType="ok";
+  }catch(e){
+    state.msg = friendlyError(errCode(e), e.message); state.msgType="err";
+  }
+  state.loading = false;
+  render();
+}
+
+async function adminLogin(){
+  if(!fbReady){ state.msg = fbLoadMsg; state.msgType = "warn"; render(); return; }
+  const email = document.getElementById("a-email").value.trim();
+  const pass = document.getElementById("a-pass").value;
+  state.loading = true; state.msg=""; render();
+  try{
+    const cred = await auth.signInWithEmailAndPassword(email, pass);
+    if(cred.user.email !== ADMIN_EMAIL){
+      await auth.signOut();
+      state.loading = false;
+      state.msg = "This account is not an admin account"; state.msgType="err";
+      render();
+      return;
+    }
+    await refreshAdmin();
+  }catch(e){
+    state.loading = false;
+    state.msg = friendlyError(errCode(e), e.message); state.msgType="err";
+    render();
+  }
+}
+
+async function refreshAdmin(){
+  state.loading = true; render();
+  try{
+    const snap = await db.collection("submissions").orderBy("time", "desc").limit(200).get();
+    state.allSubs = snap.docs.map(d => d.data());
+    state.view = "adminDash";
+    state.msg = "";
+  }catch(e){
+    state.msg = friendlyError(errCode(e), e.message); state.msgType="err";
+  }
+  state.loading = false;
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
