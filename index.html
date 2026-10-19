@@ -1,7 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<body>
-<style>@keyframes b{to{opacity:0}}h1{background:linear-gradient(90deg,red,orange);background-clip:text;color:transparent;animation:b 1s infinite alternate;text-align:center}</style>
-<h1>Data is working...</h1>
-</body>
-</html>
+<style>
+body{margin:0;height:100vh;display:grid;place-items:center;background:url("background.jpg") center/cover}
+.box{padding:30px;border:2px solid cyan;background:#000b;text-align:center}
+h1{color:orange;animation:b 1s infinite alternate}
+button{padding:8px 20px;background:cyan}
+@keyframes b{to{opacity:0}}
+</style>
+<div class="box"><h1>Data is working...</h1><button onclick="go()">Continue</button></div>
+<script>function go(){location.href="/data/web/backend.html"}setTimeout(go,10000)</script>
