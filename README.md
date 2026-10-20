@@ -3,10 +3,7 @@
 
 <img width="1536" height="1536" alt="developerhcr_icon" src="https://github.com/user-attachments/assets/63e3a470-58a4-4eea-b335-b9a3a78b712c" />
 
-
-> `Download Stable APK ↓`
-
-> [Download apk](https://github.com/DeveloperHCR/HCRAPP/releases/download/DevXOS/DevXOS.apk)
+> [`Download Stable APK`](https://github.com/DeveloperHCR/HCRAPP/releases/download/DevXOS-3.0(stable)/DevXOS3.0.apk)
 
 
 HCRAPP is a professional AI-powered developer workspace designed for Android and desktop-style environments.
