@@ -1,159 +1,69 @@
-# HCRAPP
-> (Channel) https://youtube.com/@developerhcr
+# DeveloperHCR
 
-<img width="1536" height="1536" alt="developerhcr_icon" src="https://github.com/user-attachments/assets/63e3a470-58a4-4eea-b335-b9a3a78b712c" />
+<p align="center">
+  <img src=".backend/Main/data.png" alt="DeveloperHCR logo" width="180">
+</p>
 
-> [`Download Stable APK`](https://github.com/DeveloperHCR/HCRAPP/releases/download/DevXOS-3.0(stable)/DevXOS3.0.apk)
+**Independent software development and technology**
 
+DeveloperHCR creates digital experiences across web, Android, AI-assisted tools, and developer-focused software. This repository contains the DeveloperHCR static website, its visual assets, and supporting project documentation.
 
-HCRAPP is a professional AI-powered developer workspace designed for Android and desktop-style environments.
+## About
 
-It combines AI assistance, coding tools, file management, a virtual desktop, terminal utilities, project management, and system settings in one application.
+DeveloperHCR is focused on practical, accessible software and modern digital experiences. Current areas of interest include:
 
-## Features
+- AI-assisted applications and developer workflows
+- Android software and virtual desktop experiences
+- Web design and responsive user interfaces
+- Productivity tools and software experimentation
 
-### AI Assistant
-- HCR AI
-- AI Chat
-- Hindi support
-- English support
-- Hinglish support
-- Code generation
-- Code explanation
-- Error analysis
-- Bug fixing assistance
-- File analysis
-- Local AI support
-- API-based AI support
-- AI model selection
+## Website
 
-### Developer Tools
-- Code Editor
-- HTML
-- CSS
-- JavaScript
-- Python
-- Java
-- C
-- C++
-- JSON
-- XML
-- Project Manager
-- Build Tools
-- Run Tools
-- Code Formatting
-- Code Search
+The site is a static HTML and JavaScript project. Its styles are embedded in each HTML page so they work consistently on GitHub Pages. It includes a brand homepage, project information, contact details, and supporting informational pages.
 
-### File Manager
-- Internal Storage
-- AppData
-- Projects
-- Uploads
-- Create Files
-- Create Folders
-- Rename
-- Delete
-- Copy
-- Move
-- Search
-- File Preview
-- ZIP Creation
-- ZIP Extraction
+- Responsive layout and mobile navigation
+- English, Hindi, and Hinglish interface language selection
+- Shared logo and artwork assets
+- Lightweight JavaScript for navigation, language selection, and the copyright year
+- GitHub Pages deployment through [`.github/workflows/static.yml`](.github/workflows/static.yml)
 
-### Virtual Desktop
-- Windows-style desktop interface
-- Desktop icons
-- Taskbar
-- Start Menu
-- Window management
-- Minimize
-- Maximize
-- Close
-- Fullscreen mode
-- Mouse and cursor support
-- Touch support
-- Keyboard support
+The contact form is currently a front-end demonstration and does not send or store submissions.
 
-### Tools
-- Calculator
-- Text Editor
-- Image Viewer
-- PDF Viewer
-- Downloader
-- System Monitor
-- Network Tools
-- QR Tools
-- Developer Utilities
+## Project links
 
-### Settings
-- Appearance
-- Theme
-- Wallpaper
-- AI Settings
-- API Settings
-- Model Settings
-- Storage Settings
-- Security Settings
-- Notification Settings
-- Language Settings
-- Performance Settings
-- Virtual System Settings
+- **Repository:** [github.com/DeveloperHCR/HCRAPP](https://github.com/DeveloperHCR/HCRAPP)
+- **YouTube:** [DeveloperHCR](https://youtube.com/@developerhcr)
+- **Email:** [developerhcr@gmail.com](mailto:developerhcr@gmail.com)
+- **Stable DevX OS APK:** [Download](<https://github.com/DeveloperHCR/HCRAPP/releases/download/DevXOS-3.0(stable)/DevXOS3.0.apk>)
 
-### Security
-- App Lock
-- PIN / Password protection
-- Privacy controls
-- Permission management
-- Secure storage
+## Run the website locally
 
-### Server and Cloud
-- Server connection
-- API configuration
-- Upload
-- Download
-- Account / Profile
-- Connection status
+No package installation is required. From the repository root, run:
 
-## Requirements
+```bash
+python3 -m http.server 8000
+```
 
-### Android
+Then open [http://localhost:8000](http://localhost:8000).
 
-Recommended:
-- Android 8.0 or newer
-- 4 GB RAM or more
-- At least 2 GB free storage
-
-Minimum requirements may vary depending on enabled features.
-
-### Desktop
-
-Recommended:
-- Windows 10 or newer
-- 4 GB RAM or more
-- At least 2 GB free storage
-- Internet connection for online AI and API features
-
-## Project Structure
+## Repository structure
 
 ```text
-HCRAPP/
-├── app/
-│   ├── src/
-│   └── build.gradle
-├── gradle/
-├── assets/
-├── AppData/
-├── uploads/
-├── projects/
-├── README.md
-├── settings.gradle
-├── build.gradle
-└── gradlew
+.
+├── .backend/Main/       # Supplied logo image and legacy setup note
+├── .github/workflows/   # GitHub Pages deployment workflow
+├── assets/images/       # Website logo and artwork
+├── data/web/            # Nested static backend-status page
+├── js/                  # Site navigation and small UI behaviors
+├── pages/               # Site pages; index.html remains at the root
+├── About.md             # Legacy DevX OS setup guide
+└── index.html           # Website homepage
 ```
-> # OLD
-**Web OS**
 
-<img width="1079" height="609" alt="Screenshot_2026-10-07-19-15-29-15_f9ee0578fe1cc94de7482bd41accb329" src="https://github.com/user-attachments/assets/7eae4781-84d0-46da-8124-65165c8ad108" />
+## Deployment
 
-> https://youtu.be/fNrx3FiA4iE?si=KxXxxqQHEy__iOg-
+The GitHub Actions workflow publishes the repository to GitHub Pages when changes are pushed to the `main` branch. Enable GitHub Pages for the repository and select **GitHub Actions** as the build and deployment source.
 
+## License
+
+This project is released under the [Unlicense](LICENSE).
