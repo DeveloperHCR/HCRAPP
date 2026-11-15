@@ -26,8 +26,8 @@ The site is a static HTML and JavaScript project. Styles are embedded in the HTM
 
 | Page | What it contains |
 | --- | --- |
-| Home | DeveloperHCR introduction, featured projects, GitHub stars, and a DevX Billing demo link |
-| Projects | HCRAPP, DevX OS, and DevX Billing summaries, tags, release links, and a sandboxed DevX Billing preview |
+| Home | DeveloperHCR introduction, featured projects, GitHub stars, and demo links |
+| Projects | HCRAPP, DevX OS, and DevX Billing summaries, tags, release links, a DevX OS browser preview, and a sandboxed DevX Billing preview |
 | Contact | Email, public location, Google Map, and contact form demonstration |
 | Downloads | Link to the official DevX OS 3.0 stable APK release |
 | About, Services, AI & API, Documentation, Gallery | Company and product information |
@@ -36,6 +36,10 @@ The site is a static HTML and JavaScript project. Styles are embedded in the HTM
 The site supports English, Hindi, and Hinglish. Navigation, language selection, page-view badge display, and copyright year use lightweight JavaScript.
 
 The contact form is a visual demonstration only; it does not send or store submissions.
+
+### DevX OS browser demo
+
+The DevX OS browser demo is an interactive website simulation of the desktop interface, with sample Files, Notes, Settings, an unlocked Admin Panel, and About windows. The Admin Panel needs no login and only changes in-memory sample data. The demo is not the Android application or a real operating system; nothing is persisted or sent. The Android release remains available from the [DevX OS stable release](https://github.com/DeveloperHCR/HCRAPP/releases/tag/DevXOS-3.0(stable)).
 
 ### DevX Billing demo safety
 
@@ -49,6 +53,7 @@ The GitHub stars badge is live. Website views count page loads through the visit
 
 - **Repository:** [github.com/DeveloperHCR/HCRAPP](https://github.com/DeveloperHCR/HCRAPP)
 - **DeveloperHCR website:** [developerhcr.github.io/HCRAPP](https://developerhcr.github.io/HCRAPP/)
+- **DevX OS browser demo:** [Try the interactive desktop preview](https://developerhcr.github.io/HCRAPP/pages/devx-os-demo.html)
 - **DevX Billing demo:** [Try the live demo](https://developerhcr.github.io/DevX_Billing/)
 - **DevX Billing repository:** [github.com/DeveloperHCR/DevX_Billing](https://github.com/DeveloperHCR/DevX_Billing)
 - **DevX Billing release:** [DevX_billing_1.3.2](https://github.com/DeveloperHCR/DevX_Billing/releases/tag/DevX_billing_1.3.2)
