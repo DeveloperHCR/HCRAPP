@@ -313,7 +313,7 @@ textarea { min-height: 130px; resize: vertical; }
 .github-stars img { min-height: 28px; }
 .demo-preview { margin-top: 2rem; }
 .demo-preview summary { cursor: pointer; color: var(--primary); font-weight: 700; }
-.demo-frame { display: block; width: 100%; min-height: 560px; margin-top: 1rem; border: 1px solid var(--border); border-radius: 16px; background: var(--panel-strong); }
+.demo-frame { display: block; width: 100%; height: min(78vh, 760px); min-height: 620px; margin-top: 1rem; border: 1px solid var(--border); border-radius: 16px; background: var(--panel-strong); }
 </style>
 
 
@@ -376,12 +376,29 @@ textarea { min-height: 130px; resize: vertical; }
                     </ul>
                     <a class="project-link" href="downloads.html">View stable release</a>
                 </article>
+                <article class="project-card glass-panel">
+                    <h2>DevX Billing 1.3.2</h2>
+                    <p class="muted">A browser-based shop and invoice management app with product, customer, payment history, and reporting sections.</p>
+                    <ul class="tag-list" aria-label="DevX Billing tags">
+                        <li class="tag">Billing</li>
+                        <li class="tag">Invoices</li>
+                        <li class="tag">Browser storage</li>
+                    </ul>
+                    <a class="project-link" href="https://github.com/DeveloperHCR/DevX_Billing" target="_blank" rel="noreferrer">Open DevX Billing repository</a>
+                </article>
             </div>
-            <details class="panel demo-preview">
-                <summary>Open the live website demo</summary>
-                <p class="muted">Preview the published DeveloperHCR website below.</p>
-                <iframe class="demo-frame" src="../index.html" title="Live preview of the DeveloperHCR website" loading="lazy"></iframe>
-                <a class="project-link" href="https://developerhcr.github.io/HCRAPP/" target="_blank" rel="noreferrer">Open demo in a new tab</a>
+            <details class="panel demo-preview" id="devx-billing-demo">
+                <summary>Try the DevX Billing project demo</summary>
+                <p class="muted">This preview is sandboxed and does not persist data. Use sample information only. The standalone app shares browser storage with other sites on developerhcr.github.io, so never enter real customer, invoice, payment, or API-key data.</p>
+                <iframe
+                    class="demo-frame"
+                    src="https://developerhcr.github.io/DevX_Billing/"
+                    title="Sandboxed interactive preview of DevX Billing 1.3.2"
+                    loading="lazy"
+                    referrerpolicy="no-referrer"
+                    sandbox="allow-scripts allow-forms">
+                </iframe>
+                <a class="project-link" href="https://developerhcr.github.io/DevX_Billing/" target="_blank" rel="noreferrer">Open DevX Billing demo in a new tab</a>
             </details>
         </div>
     </main>

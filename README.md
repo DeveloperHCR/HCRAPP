@@ -26,8 +26,8 @@ The site is a static HTML and JavaScript project. Styles are embedded in the HTM
 
 | Page | What it contains |
 | --- | --- |
-| Home | DeveloperHCR introduction, featured projects, GitHub stars, and live-site link |
-| Projects | HCRAPP and DevX OS summaries, project tags, release link, and an embedded website preview |
+| Home | DeveloperHCR introduction, featured projects, GitHub stars, and a DevX Billing demo link |
+| Projects | HCRAPP, DevX OS, and DevX Billing summaries, tags, release links, and a sandboxed DevX Billing preview |
 | Contact | Email, public location, Google Map, and contact form demonstration |
 | Downloads | Link to the official DevX OS 3.0 stable APK release |
 | About, Services, AI & API, Documentation, Gallery | Company and product information |
@@ -37,6 +37,10 @@ The site supports English, Hindi, and Hinglish. Navigation, language selection, 
 
 The contact form is a visual demonstration only; it does not send or store submissions.
 
+### DevX Billing demo safety
+
+The embedded demo is served from the separate [DevX_Billing repository](https://github.com/DeveloperHCR/DevX_Billing). The embedded preview is sandboxed and does not persist data. The standalone app stores business records and configured AI credentials in browser local storage. Both projects use the `developerhcr.github.io` origin, so this storage is shared with other pages on that origin. Use sample information only; never enter real customer, invoice, payment, or API-key data.
+
 ### Stars and views
 
 The GitHub stars badge is live. Website views count page loads through the visitor-badge service; repeated loads by the same person count separately, and counts may include automated traffic. The README has a separate counter. These are not GitHub repository traffic statistics. GitHub makes repository traffic views available to repository owners in [Insights → Traffic](https://github.com/DeveloperHCR/HCRAPP/graphs/traffic).
@@ -44,7 +48,10 @@ The GitHub stars badge is live. Website views count page loads through the visit
 ## Project links
 
 - **Repository:** [github.com/DeveloperHCR/HCRAPP](https://github.com/DeveloperHCR/HCRAPP)
-- **Live website demo:** [developerhcr.github.io/HCRAPP](https://developerhcr.github.io/HCRAPP/)
+- **DeveloperHCR website:** [developerhcr.github.io/HCRAPP](https://developerhcr.github.io/HCRAPP/)
+- **DevX Billing demo:** [Try the live demo](https://developerhcr.github.io/DevX_Billing/)
+- **DevX Billing repository:** [github.com/DeveloperHCR/DevX_Billing](https://github.com/DeveloperHCR/DevX_Billing)
+- **DevX Billing release:** [DevX_billing_1.3.2](https://github.com/DeveloperHCR/DevX_Billing/releases/tag/DevX_billing_1.3.2)
 - **GitHub release/tag:** [DevXOS-3.0(stable)](https://github.com/DeveloperHCR/HCRAPP/releases/tag/DevXOS-3.0(stable))
 - **Public location:** Phuljori, Giridih, Jharkhand, India ([Google Maps](https://maps.app.goo.gl/k4rmCBtXUHK1BVem9))
 - **YouTube:** [DeveloperHCR](https://youtube.com/@developerhcr)

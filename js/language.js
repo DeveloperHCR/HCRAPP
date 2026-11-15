@@ -115,11 +115,24 @@ const translations = {
     'Virtual desktop': 'वर्चुअल डेस्कटॉप',
     'Stable release': 'स्थिर रिलीज़',
     'View stable release': 'स्थिर रिलीज़ देखें',
-    'Open the live website demo': 'लाइव वेबसाइट डेमो खोलें',
-    'Preview the published DeveloperHCR website below.':
-      'नीचे प्रकाशित DeveloperHCR वेबसाइट का प्रीव्यू देखें।',
-    'Open demo in a new tab': 'डेमो नए टैब में खोलें',
-    'Live Website Demo': 'लाइव वेबसाइट डेमो',
+    'Try DevX Billing Demo': 'DevX Billing डेमो आज़माएँ',
+    'DevX Billing 1.3.2': 'DevX Billing 1.3.2',
+    'Browser-based shop and invoice management with product, customer, payment history, and reporting sections.':
+      'ब्राउज़र में चलने वाला दुकान और इनवॉइस प्रबंधन, जिसमें उत्पाद, ग्राहक, भुगतान इतिहास और रिपोर्ट शामिल हैं।',
+    'A browser-based shop and invoice management app with product, customer, payment history, and reporting sections.':
+      'ब्राउज़र में चलने वाला दुकान और इनवॉइस प्रबंधन ऐप, जिसमें उत्पाद, ग्राहक, भुगतान इतिहास और रिपोर्ट शामिल हैं।',
+    Billing: 'बिलिंग',
+    Invoices: 'इनवॉइस',
+    'Browser storage': 'ब्राउज़र स्टोरेज',
+    'Open DevX Billing Demo': 'DevX Billing डेमो खोलें',
+    'Open DevX Billing repository': 'DevX Billing रिपॉज़िटरी खोलें',
+    'View sandboxed demo': 'सैंडबॉक्स डेमो देखें',
+    'Try the DevX Billing project demo': 'DevX Billing प्रोजेक्ट डेमो आज़माएँ',
+    'This preview is sandboxed and does not persist data. Use sample information only. The standalone app shares browser storage with other sites on developerhcr.github.io, so never enter real customer, invoice, payment, or API-key data.':
+      'यह प्रीव्यू सैंडबॉक्स में है और डेटा स्थायी रूप से सेव नहीं करता। केवल नमूना जानकारी उपयोग करें। स्टैंडअलोन ऐप developerhcr.github.io की अन्य साइटों के साथ ब्राउज़र स्टोरेज साझा करता है; असली ग्राहक, इनवॉइस, भुगतान या API कुंजी दर्ज न करें।',
+    'Sandboxed interactive preview of DevX Billing 1.3.2':
+      'DevX Billing 1.3.2 का सैंडबॉक्स इंटरैक्टिव प्रीव्यू',
+    'Open DevX Billing demo in a new tab': 'DevX Billing डेमो नए टैब में खोलें',
     'Website page views; each page load counts': 'वेबसाइट पेज व्यू; हर पेज लोड गिना जाता है',
     'Counts page loads, not unique visitors': 'पेज लोड गिने जाते हैं, अलग-अलग विज़िटर नहीं',
     'Website view counts use a third-party visitor badge. Loading a page with the badge sends a request to laobi.icu and increments the page-view counter; this counts page loads, not unique people. The badge provider may process standard request information such as your IP address. The README has a separate counter for README badge loads. GitHub star counts are provided by Shields.io.':
@@ -272,11 +285,24 @@ const translations = {
     'Virtual desktop': 'Virtual desktop',
     'Stable release': 'Stable release',
     'View stable release': 'Stable release dekhein',
-    'Open the live website demo': 'Live website demo kholein',
-    'Preview the published DeveloperHCR website below.':
-      'Neeche published DeveloperHCR website ka preview dekhein.',
-    'Open demo in a new tab': 'Demo naye tab mein kholein',
-    'Live Website Demo': 'Live Website Demo',
+    'Try DevX Billing Demo': 'DevX Billing demo try karein',
+    'DevX Billing 1.3.2': 'DevX Billing 1.3.2',
+    'Browser-based shop and invoice management with product, customer, payment history, and reporting sections.':
+      'Browser mein chalne wala shop aur invoice management, jisme products, customers, payment history aur reports hain.',
+    'A browser-based shop and invoice management app with product, customer, payment history, and reporting sections.':
+      'Browser mein chalne wala shop aur invoice management app, jisme products, customers, payment history aur reports hain.',
+    Billing: 'Billing',
+    Invoices: 'Invoices',
+    'Browser storage': 'Browser storage',
+    'Open DevX Billing Demo': 'DevX Billing demo kholein',
+    'Open DevX Billing repository': 'DevX Billing repository kholein',
+    'View sandboxed demo': 'Sandboxed demo dekhein',
+    'Try the DevX Billing project demo': 'DevX Billing project demo try karein',
+    'This preview is sandboxed and does not persist data. Use sample information only. The standalone app shares browser storage with other sites on developerhcr.github.io, so never enter real customer, invoice, payment, or API-key data.':
+      'Yeh preview sandbox mein hai aur data ko permanently save nahi karta. Sirf sample information use karein. Standalone app developerhcr.github.io ki doosri sites ke saath browser storage share karta hai; real customer, invoice, payment ya API-key data na daalein.',
+    'Sandboxed interactive preview of DevX Billing 1.3.2':
+      'DevX Billing 1.3.2 ka sandbox interactive preview',
+    'Open DevX Billing demo in a new tab': 'DevX Billing demo naye tab mein kholein',
     'Website page views; each page load counts': 'Website page views; har page load count hota hai',
     'Counts page loads, not unique visitors': 'Page loads count hote hain, unique visitors nahi',
     'Website view counts use a third-party visitor badge. Loading a page with the badge sends a request to laobi.icu and increments the page-view counter; this counts page loads, not unique people. The badge provider may process standard request information such as your IP address. The README has a separate counter for README badge loads. GitHub star counts are provided by Shields.io.':
