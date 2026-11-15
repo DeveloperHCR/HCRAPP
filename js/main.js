@@ -190,13 +190,14 @@ links.forEach((link) => {
     link.classList.add('active');
   }
 });
-const advancedToggle = document.createElement('button');
-advancedToggle.type = 'button';
-advancedToggle.className = 'advanced-toggle';
-advancedToggle.setAttribute('aria-label', 'Toggle advanced mode');
-advancedToggle.textContent = 'Advanced mode';
 const navContainer = document.querySelector('.nav-container');
-if (navContainer && !navContainer.querySelector('.advanced-toggle')) {
+let advancedToggle = navContainer?.querySelector('.advanced-toggle');
+if (navContainer && !advancedToggle) {
+  advancedToggle = document.createElement('button');
+  advancedToggle.type = 'button';
+  advancedToggle.className = 'advanced-toggle';
+  advancedToggle.setAttribute('aria-label', 'Toggle advanced mode');
+  advancedToggle.textContent = 'Advanced mode';
   const menuToggle = navContainer.querySelector('.menu-toggle');
   if (menuToggle) {
     navContainer.insertBefore(advancedToggle, menuToggle.nextSibling);
@@ -207,13 +208,17 @@ if (navContainer && !navContainer.querySelector('.advanced-toggle')) {
 
 const savedAdvancedMode = localStorage.getItem('developerhcr-advanced-mode') === 'true';
 document.body.classList.toggle('advanced-mode', savedAdvancedMode);
-advancedToggle.textContent = savedAdvancedMode ? 'Premium on' : 'Advanced mode';
-advancedToggle.addEventListener('click', () => {
-  const isNowAdvanced = !document.body.classList.contains('advanced-mode');
-  document.body.classList.toggle('advanced-mode', isNowAdvanced);
-  advancedToggle.textContent = isNowAdvanced ? 'Premium on' : 'Advanced mode';
-  localStorage.setItem('developerhcr-advanced-mode', String(isNowAdvanced));
-});
+if (advancedToggle) {
+  advancedToggle.setAttribute('aria-pressed', String(savedAdvancedMode));
+  advancedToggle.textContent = savedAdvancedMode ? 'Premium on' : 'Advanced mode';
+  advancedToggle.addEventListener('click', () => {
+    const isNowAdvanced = !document.body.classList.contains('advanced-mode');
+    document.body.classList.toggle('advanced-mode', isNowAdvanced);
+    advancedToggle.textContent = isNowAdvanced ? 'Premium on' : 'Advanced mode';
+    advancedToggle.setAttribute('aria-pressed', String(isNowAdvanced));
+    localStorage.setItem('developerhcr-advanced-mode', String(isNowAdvanced));
+  });
+}
 const heroArtwork = document.querySelector('.hero-artwork .glass-panel');
 if (heroArtwork && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
   heroArtwork.addEventListener('pointermove', (event) => {
