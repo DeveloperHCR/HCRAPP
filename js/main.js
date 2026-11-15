@@ -19,7 +19,7 @@ if (footerBottom && !footerBottom.querySelector('.site-views')) {
   viewsLink.style.marginTop = '0.5rem';
 
   const viewsBadge = document.createElement('img');
-  viewsBadge.src = 'https://visitor-badge.laobi.icu/badge?page_id=DeveloperHCR.HCRAPP&left_text=website%20views&logo=github&right_color=0891b2';
+  viewsBadge.src = 'https://visitor-badge.laobi.icu/badge?page_id=DeveloperHCR.HCRAPP-website&left_text=website%20views&logo=github&right_color=0891b2';
   viewsBadge.alt = 'Website page views; each page load counts';
   viewsBadge.width = 138;
   viewsBadge.height = 20;

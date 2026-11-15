@@ -122,8 +122,8 @@ const translations = {
     'Live Website Demo': 'लाइव वेबसाइट डेमो',
     'Website page views; each page load counts': 'वेबसाइट पेज व्यू; हर पेज लोड गिना जाता है',
     'Counts page loads, not unique visitors': 'पेज लोड गिने जाते हैं, अलग-अलग विज़िटर नहीं',
-    'Website view counts use a third-party visitor badge. Loading a page with the badge sends a request to laobi.icu and increments the page-view counter; this counts page loads, not unique people. The badge provider may process standard request information such as your IP address. The website-views badge in the README only reads the website count; a separate counter tracks README badge loads. GitHub star counts are provided by Shields.io.':
-      'वेबसाइट व्यू की गणना के लिए laobi.icu की थर्ड-पार्टी विज़िटर बैज सेवा उपयोग होती है। बैज वाले पेज को लोड करने पर सेवा को अनुरोध भेजा जाता है और पेज व्यू बढ़ता है; यह अलग-अलग लोगों की गिनती नहीं है। सेवा IP पते जैसी सामान्य अनुरोध जानकारी संसाधित कर सकती है। README का वेबसाइट-व्यू बैज केवल वेबसाइट की संख्या पढ़ता है; README व्यू अलग गिने जाते हैं। GitHub स्टार की संख्या Shields.io से आती है।',
+    'Website view counts use a third-party visitor badge. Loading a page with the badge sends a request to laobi.icu and increments the page-view counter; this counts page loads, not unique people. The badge provider may process standard request information such as your IP address. The README has a separate counter for README badge loads. GitHub star counts are provided by Shields.io.':
+      'वेबसाइट व्यू की गणना के लिए laobi.icu की थर्ड-पार्टी विज़िटर बैज सेवा उपयोग होती है। बैज वाले पेज को लोड करने पर सेवा को अनुरोध भेजा जाता है और पेज व्यू बढ़ता है; यह अलग-अलग लोगों की गिनती नहीं है। सेवा IP पते जैसी सामान्य अनुरोध जानकारी संसाधित कर सकती है। README व्यू अलग गिने जाते हैं। GitHub स्टार की संख्या Shields.io से आती है।',
     'Send a Message': 'संदेश भेजें',
     Name: 'नाम',
     Email: 'ईमेल',
@@ -279,8 +279,8 @@ const translations = {
     'Live Website Demo': 'Live Website Demo',
     'Website page views; each page load counts': 'Website page views; har page load count hota hai',
     'Counts page loads, not unique visitors': 'Page loads count hote hain, unique visitors nahi',
-    'Website view counts use a third-party visitor badge. Loading a page with the badge sends a request to laobi.icu and increments the page-view counter; this counts page loads, not unique people. The badge provider may process standard request information such as your IP address. The website-views badge in the README only reads the website count; a separate counter tracks README badge loads. GitHub star counts are provided by Shields.io.':
-      'Website views ke liye laobi.icu ki third-party visitor badge service use hoti hai. Badge wale page load par service ko request bheji jaati hai aur page-view count badhta hai; yeh unique logon ki ginti nahi hai. Service IP address jaisi normal request information process kar sakti hai. README ka website-views badge website count ko sirf read karta hai; README views alag count hote hain. GitHub stars ka count Shields.io se aata hai.',
+    'Website view counts use a third-party visitor badge. Loading a page with the badge sends a request to laobi.icu and increments the page-view counter; this counts page loads, not unique people. The badge provider may process standard request information such as your IP address. The README has a separate counter for README badge loads. GitHub star counts are provided by Shields.io.':
+      'Website views ke liye laobi.icu ki third-party visitor badge service use hoti hai. Badge wale page load par service ko request bheji jaati hai aur page-view count badhta hai; yeh unique logon ki ginti nahi hai. Service IP address jaisi normal request information process kar sakti hai. README views alag count hote hain. GitHub stars ka count Shields.io se aata hai.',
     'Send a Message': 'Message bhejein',
     Name: 'Naam',
     Email: 'Email',

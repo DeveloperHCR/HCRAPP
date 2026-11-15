@@ -7,7 +7,6 @@
 **Independent software development and technology**
 
 [![GitHub stars](https://img.shields.io/github/stars/DeveloperHCR/HCRAPP?style=for-the-badge&logo=github&label=GitHub%20stars)](https://github.com/DeveloperHCR/HCRAPP/stargazers)
-[![Website views](https://visitor-badge.laobi.icu/badge?page_id=DeveloperHCR.HCRAPP&left_text=website%20views&logo=github&right_color=0891b2&query_only=true)](https://developerhcr.github.io/HCRAPP/)
 [![README views](https://visitor-badge.laobi.icu/badge?page_id=DeveloperHCR.HCRAPP-README&left_text=README%20views&logo=github&right_color=0891b2)](https://visitor-badge.laobi.icu/)
 
 DeveloperHCR builds digital experiences across web, Android, AI-assisted tools, and developer-focused software. This repository contains the official static website, the DevX OS release information, visual assets, and supporting documentation.
