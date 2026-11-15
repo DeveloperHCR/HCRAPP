@@ -9,37 +9,39 @@
 [![GitHub stars](https://img.shields.io/github/stars/DeveloperHCR/HCRAPP?style=for-the-badge&logo=github&label=GitHub%20stars)](https://github.com/DeveloperHCR/HCRAPP/stargazers)
 [![README views](https://visitor-badge.laobi.icu/badge?page_id=DeveloperHCR.HCRAPP-README&left_text=README%20views&logo=github&right_color=0891b2)](https://visitor-badge.laobi.icu/)
 
-DeveloperHCR builds digital experiences across web, Android, AI-assisted tools, and developer-focused software. This repository contains the official static website, the DevX OS release information, visual assets, and supporting documentation.
+DeveloperHCR designs premium digital experiences across web, Android, AI-assisted tools, and developer-first software. This repository contains the official static website, DevX OS release information, visual assets, and supporting documentation for the project ecosystem.
 
 ## About
 
-DeveloperHCR focuses on practical software and accessible digital experiences. Project areas include:
+DeveloperHCR focuses on practical software and accessible digital experiences with a polished, product-first style. Core areas include:
 
 - AI-assisted applications and developer workflows
 - Android software and virtual desktop experiences
-- Web design and responsive user interfaces
+- Premium responsive web design and product storytelling
 - Productivity tools and software experimentation
+
+The website includes thoughtfully layered visual enhancements, subtle motion effects, and a hidden stealth-mode cue for a more premium feel without compromising clarity or accessibility.
 
 ## Website
 
-The site is a static HTML and JavaScript project. Styles are embedded in the HTML pages so GitHub Pages can serve the site without a build step or external CSS files.
+The site is a static HTML and JavaScript project. Styles are embedded in the HTML pages so GitHub Pages can serve the site without a build step or external CSS files. The landing page has a more refined visual treatment with gradient depth, glassmorphism panels, hover motion, and selective interactive polish.
 
 | Page | What it contains |
 | --- | --- |
 | Home | DeveloperHCR introduction, featured projects, GitHub stars, and demo links |
 | Projects | HCRAPP, DevX OS, and DevX Billing summaries, tags, release links, a DevX OS browser preview, and a sandboxed DevX Billing preview |
-| Contact | Email, public location, Google Map, and contact form demonstration |
+| Contact | Email, public location, Google Map, and a message form that opens a prefilled email in the visitor's email app |
 | Downloads | Link to the official DevX OS 3.0 stable APK release |
 | About, Services, AI & API, Documentation, Gallery | Company and product information |
 | Privacy, Terms | Website privacy and usage information |
 
 The site supports English, Hindi, and Hinglish. Navigation, language selection, page-view badge display, and copyright year use lightweight JavaScript.
 
-The contact form is a visual demonstration only; it does not send or store submissions.
+The contact form uses a `mailto:` link to open the visitor's configured email app with the message addressed to `developerhcr@gmail.com`. The visitor must review and send the email; the website itself does not transmit or store form submissions.
 
 ### DevX OS browser demo
 
-The DevX OS browser demo is an interactive website simulation of the desktop interface, with sample Files, Notes, Settings, an unlocked Admin Panel, and About windows. The Admin Panel needs no login and only changes in-memory sample data. The demo is not the Android application or a real operating system; nothing is persisted or sent. The Android release remains available from the [DevX OS stable release](https://github.com/DeveloperHCR/HCRAPP/releases/tag/DevXOS-3.0(stable)).
+The DevX OS browser demo is an interactive website simulation of the desktop interface, with Files, Notes, Settings, an unlocked Admin Panel, Calculator, Calendar, a local-only sample Browser, a simulated safe Terminal, a sample System Monitor, and About apps. The Admin Panel needs no login and only changes in-memory sample data. The demo is not the Android application or a real operating system; nothing is persisted or sent, and system resources are not accessed. The Android release remains available from the [DevX OS stable release](https://github.com/DeveloperHCR/HCRAPP/releases/tag/DevXOS-3.0(stable)).
 
 ### DevX Billing demo safety
 
@@ -71,7 +73,7 @@ No package installation is required. From the repository root, run:
 python3 -m http.server 8000
 ```
 
-Then open [http://localhost:8000](http://localhost:8000).
+Then open [http://localhost:8000](http://localhost:8000). For a more polished preview, refresh once the page is loaded and explore the page motion and UI details.
 
 ## Deployment
 

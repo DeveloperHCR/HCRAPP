@@ -68,7 +68,7 @@
         .desktop::after { width: 260px; height: 260px; top: 23%; right: calc(12% + 80px); }
         .desktop-top { position: absolute; inset: 0 0 auto; display: flex; align-items: center; justify-content: space-between; height: 42px; padding: 0 1rem; background: rgba(4, 11, 20, 0.48); color: #dceaf5; font-size: 0.82rem; }
         .desktop-top .system-status { display: flex; gap: 1rem; align-items: center; color: #c0d0dc; }
-        .desktop-icons { position: absolute; top: 58px; left: 18px; display: grid; gap: 0.8rem; }
+        .desktop-icons { position: absolute; top: 58px; left: 18px; width: 266px; display: grid; grid-template-columns: repeat(3, 82px); gap: 0.35rem; }
         .desktop-icon { width: 82px; min-height: 82px; display: grid; justify-items: center; align-content: center; gap: 0.25rem; padding: 0.4rem; border: 1px solid transparent; border-radius: 10px; background: transparent; cursor: pointer; text-align: center; font-size: 0.8rem; }
         .desktop-icon:hover, .desktop-icon:focus-visible { border-color: rgba(103, 232, 249, 0.25); background: rgba(103, 232, 249, 0.12); outline: none; }
         .desktop-icon .icon { font-size: 1.7rem; filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.4)); }
@@ -124,6 +124,29 @@
         .admin-table .status-good { color: #6ee7b7; }
         .admin-table [data-admin-action="remove-user"] { border: 0; background: transparent; color: #fda4af; cursor: pointer; }
         .admin-message { min-height: 1.25em; color: var(--muted); }
+        .app-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0.6rem; }
+        .app-tile { min-height: 88px; display: grid; justify-items: center; align-content: center; gap: 0.25rem; border: 1px solid var(--border); border-radius: 9px; background: rgba(255,255,255,0.03); cursor: pointer; }
+        .app-tile:hover { border-color: rgba(103,232,249,0.35); background: rgba(103,232,249,0.1); }
+        .app-tile span:first-child { font-size: 1.4rem; }
+        .calc-display { width: 100%; margin-bottom: 0.6rem; padding: 0.7rem; border: 1px solid var(--border); border-radius: 8px; background: #08111d; color: var(--text); font: 1.3rem/1.4 monospace; text-align: right; }
+        .calc-keys { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.4rem; }
+        .calc-keys button, .demo-form button { min-height: 40px; border: 1px solid var(--border); border-radius: 7px; background: rgba(255,255,255,0.05); cursor: pointer; }
+        .calc-keys button:hover, .demo-form button:hover { background: rgba(103,232,249,0.15); }
+        .calc-keys [data-calc-key="="] { background: rgba(103,232,249,0.22); }
+        .demo-form { display: flex; gap: 0.5rem; }
+        .demo-input { min-width: 0; flex: 1; padding: 0.6rem 0.7rem; border: 1px solid var(--border); border-radius: 7px; background: #08111d; color: var(--text); font: inherit; }
+        .demo-output { min-height: 100px; margin-top: 0.7rem; padding: 0.7rem; border: 1px solid var(--border); border-radius: 8px; background: #08111d; color: #c5d8e6; font: 0.84rem/1.55 ui-monospace, monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+        .calendar-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+        .calendar-heading h2 { margin: 0; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0.25rem; text-align: center; }
+        .calendar-grid span { display: grid; min-height: 32px; place-items: center; border-radius: 6px; color: #c5d8e6; font-size: 0.82rem; }
+        .calendar-grid .calendar-day-name { color: var(--muted); font-weight: 700; }
+        .calendar-grid .today { background: rgba(103,232,249,0.2); color: var(--primary); font-weight: 700; }
+        .monitor-reading { display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
+        .monitor-reading span { color: var(--muted); }
+        .browser-bar { display: flex; gap: 0.4rem; margin-bottom: 0.7rem; }
+        .browser-page { min-height: 190px; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: #f3f7fb; color: #152333; }
+        .browser-page h3 { margin-top: 0; color: #0b556d; }
         .start-menu { position: absolute; z-index: 1000; bottom: 56px; left: 10px; width: min(300px, calc(100% - 20px)); padding: 1rem; border: 1px solid var(--border); border-radius: 14px; background: var(--panel); box-shadow: 0 16px 40px rgba(0,0,0,0.5); backdrop-filter: blur(16px); }
         .start-menu h2 { margin: 0 0 0.7rem; font-size: 1rem; }
         .start-menu button { width: 100%; padding: 0.65rem; border: 0; border-radius: 8px; background: transparent; cursor: pointer; text-align: left; }
@@ -169,11 +192,11 @@
         <div class="intro">
             <div>
                 <h1>DevX OS <span style="color:#67e8f9">Browser Demo</span></h1>
-                <p>Explore the DevX OS desktop, including an open Admin Panel. No sign-in is required; all controls are available to try.</p>
+                <p>Explore a hands-on desktop with an open Admin Panel, Calculator, Calendar, Browser, Terminal, and more. No sign-in required.</p>
             </div>
             <a class="release-link" href="https://github.com/DeveloperHCR/HCRAPP/releases/tag/DevXOS-3.0(stable)" target="_blank" rel="noreferrer">DevX OS 3.0 Stable ↗</a>
         </div>
-        <p class="notice">This is a website simulation, not the Android app or a real operating system. The Admin Panel is intentionally unlocked and uses sample data only; it cannot access or change real accounts or system settings. Nothing is sent or saved.</p>
+        <p class="notice">This is a website simulation, not the Android app or a real operating system. Admin actions use sample data; the Terminal is simulated and cannot run system commands. Demo changes are temporary and nothing is sent or saved.</p>
         <section class="desktop" id="desktop" aria-label="Interactive DevX OS desktop">
             <div class="desktop-top">
                 <span>◈ &nbsp; DevX OS</span>
@@ -184,6 +207,11 @@
                 <button class="desktop-icon" data-open-app="notes"><span class="icon" aria-hidden="true">📝</span><span>Notes</span></button>
                 <button class="desktop-icon" data-open-app="settings"><span class="icon" aria-hidden="true">⚙️</span><span>Settings</span></button>
                 <button class="desktop-icon" data-open-app="admin"><span class="icon" aria-hidden="true">🛡️</span><span>Admin Panel</span></button>
+                <button class="desktop-icon" data-open-app="calculator"><span class="icon" aria-hidden="true">🧮</span><span>Calculator</span></button>
+                <button class="desktop-icon" data-open-app="calendar"><span class="icon" aria-hidden="true">📅</span><span>Calendar</span></button>
+                <button class="desktop-icon" data-open-app="browser"><span class="icon" aria-hidden="true">🌐</span><span>Browser</span></button>
+                <button class="desktop-icon" data-open-app="terminal"><span class="icon" aria-hidden="true">⌨️</span><span>Terminal</span></button>
+                <button class="desktop-icon" data-open-app="monitor"><span class="icon" aria-hidden="true">📊</span><span>System Monitor</span></button>
                 <button class="desktop-icon" data-open-app="about"><span class="icon" aria-hidden="true">ℹ️</span><span>About DevX</span></button>
             </div>
             <div class="windows" id="windows"></div>
@@ -193,6 +221,11 @@
                 <button data-open-app="notes">📝 &nbsp; Notes</button>
                 <button data-open-app="settings">⚙️ &nbsp; Settings</button>
                 <button data-open-app="admin">🛡️ &nbsp; Admin Panel</button>
+                <button data-open-app="calculator">🧮 &nbsp; Calculator</button>
+                <button data-open-app="calendar">📅 &nbsp; Calendar</button>
+                <button data-open-app="browser">🌐 &nbsp; Browser (demo)</button>
+                <button data-open-app="terminal">⌨️ &nbsp; Terminal (simulated)</button>
+                <button data-open-app="monitor">📊 &nbsp; System Monitor (sample)</button>
                 <button data-open-app="about">ℹ️ &nbsp; About DevX OS</button>
             </div>
             <div class="taskbar">
@@ -212,10 +245,17 @@
         <div class="welcome-card">
             <div class="eyebrow">Your virtual workspace</div>
             <h2>Welcome to DevX OS</h2>
-            <p>This browser preview gives you a feel for the desktop interface. Try a few apps to explore the demo.</p>
-            <button class="app-button" data-open-app="files">📁 Open Files</button>
-            <button class="app-button" data-open-app="notes">📝 Open Notes</button>
-            <button class="app-button" data-open-app="admin">🛡️ Open Admin Panel</button>
+            <p>Choose an app to explore the desktop preview. All apps are open and use demo-only data.</p>
+            <div class="app-grid">
+                <button class="app-tile" data-open-app="files"><span>📁</span><span>Files</span></button>
+                <button class="app-tile" data-open-app="notes"><span>📝</span><span>Notes</span></button>
+                <button class="app-tile" data-open-app="admin"><span>🛡️</span><span>Admin Panel</span></button>
+                <button class="app-tile" data-open-app="calculator"><span>🧮</span><span>Calculator</span></button>
+                <button class="app-tile" data-open-app="calendar"><span>📅</span><span>Calendar</span></button>
+                <button class="app-tile" data-open-app="browser"><span>🌐</span><span>Browser</span></button>
+                <button class="app-tile" data-open-app="terminal"><span>⌨️</span><span>Terminal</span></button>
+                <button class="app-tile" data-open-app="monitor"><span>📊</span><span>System Monitor</span></button>
+            </div>
         </div>
     </template>
     <template data-app-content="files">
@@ -232,6 +272,53 @@
         <h2>Settings</h2>
         <p>Settings in the browser preview are illustrative only.</p>
         <ul class="file-list"><li>🎨 &nbsp; Appearance &nbsp; <span style="color:#67e8f9">Dark neon</span></li><li>🖥️ &nbsp; Display &nbsp; Browser window</li><li>🔔 &nbsp; Notifications &nbsp; Demo mode</li></ul>
+    </template>
+    <template data-app-content="calculator">
+        <h2>Calculator</h2>
+        <p>Use the keypad or type a basic arithmetic expression.</p>
+        <label class="sr-only" for="calculator-display">Calculator display</label>
+        <input class="calc-display" id="calculator-display" value="0" inputmode="decimal" autocomplete="off">
+        <div class="calc-keys">
+            <button data-calc-key="clear">C</button><button data-calc-key="(">(</button><button data-calc-key=")">)</button><button data-calc-key="÷">÷</button>
+            <button data-calc-key="7">7</button><button data-calc-key="8">8</button><button data-calc-key="9">9</button><button data-calc-key="×">×</button>
+            <button data-calc-key="4">4</button><button data-calc-key="5">5</button><button data-calc-key="6">6</button><button data-calc-key="-">−</button>
+            <button data-calc-key="1">1</button><button data-calc-key="2">2</button><button data-calc-key="3">3</button><button data-calc-key="+">+</button>
+            <button data-calc-key="0">0</button><button data-calc-key=".">.</button><button data-calc-key="backspace">⌫</button><button data-calc-key="=">=</button>
+        </div>
+        <p class="admin-message" data-calc-status aria-live="polite"></p>
+    </template>
+    <template data-app-content="calendar">
+        <div class="calendar-heading"><h2 data-calendar-title>Calendar</h2><span>Today highlighted</span></div>
+        <div class="calendar-grid" data-calendar-grid aria-label="Current month calendar"></div>
+    </template>
+    <template data-app-content="browser">
+        <h2>DevX Browser</h2>
+        <p>This preview only opens built-in demo pages; it does not browse the internet.</p>
+        <form class="browser-bar" data-browser-form>
+            <label class="sr-only" for="browser-address">Demo page address</label>
+            <input class="demo-input" id="browser-address" name="address" value="devx://home" autocomplete="off">
+            <button class="app-button" type="submit">Go</button>
+        </form>
+        <div class="browser-page" data-browser-page aria-live="polite"><h3>Welcome</h3><p>DevX OS browser preview. Try <code>devx://home</code> or <code>devx://about</code>.</p></div>
+    </template>
+    <template data-app-content="terminal">
+        <h2>Terminal <span class="admin-message">· simulated</span></h2>
+        <p>This is a safe command simulator. It cannot run commands on your device.</p>
+        <div class="demo-output" data-terminal-output aria-live="polite">DevX OS Demo Terminal\nType "help" to see available demo commands.</div>
+        <form class="demo-form" data-terminal-form>
+            <label class="sr-only" for="terminal-command">Demo terminal command</label>
+            <input class="demo-input" id="terminal-command" name="command" placeholder="Try help, date, whoami, ls" autocomplete="off">
+            <button type="submit">Run</button>
+        </form>
+    </template>
+    <template data-app-content="monitor">
+        <h2>System Monitor</h2>
+        <p>Illustrative readings only — not measured from your device.</p>
+        <div class="monitor-reading"><span>CPU load</span><strong>24% · sample</strong></div>
+        <div class="monitor-reading"><span>Memory</span><strong>3.2 / 8 GB · sample</strong></div>
+        <div class="monitor-reading"><span>Network</span><strong>Connected · demo</strong></div>
+        <div class="monitor-reading"><span>Storage</span><strong>64% · sample</strong></div>
+        <p class="admin-message">System data is not accessed by this browser preview.</p>
     </template>
     <template data-app-content="admin">
         <div class="admin-dashboard">

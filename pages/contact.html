@@ -358,13 +358,15 @@ textarea { min-height: 130px; resize: vertical; }
           </div>
           <div class="info-card glass-panel">
             <h3>Send a Message</h3>
-            <form>
+            <p class="muted">Submitting opens your email app with the message filled in. Review and send it there.</p>
+            <form id="contact-form">
               <div class="form-row">
-                <div><label>Name</label><input type="text" placeholder="Your name"></div>
-                <div><label>Email</label><input type="email" placeholder="Your email"></div>
+                <div><label for="contact-name">Name</label><input id="contact-name" name="name" type="text" placeholder="Your name" autocomplete="name" required></div>
+                <div><label for="contact-email">Email</label><input id="contact-email" name="email" type="email" placeholder="Your email" autocomplete="email" required></div>
               </div>
-              <div style="margin-top:1rem"><label>Message</label><textarea placeholder="Write your message"></textarea></div>
+              <div style="margin-top:1rem"><label for="contact-message">Message</label><textarea id="contact-message" name="message" placeholder="Write your message" maxlength="5000" required></textarea></div>
               <div style="margin-top:1rem"><button class="btn btn-primary" type="submit">Send</button></div>
+              <p id="contact-form-status" class="muted" role="status" aria-live="polite"></p>
             </form>
           </div>
           <section class="panel map-panel" aria-labelledby="map-title">

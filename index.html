@@ -7,6 +7,7 @@
     <style>
 :root {
   --bg: #07131f;
+  --bg-strong: #020b12;
   --panel: rgba(10, 20, 30, 0.8);
   --panel-strong: #0a1724;
   --card: rgba(13, 27, 40, 0.9);
@@ -18,18 +19,44 @@
   --success: #34d399;
   --border: rgba(148, 163, 184, 0.18);
   --shadow: 0 20px 50px rgba(15, 23, 42, 0.65);
+  --glow: 0 0 24px rgba(103, 232, 249, 0.28);
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
+  position: relative;
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   background:
-    radial-gradient(circle at top, rgba(103, 232, 249, 0.12), transparent 35%),
-    linear-gradient(135deg, #020b12, #0b1724 35%, #07131f);
+    radial-gradient(circle at top, rgba(103, 232, 249, 0.14), transparent 30%),
+    radial-gradient(circle at right, rgba(139, 92, 246, 0.12), transparent 24%),
+    linear-gradient(135deg, var(--bg-strong), #0b1724 35%, var(--bg));
   color: var(--text);
   line-height: 1.6;
+  overflow-x: hidden;
 }
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: linear-gradient(rgba(103, 232, 249, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(103, 232, 249, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(circle at center, black, transparent 78%);
+  pointer-events: none;
+}
+body::after {
+  content: "";
+  position: fixed;
+  width: 28rem;
+  height: 28rem;
+  border-radius: 50%;
+  top: 5%;
+  right: -10%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.20), transparent 62%);
+  pointer-events: none;
+  filter: blur(18px);
+}
+::selection { background: rgba(103, 232, 249, 0.25); }
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; display: block; }
 .container { width: min(1100px, calc(100% - 2rem)); margin: 0 auto; }
@@ -144,6 +171,25 @@ img { max-width: 100%; display: block; }
   color: var(--muted);
   margin-bottom: 1.5rem;
 }
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.4rem 0 0.5rem;
+}
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(103, 232, 249, 0.22);
+  background: rgba(103, 232, 249, 0.08);
+  color: var(--primary);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
 .hero-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -158,9 +204,12 @@ img { max-width: 100%; display: block; }
   padding: 0.9rem 1.3rem;
   font-weight: 700;
   border-radius: 12px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
-.btn:hover { transform: translateY(-1px); }
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--glow);
+}
 .btn-primary {
   background: linear-gradient(135deg, var(--primary), #38bdf8);
   color: #04151d;
@@ -177,6 +226,8 @@ img { max-width: 100%; display: block; }
 .hero-artwork .glass-panel {
   padding: 1rem;
   position: relative;
+  transform: perspective(1200px) rotateX(0deg) rotateY(0deg);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 .artwork-img {
   width: 100%;
@@ -190,6 +241,22 @@ img { max-width: 100%; display: block; }
   padding: 0.6rem 1rem; border-radius: 999px;
   background: rgba(52, 211, 153, 0.15); color: var(--success);
   border: 1px solid rgba(52, 211, 153, 0.35); font-weight: 700;
+}
+.secret-indicator {
+  display: none;
+  margin-top: 1rem;
+  width: fit-content;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(103, 232, 249, 0.12);
+  border: 1px solid rgba(103, 232, 249, 0.35);
+  color: var(--primary);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+body.secret-mode .secret-indicator {
+  display: inline-flex;
 }
 section { padding: 2rem 0; }
 .intro-section, .projects-preview, .page-content {
@@ -212,6 +279,12 @@ section { padding: 2rem 0; }
   padding: 1.5rem;
   border-radius: 18px;
   min-height: 220px;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.project-card:hover, .info-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(103, 232, 249, 0.35);
+  box-shadow: 0 25px 45px rgba(2, 8, 12, 0.55);
 }
 .project-card h3, .info-card h3 { margin-top: 0; }
 .project-link {
@@ -343,9 +416,14 @@ textarea { min-height: 130px; resize: vertical; }
         <div class="hero-content">
             <h1>Engineering the Future of <span class="highlight">Digital Experience</span></h1>
             <p>Welcome to DeveloperHCR™. Independent software development and technology brand focused on creating innovative digital experiences, AI-powered applications, Android software, developer tools, and modern web solutions.</p>
+            <div class="hero-meta" aria-label="DeveloperHCR highlights">
+                <div class="meta-chip">AI-first</div>
+                <div class="meta-chip">Windows style UI</div>
+                <div class="meta-chip">Productivity tools</div>
+            </div>
             <div class="hero-buttons">
                 <a href="pages/projects.html" class="btn btn-primary"> Explore Projects</a>
-                <a href="pages/devx-os-demo.html#admin-panel" class="btn btn-secondary">Try DevX OS Admin Demo</a>
+                <a href="pages/devx-os-demo.html#admin-panel" class="btn btn-secondary">Explore DevX OS Demo</a>
                 <a href="pages/projects.html#devx-billing-demo" class="btn btn-secondary">Try DevX Billing Demo</a>
                 <a class="btn btn-secondary github-button" href="https://github.com/DeveloperHCR/HCRAPP" target="_blank" rel="noreferrer">
                     <svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -354,6 +432,7 @@ textarea { min-height: 130px; resize: vertical; }
                     <span>GitHub Repository</span>
                 </a>
             </div>
+            <div class="secret-indicator" id="secret-indicator">Stealth mode active</div>
             <a class="github-stars" href="https://github.com/DeveloperHCR/HCRAPP/stargazers" target="_blank" rel="noreferrer" aria-label="View DeveloperHCR GitHub stars">
                 <img src="https://img.shields.io/github/stars/DeveloperHCR/HCRAPP?style=for-the-badge&amp;logo=github&amp;label=GitHub%20stars" alt="GitHub stars">
             </a>
@@ -400,7 +479,7 @@ textarea { min-height: 130px; resize: vertical; }
                         <li class="tag">Virtual desktop</li>
                         <li><a class="tag" href="https://github.com/DeveloperHCR/HCRAPP/releases/tag/DevXOS-3.0(stable)" target="_blank" rel="noreferrer">DevXOS-3.0(stable)</a></li>
                     </ul>
-                    <a href="pages/devx-os-demo.html#admin-panel" class="project-link">Open the unlocked Admin Panel demo</a>
+                    <a href="pages/devx-os-demo.html#admin-panel" class="project-link">Explore demo &amp; unlocked Admin Panel</a>
                 </div>
                 <div class="project-card glass-panel">
                     <h3>DevX Billing 1.3.2</h3>

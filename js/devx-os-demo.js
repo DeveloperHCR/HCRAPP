@@ -10,15 +10,94 @@ const appDetails = {
   notes: { title: 'Notes', icon: '📝' },
   settings: { title: 'Settings', icon: '⚙️' },
   admin: { title: 'Admin Panel', icon: '🛡️' },
+  calculator: { title: 'Calculator', icon: '🧮' },
+  calendar: { title: 'Calendar', icon: '📅' },
+  browser: { title: 'Browser (demo)', icon: '🌐' },
+  terminal: { title: 'Terminal (simulated)', icon: '⌨️' },
+  monitor: { title: 'System Monitor (sample)', icon: '📊' },
   about: { title: 'About DevX OS', icon: 'ℹ️' }
 };
 let topWindow = 1;
 let demoUserCounter = 3;
 const openWindows = new Map();
 
+function calculate(expression) {
+  const tokens = expression.match(/\d*\.?\d+|[()+\-*/]/g) || [];
+  if (!tokens.length || tokens.join('') !== expression.replace(/\s+/g, '')) {
+    throw new Error('Enter a valid arithmetic expression.');
+  }
+  let position = 0;
+
+  function parseExpression() {
+    let value = parseTerm();
+    while (tokens[position] === '+' || tokens[position] === '-') {
+      const operator = tokens[position++];
+      const next = parseTerm();
+      value = operator === '+' ? value + next : value - next;
+    }
+    return value;
+  }
+
+  function parseTerm() {
+    let value = parseFactor();
+    while (tokens[position] === '*' || tokens[position] === '/') {
+      const operator = tokens[position++];
+      const next = parseFactor();
+      if (operator === '/' && next === 0) throw new Error('Cannot divide by zero.');
+      value = operator === '*' ? value * next : value / next;
+    }
+    return value;
+  }
+
+  function parseFactor() {
+    const token = tokens[position++];
+    if (token === '+') return parseFactor();
+    if (token === '-') return -parseFactor();
+    if (token === '(') {
+      const value = parseExpression();
+      if (tokens[position++] !== ')') throw new Error('Check the parentheses.');
+      return value;
+    }
+    if (token === undefined || !/^\d*\.?\d+$/.test(token)) {
+      throw new Error('Enter a valid arithmetic expression.');
+    }
+    return Number(token);
+  }
+
+  const result = parseExpression();
+  if (position !== tokens.length || !Number.isFinite(result)) {
+    throw new Error('Enter a valid arithmetic expression.');
+  }
+  return Number(result.toPrecision(12));
+}
+
+function renderCalendar(windowElement) {
+  const now = new Date();
+  const title = windowElement.querySelector('[data-calendar-title]');
+  const grid = windowElement.querySelector('[data-calendar-grid]');
+  title.textContent = now.toLocaleDateString([], { month: 'long', year: 'numeric' });
+  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  dayNames.forEach((day) => {
+    const cell = document.createElement('span');
+    cell.className = 'calendar-day-name';
+    cell.textContent = day;
+    grid.append(cell);
+  });
+  const firstWeekday = new Date(now.getFullYear(), now.getMonth(), 1).getDay();
+  const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  for (let blank = 0; blank < firstWeekday; blank += 1) grid.append(document.createElement('span'));
+  for (let day = 1; day <= daysInMonth; day += 1) {
+    const cell = document.createElement('span');
+    cell.textContent = String(day);
+    if (day === now.getDate()) cell.className = 'today';
+    grid.append(cell);
+  }
+}
+
 function focusWindow(app, windowElement) {
   topWindow += 1;
   windowElement.style.zIndex = String(topWindow);
+  for (const entry of openWindows.values()) entry.taskButton.setAttribute('aria-pressed', 'false');
   openWindows.get(app).taskButton.setAttribute('aria-pressed', 'true');
 }
 
@@ -70,6 +149,7 @@ function openApp(app) {
   body.append(template.content.cloneNode(true));
   windowElement.append(titlebar, body);
   windowsHost.append(windowElement);
+  if (app === 'calendar') renderCalendar(windowElement);
 
   const taskButton = document.createElement('button');
   taskButton.type = 'button';
@@ -125,6 +205,25 @@ desktop.addEventListener('click', (event) => {
     openApp(appButton.dataset.openApp);
     return;
   }
+  const calculatorKey = event.target.closest('[data-calc-key]');
+  if (calculatorKey) {
+    const calculator = calculatorKey.closest('.window');
+    const display = calculator.querySelector('.calc-display');
+    const message = calculator.querySelector('[data-calc-status]');
+    const key = calculatorKey.dataset.calcKey;
+    if (key === 'clear') display.value = '';
+    else if (key === 'backspace') display.value = display.value.slice(0, -1);
+    else if (key === '=') {
+      try {
+        display.value = String(calculate(display.value));
+        message.textContent = '';
+      } catch (error) {
+        message.textContent = error.message;
+      }
+    } else display.value += key === '×' ? '*' : key === '÷' ? '/' : key;
+    if (key !== '=') message.textContent = '';
+    return;
+  }
   const adminAction = event.target.closest('[data-admin-action]');
   if (adminAction && adminAction.closest('.window[data-app="admin"]')) {
     const dashboard = adminAction.closest('.admin-dashboard');
@@ -172,9 +271,58 @@ desktop.addEventListener('click', (event) => {
   } else focusWindow(app, windowElement);
 });
 
+desktop.addEventListener('submit', (event) => {
+  const browserForm = event.target.closest('[data-browser-form]');
+  if (browserForm) {
+    event.preventDefault();
+    const page = browserForm.closest('.window').querySelector('[data-browser-page]');
+    const address = browserForm.elements.address.value.trim().toLowerCase();
+    if (address === 'devx://home') {
+      page.innerHTML = '<h3>Welcome</h3><p>DevX OS browser preview. Try <code>devx://home</code> or <code>devx://about</code>.</p>';
+    } else if (address === 'devx://about') {
+      page.innerHTML = '<h3>About DevX OS</h3><p>This is a local sample page inside the browser preview. External websites are not loaded.</p>';
+    } else {
+      page.innerHTML = '<h3>Demo navigation only</h3><p>For safety, this browser preview only opens built-in devx://home and devx://about pages.</p>';
+    }
+    return;
+  }
+
+  const terminalForm = event.target.closest('[data-terminal-form]');
+  if (!terminalForm) return;
+  event.preventDefault();
+  const output = terminalForm.closest('.window').querySelector('[data-terminal-output]');
+  const input = terminalForm.elements.command;
+  const command = input.value.trim().toLowerCase();
+  const outputs = {
+    help: 'Available demo commands: help, date, whoami, ls, clear',
+    date: new Date().toString(),
+    whoami: 'demo-user (temporary preview session)',
+    ls: 'Documents/   Projects/   Welcome.txt'
+  };
+  if (command === 'clear') output.textContent = 'DevX OS Demo Terminal\nType "help" to see available demo commands.';
+  else if (command) output.textContent += `\n$ ${input.value}\n${outputs[command] || 'Command not available in the safe demo terminal. Type "help" for options.'}`;
+  input.value = '';
+  output.scrollTop = output.scrollHeight;
+});
+
 desktop.addEventListener('pointerdown', (event) => {
+  const windowElement = event.target.closest('.window');
+  if (windowElement) focusWindow(windowElement.dataset.app, windowElement);
   const titlebar = event.target.closest('.window-titlebar');
   if (titlebar) beginDrag(event, titlebar);
+});
+
+desktop.addEventListener('keydown', (event) => {
+  if (event.key !== 'Enter' || !event.target.matches('.calc-display')) return;
+  event.preventDefault();
+  const display = event.target;
+  const message = display.closest('.window').querySelector('[data-calc-status]');
+  try {
+    display.value = String(calculate(display.value));
+    message.textContent = '';
+  } catch (error) {
+    message.textContent = error.message;
+  }
 });
 
 taskItems.addEventListener('click', (event) => {

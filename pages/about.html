@@ -7,6 +7,7 @@
     <style>
 :root {
   --bg: #07131f;
+  --bg-strong: #020b12;
   --panel: rgba(10, 20, 30, 0.8);
   --panel-strong: #0a1724;
   --card: rgba(13, 27, 40, 0.9);
@@ -18,18 +19,44 @@
   --success: #34d399;
   --border: rgba(148, 163, 184, 0.18);
   --shadow: 0 20px 50px rgba(15, 23, 42, 0.65);
+  --glow: 0 0 24px rgba(103, 232, 249, 0.28);
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
+  position: relative;
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   background:
-    radial-gradient(circle at top, rgba(103, 232, 249, 0.12), transparent 35%),
-    linear-gradient(135deg, #020b12, #0b1724 35%, #07131f);
+    radial-gradient(circle at top, rgba(103, 232, 249, 0.14), transparent 30%),
+    radial-gradient(circle at right, rgba(139, 92, 246, 0.12), transparent 24%),
+    linear-gradient(135deg, var(--bg-strong), #0b1724 35%, var(--bg));
   color: var(--text);
   line-height: 1.6;
+  overflow-x: hidden;
 }
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: linear-gradient(rgba(103, 232, 249, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(103, 232, 249, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(circle at center, black, transparent 78%);
+  pointer-events: none;
+}
+body::after {
+  content: "";
+  position: fixed;
+  width: 28rem;
+  height: 28rem;
+  border-radius: 50%;
+  top: 5%;
+  right: -10%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.20), transparent 62%);
+  pointer-events: none;
+  filter: blur(18px);
+}
+::selection { background: rgba(103, 232, 249, 0.25); }
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; display: block; }
 .container { width: min(1100px, calc(100% - 2rem)); margin: 0 auto; }
@@ -254,6 +281,59 @@ section { padding: 2rem 0; }
   max-width: 800px;
 }
 .info-card ul { margin: 0; padding-left: 1.1rem; color: var(--muted); }
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.4rem;
+  margin-top: 1.8rem;
+}
+.detail-card {
+  padding: 1.5rem;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: rgba(11, 18, 27, 0.8);
+  box-shadow: var(--shadow);
+}
+.detail-card .tag {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(103, 232, 249, 0.28);
+  background: rgba(103, 232, 249, 0.08);
+  color: var(--primary);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.detail-card p, .detail-card li { color: var(--muted); }
+.detail-card ul { margin: 0.7rem 0 0; padding-left: 1.2rem; }
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.metric {
+  padding: 1.3rem 1rem;
+  border-radius: 16px;
+  background: rgba(103, 232, 249, 0.06);
+  border: 1px solid rgba(103, 232, 249, 0.18);
+  text-align: center;
+}
+.metric strong {
+  display: block;
+  font-size: clamp(1.6rem, 2vw, 2.2rem);
+  color: var(--primary);
+}
+.metric span { color: var(--muted); }
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
 .panel {
   border-radius: 18px;
   padding: 1.5rem;
@@ -345,6 +425,102 @@ textarea { min-height: 130px; resize: vertical; }
 
     <main class="page-content">
         <div class="container">
+            <section class="panel glass-panel">
+                <h2>Who we are</h2>
+                <p class="muted">DeveloperHCR is an independent software and technology brand focused on building useful, human-centered digital products. We work across AI-assisted workflows, Android experiences, productivity systems, and modern web products that are practical, accessible, and thoughtfully designed.</p>
+                <div class="cta-row">
+                    <a href="projects.html" class="btn btn-primary">Explore projects</a>
+                    <a href="contact.html" class="btn btn-secondary">Contact us</a>
+                </div>
+            </section>
+
+            <div class="metric-grid">
+                <div class="metric glass-panel">
+                    <strong>AI</strong>
+                    <span>Developer workflows</span>
+                </div>
+                <div class="metric glass-panel">
+                    <strong>Android</strong>
+                    <span>App experiences</span>
+                </div>
+                <div class="metric glass-panel">
+                    <strong>Web</strong>
+                    <span>Responsive products</span>
+                </div>
+                <div class="metric glass-panel">
+                    <strong>Design</strong>
+                    <span>Clear UX systems</span>
+                </div>
+            </div>
+
+            <div class="detail-grid">
+                <article class="detail-card">
+                    <div class="tag">Focus</div>
+                    <h3>Professional focus</h3>
+                    <p>We build digital experiences that combine real-world usefulness with polish, clarity, and experimentation.</p>
+                    <ul>
+                        <li>AI-assisted software and developer tools</li>
+                        <li>Android applications and desktop-style experiences</li>
+                        <li>Responsive websites and digital products</li>
+                    </ul>
+                </article>
+
+                <article class="detail-card">
+                    <div class="tag">Method</div>
+                    <h3>How we work</h3>
+                    <p>We design lean systems, test ideas quickly, and refine them through practical engineering and continuous learning.</p>
+                    <ul>
+                        <li>Clear product thinking</li>
+                        <li>Rapid experimentation</li>
+                        <li>Accessible user experience</li>
+                    </ul>
+                </article>
+
+                <article class="detail-card">
+                    <div class="tag">Vision</div>
+                    <h3>Our mission</h3>
+                    <p>To make technology more valuable, productive, and approachable by creating software that feels useful from day one.</p>
+                    <ul>
+                        <li>Useful by default</li>
+                        <li>Accessible by design</li>
+                        <li>Built for real users</li>
+                    </ul>
+                </article>
+
+                <article class="detail-card">
+                    <div class="tag">Build</div>
+                    <h3>What we create</h3>
+                    <p>From productivity concepts to interactive demos, DeveloperHCR explores products that connect engineering, design, and innovation.</p>
+                    <ul>
+                        <li>Desktop-style experiences</li>
+                        <li>AI tool prototypes</li>
+                        <li>Interactive product showcases</li>
+                    </ul>
+                </article>
+
+                <article class="detail-card">
+                    <div class="tag">Culture</div>
+                    <h3>Our approach</h3>
+                    <p>We believe in simple systems, useful technology, and an iterative process that respects both user needs and execution quality.</p>
+                    <ul>
+                        <li>Design with clarity</li>
+                        <li>Engineer with purpose</li>
+                        <li>Improve through feedback</li>
+                    </ul>
+                </article>
+
+                <article class="detail-card">
+                    <div class="tag">Reach</div>
+                    <h3>Connect with us</h3>
+                    <p>We welcome collaborations, product discussions, software inquiries, and creative project conversations.</p>
+                    <ul>
+                        <li><a href="mailto:developerhcr@gmail.com">developerhcr@gmail.com</a></li>
+                        <li><a href="https://youtube.com/@developerhcr" target="_blank" rel="noreferrer">YouTube</a></li>
+                        <li><a href="https://github.com/DeveloperHCR/HCRAPP" target="_blank" rel="noreferrer">GitHub</a></li>
+                    </ul>
+                </article>
+            </div>
+
             <div class="info-grid">
                 <section class="info-card glass-panel">
                     <h2>Professional Focus</h2>

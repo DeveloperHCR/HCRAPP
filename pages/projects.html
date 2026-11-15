@@ -7,6 +7,7 @@
     <style>
 :root {
   --bg: #07131f;
+  --bg-strong: #020b12;
   --panel: rgba(10, 20, 30, 0.8);
   --panel-strong: #0a1724;
   --card: rgba(13, 27, 40, 0.9);
@@ -18,18 +19,44 @@
   --success: #34d399;
   --border: rgba(148, 163, 184, 0.18);
   --shadow: 0 20px 50px rgba(15, 23, 42, 0.65);
+  --glow: 0 0 24px rgba(103, 232, 249, 0.28);
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
+  position: relative;
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   background:
-    radial-gradient(circle at top, rgba(103, 232, 249, 0.12), transparent 35%),
-    linear-gradient(135deg, #020b12, #0b1724 35%, #07131f);
+    radial-gradient(circle at top, rgba(103, 232, 249, 0.14), transparent 30%),
+    radial-gradient(circle at right, rgba(139, 92, 246, 0.12), transparent 24%),
+    linear-gradient(135deg, var(--bg-strong), #0b1724 35%, var(--bg));
   color: var(--text);
   line-height: 1.6;
+  overflow-x: hidden;
 }
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: linear-gradient(rgba(103, 232, 249, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(103, 232, 249, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(circle at center, black, transparent 78%);
+  pointer-events: none;
+}
+body::after {
+  content: "";
+  position: fixed;
+  width: 28rem;
+  height: 28rem;
+  border-radius: 50%;
+  top: 5%;
+  right: -10%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.20), transparent 62%);
+  pointer-events: none;
+  filter: blur(18px);
+}
+::selection { background: rgba(103, 232, 249, 0.25); }
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; display: block; }
 .container { width: min(1100px, calc(100% - 2rem)); margin: 0 auto; }
@@ -374,7 +401,7 @@ textarea { min-height: 130px; resize: vertical; }
                         <li class="tag">Virtual desktop</li>
                         <li><a class="tag" href="https://github.com/DeveloperHCR/HCRAPP/releases/tag/DevXOS-3.0(stable)" target="_blank" rel="noreferrer">DevXOS-3.0(stable)</a></li>
                     </ul>
-                    <a class="project-link" href="devx-os-demo.html#admin-panel">Try the unlocked Admin Panel demo</a>
+                    <a class="project-link" href="devx-os-demo.html#admin-panel">Explore demo &amp; unlocked Admin Panel</a>
                     <a class="project-link" href="downloads.html">View stable release</a>
                 </article>
                 <article class="project-card glass-panel">
