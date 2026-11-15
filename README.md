@@ -97,4 +97,4 @@ The GitHub Actions workflow in [`.github/workflows/static.yml`](.github/workflow
 
 This project is released under the [Unlicense](LICENSE).
 
-> THE WORLD IS BLIND. **(DeveloperHCR)**
+> THE WORLD IS BLIND. **(DeveloperHCR - Abhimanyu Verma)**
