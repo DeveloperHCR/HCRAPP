@@ -89,3 +89,5 @@ The GitHub Actions workflow in [`.github/workflows/static.yml`](.github/workflow
 ## License
 
 This project is released under the [Unlicense](LICENSE).
+
+> THE WORLD IS BLIND. **(DeveloperHCR)**
