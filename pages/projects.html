@@ -307,6 +307,13 @@ textarea { min-height: 130px; resize: vertical; }
   .language-select { min-width: 78px; padding: 0.55rem 0.4rem; }
   .menu-toggle { width: 38px; height: 38px; }
 }
+.tag-list { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 1rem 0 0; list-style: none; }
+.tag { padding: 0.3rem 0.7rem; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); font-size: 0.85rem; }
+.github-stars { display: inline-flex; margin: 0 0 1.25rem; }
+.github-stars img { min-height: 28px; }
+.demo-preview { margin-top: 2rem; }
+.demo-preview summary { cursor: pointer; color: var(--primary); font-weight: 700; }
+.demo-frame { display: block; width: 100%; min-height: 560px; margin-top: 1rem; border: 1px solid var(--border); border-radius: 16px; background: var(--panel-strong); }
 </style>
 
 
@@ -345,18 +352,37 @@ textarea { min-height: 130px; resize: vertical; }
 
     <main class="page-content">
         <div class="container">
+            <a class="github-stars" href="https://github.com/DeveloperHCR/HCRAPP/stargazers" target="_blank" rel="noreferrer" aria-label="View DeveloperHCR GitHub stars">
+                <img src="https://img.shields.io/github/stars/DeveloperHCR/HCRAPP?style=for-the-badge&amp;logo=github&amp;label=GitHub%20stars" alt="GitHub stars">
+            </a>
             <div class="project-grid">
                 <article class="project-card glass-panel">
                     <h2>HCRAPP</h2>
                     <p class="muted">An AI-assisted developer workspace concept bringing coding utilities, file management, and productivity features together.</p>
+                    <ul class="tag-list" aria-label="HCRAPP tags">
+                        <li class="tag">AI-assisted</li>
+                        <li class="tag">Android</li>
+                        <li class="tag">Developer tools</li>
+                    </ul>
                     <a class="project-link" href="https://github.com/DeveloperHCR/HCRAPP" target="_blank" rel="noreferrer">View repository</a>
                 </article>
                 <article class="project-card glass-panel">
                     <h2>DevX OS</h2>
                     <p class="muted">A virtual desktop experience concept with a custom interface designed for touch and desktop-style interaction.</p>
-                    <a class="project-link" href="https://github.com/DeveloperHCR/HCRAPP" target="_blank" rel="noreferrer">Project information</a>
+                    <ul class="tag-list" aria-label="DevX OS tags">
+                        <li class="tag">Android</li>
+                        <li class="tag">Virtual desktop</li>
+                        <li class="tag">Stable release</li>
+                    </ul>
+                    <a class="project-link" href="downloads.html">View stable release</a>
                 </article>
             </div>
+            <details class="panel demo-preview">
+                <summary>Open the live website demo</summary>
+                <p class="muted">Preview the published DeveloperHCR website below.</p>
+                <iframe class="demo-frame" src="../index.html" title="Live preview of the DeveloperHCR website" loading="lazy"></iframe>
+                <a class="project-link" href="https://developerhcr.github.io/HCRAPP/" target="_blank" rel="noreferrer">Open demo in a new tab</a>
+            </details>
         </div>
     </main>
 

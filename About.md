@@ -2,7 +2,7 @@
 
 DevX OS — Professional Virtual Workspace
 Owner: Abhimanyu Verma
-Location: Near Utkramit Madhya Vidyalay Phuljori (or Pandayd), Giridih, Jharkhand, India
+Location: Phuljori, Giridih, Jharkhand, India
 
 Version: DevX OS 2.0.1 BETA
 
@@ -458,8 +458,7 @@ Abhimanyu Verma
 
 Location:
 
-Near Utkramit Madhya Vidyalay Phuljori (or Pandayd),
-Giridih, Jharkhand, India
+Phuljori, Giridih, Jharkhand, India
 
 
 ## ℹ️ ABOUT SECTION
@@ -474,9 +473,7 @@ Version: 2.0.1 BETA
 Abhimanyu Verma
 
 📍 Location:
-Near Utkramit Madhya Vidyalay Phuljori
-(or Pandayd)
-Giridih, Jharkhand, India
+Phuljori, Giridih, Jharkhand, India
 
 
 ## 🏗️ RELEASE APK

@@ -307,6 +307,10 @@ textarea { min-height: 130px; resize: vertical; }
   .language-select { min-width: 78px; padding: 0.55rem 0.4rem; }
   .menu-toggle { width: 38px; height: 38px; }
 }
+.tag-list { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 1rem 0 0; list-style: none; }
+.tag { padding: 0.3rem 0.7rem; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); font-size: 0.85rem; }
+.github-stars { display: inline-flex; margin-top: 1.25rem; }
+.github-stars img { min-height: 28px; }
 </style>
 
 </head>
@@ -340,8 +344,11 @@ textarea { min-height: 130px; resize: vertical; }
             <p>Welcome to DeveloperHCR™. Independent software development and technology brand focused on creating innovative digital experiences, AI-powered applications, Android software, developer tools, and modern web solutions.</p>
             <div class="hero-buttons">
                 <a href="pages/projects.html" class="btn btn-primary"> Explore Projects</a>
-                <a href="https://github.com/DeveloperHCR/HCRAPP" target="_blank" rel="noreferrer" class="btn btn-secondary"> GitHub Repository</a>
+                <a href="https://developerhcr.github.io/HCRAPP/" target="_blank" rel="noreferrer" class="btn btn-secondary">Live Website Demo</a>
             </div>
+            <a class="github-stars" href="https://github.com/DeveloperHCR/HCRAPP/stargazers" target="_blank" rel="noreferrer" aria-label="View DeveloperHCR GitHub stars">
+                <img src="https://img.shields.io/github/stars/DeveloperHCR/HCRAPP?style=for-the-badge&amp;logo=github&amp;label=GitHub%20stars" alt="GitHub stars">
+            </a>
         </div>
         <div class="hero-artwork">
             <div class="glass-panel">
@@ -370,11 +377,21 @@ textarea { min-height: 130px; resize: vertical; }
                 <div class="project-card glass-panel">
                     <h3>HCRAPP</h3>
                     <p>AI-assisted developer workspace project focused on coding tools, file management, virtual desktop concepts, utilities, and productivity features.</p>
+                    <ul class="tag-list" aria-label="Project tags">
+                        <li class="tag">AI-assisted</li>
+                        <li class="tag">Android</li>
+                        <li class="tag">Developer tools</li>
+                    </ul>
                     <a href="https://github.com/DeveloperHCR/HCRAPP" target="_blank" rel="noreferrer" class="project-link">View Repository </a>
                 </div>
                 <div class="project-card glass-panel">
                     <h3>DevX OS</h3>
                     <p>Computer-style graphical desktop environment concept featuring a custom desktop GUI, window management, and file systems.</p>
+                    <ul class="tag-list" aria-label="Project tags">
+                        <li class="tag">Android</li>
+                        <li class="tag">Virtual desktop</li>
+                        <li class="tag">Stable release</li>
+                    </ul>
                     <a href="pages/projects.html" class="project-link">Learn More </a>
                 </div>
             </div>

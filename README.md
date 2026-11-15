@@ -6,6 +6,8 @@
 
 **Independent software development and technology**
 
+[![GitHub stars](https://img.shields.io/github/stars/DeveloperHCR/HCRAPP?style=for-the-badge&logo=github&label=GitHub%20stars)](https://github.com/DeveloperHCR/HCRAPP/stargazers)
+
 DeveloperHCR creates digital experiences across web, Android, AI-assisted tools, and developer-focused software. This repository contains the DeveloperHCR static website, its visual assets, and supporting project documentation.
 
 ## About
@@ -32,6 +34,7 @@ The contact form is currently a front-end demonstration and does not send or sto
 ## Project links
 
 - **Repository:** [github.com/DeveloperHCR/HCRAPP](https://github.com/DeveloperHCR/HCRAPP)
+- **Live website demo:** [developerhcr.github.io/HCRAPP](https://developerhcr.github.io/HCRAPP/)
 - **YouTube:** [DeveloperHCR](https://youtube.com/@developerhcr)
 - **Email:** [developerhcr@gmail.com](mailto:developerhcr@gmail.com)
 - **Stable DevX OS APK:** [Download](<https://github.com/DeveloperHCR/HCRAPP/releases/download/DevXOS-3.0(stable)/DevXOS3.0.apk>)

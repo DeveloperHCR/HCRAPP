@@ -307,6 +307,9 @@ textarea { min-height: 130px; resize: vertical; }
   .language-select { min-width: 78px; padding: 0.55rem 0.4rem; }
   .menu-toggle { width: 38px; height: 38px; }
 }
+.map-panel { overflow: hidden; }
+.map-frame { display: block; width: 100%; min-height: 360px; border: 0; border-radius: 14px; }
+.map-link { display: inline-block; margin-top: 1rem; color: var(--primary); font-weight: 700; }
 </style>
 
 
@@ -349,8 +352,8 @@ textarea { min-height: 130px; resize: vertical; }
             <ul>
               <li>Email: developerhcr@gmail.com</li>
               <li>GitHub: DeveloperHCR</li>
-              <li>Location: Room No 13, Phuljori, Giridih, Jharkhand 815301</li>
-              <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Room%20No%2013%2C%20Phuljori%2C%20Giridih%2C%20Jharkhand%20815301" target="_blank" rel="noreferrer">Open in Google Maps</a></li>
+              <li>Location: Phuljori, Giridih, Jharkhand, India</li>
+              <li><a href="https://maps.app.goo.gl/k4rmCBtXUHK1BVem9" target="_blank" rel="noreferrer">Open in Google Maps</a></li>
             </ul>
           </div>
           <div class="info-card glass-panel">
@@ -364,6 +367,19 @@ textarea { min-height: 130px; resize: vertical; }
               <div style="margin-top:1rem"><button class="btn btn-primary" type="submit">Send</button></div>
             </form>
           </div>
+          <section class="panel map-panel" aria-labelledby="map-title">
+            <h2 id="map-title">Find DeveloperHCR</h2>
+            <p class="muted">Phuljori, Giridih, Jharkhand, India</p>
+            <iframe
+              class="map-frame"
+              title="Google Map showing the location shared by DeveloperHCR"
+              src="https://maps.google.com/maps?q=24.205310%2C86.354860&amp;z=15&amp;output=embed"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen>
+            </iframe>
+            <a class="map-link" href="https://maps.app.goo.gl/k4rmCBtXUHK1BVem9" target="_blank" rel="noreferrer">Open in Google Maps</a>
+          </section>
         </div>
       </div>
     </main>
