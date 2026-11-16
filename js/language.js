@@ -222,6 +222,10 @@ const translations = {
       'सफल जाँच का अर्थ है कि सार्वजनिक स्थिति पृष्ठ ने जवाब दिया; इससे मशीन अपटाइम, डिप्लॉयमेंट लॉग या बैकएंड स्थिति नहीं दिखती।',
     'Refresh status': 'स्थिति फिर जाँचें',
     'Lock dashboard': 'डैशबोर्ड लॉक करें',
+    'Expand dashboard': 'डैशबोर्ड बड़ा करें',
+    'Restore dashboard': 'डैशबोर्ड सामान्य आकार में करें',
+    'A successful check confirms the public page responded. GitHub Pages hosts this website, so your personal PC does not need to stay on. This check cannot report machine uptime, deployment logs, or backend health.':
+      'सफल जाँच का अर्थ है कि सार्वजनिक पृष्ठ ने जवाब दिया। यह वेबसाइट GitHub Pages पर होस्ट है, इसलिए आपका निजी कंप्यूटर चालू रखने की ज़रूरत नहीं है। यह जाँच मशीन अपटाइम, डिप्लॉयमेंट लॉग या बैकएंड स्थिति नहीं दिखा सकती।',
     'Light mode': 'लाइट मोड',
     'Dark mode': 'डार्क मोड',
     'Toggle light and dark mode': 'लाइट और डार्क मोड बदलें',
@@ -453,6 +457,10 @@ const translations = {
       'Successful check ka matlab public status page ne response diya; machine uptime, deployment logs ya backend health nahi dikhti.',
     'Refresh status': 'Status refresh karein',
     'Lock dashboard': 'Dashboard lock karein',
+    'Expand dashboard': 'Dashboard expand karein',
+    'Restore dashboard': 'Dashboard normal size karein',
+    'A successful check confirms the public page responded. GitHub Pages hosts this website, so your personal PC does not need to stay on. This check cannot report machine uptime, deployment logs, or backend health.':
+      'Successful check ka matlab public page ne response diya. Yeh website GitHub Pages par host hai, isliye aapke personal PC ko on rakhne ki zaroorat nahi. Yeh machine uptime, deployment logs ya backend health nahi dikha sakta.',
     'Light mode': 'Light mode',
     'Dark mode': 'Dark mode',
     'Toggle light and dark mode': 'Light aur dark mode toggle karein',

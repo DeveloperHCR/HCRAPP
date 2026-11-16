@@ -360,6 +360,16 @@ input, textarea, select {
 textarea { min-height: 130px; resize: vertical; }
 .muted { color: var(--muted); }
 .admin-dashboard[open] { width: min(720px, calc(100% - 2rem)); max-height: min(90vh, 760px); overflow: auto; border: 1px solid var(--border); border-radius: 18px; padding: 1.5rem; background: var(--panel-strong); color: var(--text); box-shadow: var(--shadow); }
+.admin-dashboard.is-expanded[open] { position: fixed; inset: 0; width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; border: 0; border-radius: 0; padding: clamp(1rem, 3vw, 2.5rem); }
+.admin-dialog-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.admin-dialog-header h2 { margin: 0; }
+.admin-label-restore { display: none; }
+.admin-dashboard.is-expanded .admin-label-expand { display: none; }
+.admin-dashboard.is-expanded .admin-label-restore { display: inline; }
+.admin-server-card { grid-column: 1 / -1; }
+.admin-server-card strong { font-size: clamp(1.8rem, 5vw, 3.2rem); line-height: 1.15; }
+.admin-server-card p { margin: 0.65rem 0 0; }
+.admin-signature { margin: 1.5rem 0 0; text-align: center; font-size: 0.62rem; letter-spacing: 0.12em; opacity: 0.65; }
 .admin-dashboard::backdrop { background: rgba(2, 8, 12, 0.78); backdrop-filter: blur(5px); }
 .admin-status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1rem; margin: 1.25rem 0; }
 .admin-status-card { padding: 1rem; border: 1px solid var(--border); border-radius: 14px; background: rgba(103, 232, 249, 0.05); }
@@ -566,7 +576,10 @@ textarea { min-height: 130px; resize: vertical; }
     </section>
 
     <dialog class="admin-dashboard" id="admin-dialog" aria-labelledby="admin-dialog-title">
-        <h2 id="admin-dialog-title">Admin dashboard</h2>
+        <div class="admin-dialog-header">
+            <h2 id="admin-dialog-title">Admin dashboard</h2>
+            <button class="btn btn-secondary" id="expand-admin" type="button" aria-controls="admin-dialog" aria-expanded="false"><span class="admin-label-expand">Expand dashboard</span><span class="admin-label-restore">Restore dashboard</span></button>
+        </div>
         <form id="admin-password-form">
             <p id="admin-password-instructions" class="muted"></p>
             <label for="admin-password">Admin password</label>
@@ -583,9 +596,10 @@ textarea { min-height: 130px; resize: vertical; }
         </form>
         <section id="admin-status-panel" hidden aria-label="Website status">
             <div class="admin-status-grid">
-                <article class="admin-status-card">
-                    <span class="muted">Website server</span>
+                <article class="admin-status-card admin-server-card">
+                    <span class="muted">Website status</span>
                     <strong id="admin-server-status" aria-live="polite">Checking...</strong>
+                    <p id="admin-server-message" class="muted">Checking whether the website is responding...</p>
                 </article>
                 <article class="admin-status-card">
                     <span class="muted">Hosting</span>
@@ -597,12 +611,13 @@ textarea { min-height: 130px; resize: vertical; }
                 </article>
             </div>
             <p id="admin-last-checked" class="muted" aria-live="polite">Not checked yet.</p>
-            <p class="muted">A successful check means the public status page responded; it does not expose machine uptime, deployment logs, or backend health.</p>
+            <p class="muted">A successful check confirms the public page responded. GitHub Pages hosts this website, so your personal PC does not need to stay on. This check cannot report machine uptime, deployment logs, or backend health.</p>
             <div class="admin-dialog-actions">
                 <button class="btn btn-primary" id="refresh-admin-status" type="button">Refresh status</button>
                 <button class="btn btn-secondary" id="lock-admin" type="button">Lock dashboard</button>
             </div>
         </section>
+        <p class="admin-signature">DEVELOPERHCR - ABHIMANYU VERMA</p>
     </dialog>
 
     <footer class="site-footer">
@@ -628,6 +643,6 @@ textarea { min-height: 130px; resize: vertical; }
     <script src="../js/main.js?v=20261116-theme"></script>
     <script src="../js/navigation.js"></script>
     <script src="../js/language.js"></script>
-    <script src="../js/about-admin.js"></script>
+    <script src="../js/about-admin.js?v=20261116-expanded"></script>
 </body>
 </html>

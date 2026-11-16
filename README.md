@@ -39,7 +39,7 @@ The site supports English, Hindi, and Hinglish. Navigation, language selection, 
 
 The contact form uses a `mailto:` link to open the visitor's configured email app with the message addressed to `developerhcr@gmail.com`. The visitor must review and send the email; the website itself does not transmit or store form submissions.
 
-The About page's admin dashboard checks whether the static status page responds. Its password is stored only in the current browser and is not server-side authentication; the static site does not provide a backend API or machine-level server monitoring.
+The About page's admin dashboard offers an expanded view and checks whether the static status page responds. GitHub Pages hosts the site, so a personal PC does not need to stay on. Its password is stored only in the current browser and is not server-side authentication; the static site does not provide a backend API or machine-level server monitoring.
 
 ### DevX OS browser demo
 

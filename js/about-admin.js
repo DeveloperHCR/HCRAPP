@@ -10,7 +10,9 @@ if (adminDialog instanceof HTMLDialogElement && openAdminButton instanceof HTMLB
   const authStatus = document.getElementById('admin-auth-status');
   const statusPanel = document.getElementById('admin-status-panel');
   const serverStatus = document.getElementById('admin-server-status');
+  const serverMessage = document.getElementById('admin-server-message');
   const lastChecked = document.getElementById('admin-last-checked');
+  const expandAdminButton = document.getElementById('expand-admin');
   const storageSaltKey = 'developerhcr-admin-salt';
   const storageVerifierKey = 'developerhcr-admin-verifier';
   const passwordLength = 12;
@@ -24,7 +26,9 @@ if (adminDialog instanceof HTMLDialogElement && openAdminButton instanceof HTMLB
     authStatus instanceof HTMLParagraphElement &&
     statusPanel instanceof HTMLElement &&
     serverStatus instanceof HTMLElement &&
-    lastChecked instanceof HTMLElement
+    serverMessage instanceof HTMLElement &&
+    lastChecked instanceof HTMLElement &&
+    expandAdminButton instanceof HTMLButtonElement
   ) {
     const showPasswordForm = () => {
       passwordForm.hidden = false;
@@ -67,22 +71,26 @@ if (adminDialog instanceof HTMLDialogElement && openAdminButton instanceof HTMLB
     const checkServerStatus = async () => {
       serverStatus.textContent = 'Checking...';
       serverStatus.className = '';
+      serverMessage.textContent = 'Checking whether the website is responding...';
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 8000);
       try {
         const response = await fetch('Backend.html', { cache: 'no-store', signal: controller.signal });
         if (!response.ok) {
-          serverStatus.textContent = `Unavailable (HTTP ${response.status})`;
+          serverStatus.textContent = 'Server check failed';
           serverStatus.className = 'status-bad';
+          serverMessage.textContent = `The public status page returned HTTP ${response.status}.`;
         } else {
-          serverStatus.textContent = `Running (HTTP ${response.status})`;
+          serverStatus.textContent = 'Server is running';
           serverStatus.className = 'status-good';
+          serverMessage.textContent = `Website responded with HTTP ${response.status}. Hosted on GitHub Pages, so your PC can stay off.`;
         }
       } catch (error) {
-        serverStatus.textContent = error.name === 'AbortError'
-          ? 'Unavailable — status check timed out'
-          : 'Unavailable — status page could not be reached';
+        serverStatus.textContent = 'Server status unavailable';
         serverStatus.className = 'status-bad';
+        serverMessage.textContent = error.name === 'AbortError'
+          ? 'The status check timed out. Try refreshing in a moment.'
+          : 'Could not reach the public status page. Check your connection and try again.';
         console.error('Unable to check the website status page.', error);
       } finally {
         clearTimeout(timeout);
@@ -97,6 +105,16 @@ if (adminDialog instanceof HTMLDialogElement && openAdminButton instanceof HTMLB
     });
 
     document.getElementById('close-admin').addEventListener('click', () => adminDialog.close());
+
+    expandAdminButton.addEventListener('click', () => {
+      const isExpanded = adminDialog.classList.toggle('is-expanded');
+      expandAdminButton.setAttribute('aria-expanded', String(isExpanded));
+    });
+
+    adminDialog.addEventListener('close', () => {
+      adminDialog.classList.remove('is-expanded');
+      expandAdminButton.setAttribute('aria-expanded', 'false');
+    });
 
     passwordForm.addEventListener('submit', async (event) => {
       event.preventDefault();
