@@ -168,6 +168,60 @@ const translations = {
     Terms: 'शर्तें',
     'Select language': 'भाषा चुनें',
     'Open menu': 'मेन्यू खोलें',
+    'Explore DeveloperHCR: practical tools and ambitious experiments across Android, AI-assisted workflows, desktop-style experiences, and the web. Every project starts with a simple question: how can technology make everyday work clearer and more useful?':
+      'DeveloperHCR के साथ Android, AI-सहायता वाले वर्कफ़्लो, डेस्कटॉप-शैली के अनुभव और वेब के उपयोगी टूल तथा नए प्रयोग देखें। हर प्रोजेक्ट एक सरल प्रश्न से शुरू होता है: तकनीक रोज़मर्रा के काम को और स्पष्ट व उपयोगी कैसे बना सकती है?',
+    'From developer tools and Android experiences to responsive web products, DeveloperHCR turns curiosity into practical experiments. We focus on clear interfaces, useful details, and technology that feels approachable.':
+      'डेवलपर टूल और Android अनुभवों से लेकर रिस्पॉन्सिव वेब उत्पादों तक, DeveloperHCR जिज्ञासा को व्यावहारिक प्रयोगों में बदलता है। हमारा ध्यान स्पष्ट इंटरफ़ेस, उपयोगी विवरण और सहज तकनीक पर है।',
+    'Discover projects that turn practical needs into hands-on software—from an AI-assisted workspace and desktop-inspired experiences to a browser-based billing demo. Explore a demo or follow the work on GitHub.':
+      'ऐसे प्रोजेक्ट देखें जो वास्तविक ज़रूरतों को उपयोगी सॉफ्टवेयर में बदलते हैं—AI-सहायता वाले वर्कस्पेस और डेस्कटॉप-प्रेरित अनुभवों से लेकर ब्राउज़र-आधारित बिलिंग डेमो तक। डेमो आज़माएँ या GitHub पर काम देखें।',
+    'From first sketch to polished interface, we explore responsive web experiences, Android apps, desktop-style interactions, and AI-assisted tools. Our focus is turning promising ideas into clear, useful journeys.':
+      'पहले स्केच से लेकर बेहतर इंटरफ़ेस तक, हम रिस्पॉन्सिव वेब अनुभव, Android ऐप्स, डेस्कटॉप-शैली के इंटरैक्शन और AI-सहायता वाले टूल पर काम करते हैं। हमारा लक्ष्य अच्छे विचारों को स्पष्ट और उपयोगी अनुभवों में बदलना है।',
+    'Interfaces that adapt to every screen, pair accessible navigation with modern visual design, and help people find what they need without friction.':
+      'हर स्क्रीन के अनुसार ढलने वाले इंटरफ़ेस, सुलभ नेविगेशन और आधुनिक डिज़ाइन के साथ लोगों को उनकी ज़रूरत की चीज़ आसानी से खोजने में मदद करते हैं।',
+    'Touch-friendly app concepts and desktop-style environments that bring familiar workflows to new form factors, with usability guiding every interaction.':
+      'टच के अनुकूल ऐप अवधारणाएँ और डेस्कटॉप-शैली के वातावरण, जो परिचित वर्कफ़्लो को नए डिवाइस तक लाते हैं और हर इंटरैक्शन को उपयोगी बनाते हैं।',
+    'Practical helpers for coding, learning, and productivity—designed to support human judgment, explain their limits, and keep the workflow in focus.':
+      'कोडिंग, सीखने और उत्पादकता के लिए ऐसे उपयोगी सहायक, जो मानवीय निर्णय का समर्थन करें, अपनी सीमाएँ स्पष्ट रखें और काम पर ध्यान बनाए रखें।',
+    'AI works best when it supports the person doing the work. We explore thoughtful ways to bring useful assistance into software and developer workflows.':
+      'AI सबसे उपयोगी तब होता है जब वह काम करने वाले व्यक्ति का साथ देता है। हम सॉफ्टवेयर और डेवलपर वर्कफ़्लो में उपयोगी सहायता जोड़ने के बेहतर तरीकों को तलाशते हैं।',
+    'Current experiments include code assistance, plain-language explanations, error analysis, and model-backed features. Each product defines its own capabilities and connected services; availability depends on the product.':
+      'वर्तमान प्रयोगों में कोड सहायता, सरल भाषा में व्याख्या, त्रुटि विश्लेषण और AI मॉडल पर आधारित सुविधाएँ शामिल हैं। हर उत्पाद की क्षमताएँ और सेवाएँ अलग हैं; उपलब्धता उत्पाद पर निर्भर करती है।',
+    'Find the official DevX OS release here. Before installing, verify the release version, read its notes, and confirm that it suits your device.':
+      'DevX OS की आधिकारिक रिलीज़ यहाँ पाएँ। इंस्टॉल करने से पहले संस्करण की पुष्टि करें, रिलीज़ नोट पढ़ें और देखें कि यह आपके डिवाइस के अनुकूल है।',
+    'Get DevX OS 3.0 Stable from the official HCRAPP GitHub release. Review its release details and your device compatibility before installing.':
+      'DevX OS 3.0 Stable को आधिकारिक HCRAPP GitHub रिलीज़ से डाउनलोड करें। इंस्टॉल करने से पहले रिलीज़ विवरण और डिवाइस संगतता देखें।',
+    'Good documentation makes a project easier to explore, build, and improve. Start with the guide below, and check its version because some instructions are from an older release.':
+      'अच्छे दस्तावेज़ किसी प्रोजेक्ट को समझना, बनाना और बेहतर करना आसान बनाते हैं। नीचे दी गई गाइड से शुरू करें और उसका संस्करण जाँचें, क्योंकि कुछ निर्देश पुराने रिलीज़ के हैं।',
+    'This repository includes a legacy DevX OS 2.0.1 beta setup and build guide. Treat it as historical reference: verify every step against the current release before using it.':
+      'इस रिपॉज़िटरी में DevX OS 2.0.1 बीटा की पुरानी सेटअप और बिल्ड गाइड है। इसे ऐतिहासिक संदर्भ मानें और उपयोग से पहले हर चरण को वर्तमान रिलीज़ से जाँचें।',
+    'Take a closer look at the visual identity behind DeveloperHCR. This compact gallery brings together our logo and digital artwork—snapshots of the ideas and details that shape our projects.':
+      'DeveloperHCR की दृश्य पहचान को करीब से देखें। इस छोटी गैलरी में हमारा लोगो और डिजिटल आर्टवर्क शामिल है—वे विचार और विवरण जो हमारे प्रोजेक्ट्स को आकार देते हैं।',
+    'Have an idea, a project question, or a collaboration in mind? Send a note with a little context. Your email app will open a draft so you can review it before sending.':
+      'कोई विचार, प्रोजेक्ट से जुड़ा सवाल या सहयोग की योजना है? थोड़ी जानकारी के साथ संदेश भेजें। आपका ईमेल ऐप एक ड्राफ़्ट खोलेगा, जिसे भेजने से पहले आप जाँच सकते हैं।',
+    'Website status check': 'वेबसाइट स्थिति जाँच',
+    'The public status page loaded successfully. This confirms that this page is reachable; it does not measure application backend health or machine uptime.':
+      'सार्वजनिक स्थिति पृष्ठ सफलतापूर्वक खुला। इससे केवल इस पृष्ठ की उपलब्धता की पुष्टि होती है; यह बैकएंड की स्थिति या मशीन का अपटाइम नहीं मापता।',
+    'Admin access': 'एडमिन पहुँच',
+    'Your quick operational snapshot: check the public status page, review the hosting setup, and see when the last check ran. This panel is read-only and cannot control the hosting service.':
+      'त्वरित स्थिति देखें: सार्वजनिक स्थिति पृष्ठ जाँचें, होस्टिंग सेटअप देखें और जानें कि पिछली जाँच कब हुई। यह पैनल केवल पढ़ने के लिए है और होस्टिंग सेवा को नियंत्रित नहीं कर सकता।',
+    'Open admin dashboard': 'एडमिन डैशबोर्ड खोलें',
+    'This static website cannot securely authenticate administrators. The password only gates this browser and does not protect server data.':
+      'यह स्टैटिक वेबसाइट एडमिन की सुरक्षित पुष्टि नहीं कर सकती। पासवर्ड केवल इस ब्राउज़र पर एक डेमो लॉक है और सर्वर डेटा की सुरक्षा नहीं करता।',
+    'Admin dashboard': 'एडमिन डैशबोर्ड',
+    'Admin password': 'एडमिन पासवर्ड',
+    'Confirm password': 'पासवर्ड की पुष्टि करें',
+    'Unlock dashboard': 'डैशबोर्ड खोलें',
+    Close: 'बंद करें',
+    'Website status': 'वेबसाइट स्थिति',
+    'Website server': 'वेबसाइट सर्वर',
+    'Static site (GitHub Pages)': 'स्टैटिक साइट (GitHub Pages)',
+    'Backend API': 'बैकएंड API',
+    'Not configured': 'कॉन्फ़िगर नहीं है',
+    'Not checked yet.': 'अभी जाँच नहीं हुई है।',
+    'A successful check means the public status page responded; it does not expose machine uptime, deployment logs, or backend health.':
+      'सफल जाँच का अर्थ है कि सार्वजनिक स्थिति पृष्ठ ने जवाब दिया; इससे मशीन अपटाइम, डिप्लॉयमेंट लॉग या बैकएंड स्थिति नहीं दिखती।',
+    'Refresh status': 'स्थिति फिर जाँचें',
+    'Lock dashboard': 'डैशबोर्ड लॉक करें',
     'Backend Status | DeveloperHCR': 'बैकएंड स्थिति | DeveloperHCR',
     'Data is working...': 'डेटा काम कर रहा है...',
     'The backend endpoint is responding and the site is ready to continue.':
@@ -342,9 +396,60 @@ const translations = {
     Terms: 'Terms',
     'Open menu': 'Menu kholein',
     'Backend Status | DeveloperHCR': 'Backend status | DeveloperHCR',
-    'Data is working...': 'Data kaam kar raha hai...',
-    'The backend endpoint is responding and the site is ready to continue.':
-      'Backend endpoint respond kar raha hai aur site continue karne ke liye ready hai.',
+    'Explore DeveloperHCR: practical tools and ambitious experiments across Android, AI-assisted workflows, desktop-style experiences, and the web. Every project starts with a simple question: how can technology make everyday work clearer and more useful?':
+      'DeveloperHCR ke saath Android, AI-assisted workflows, desktop-style experiences aur web ke practical tools aur naye experiments explore karein. Har project ek simple question se shuru hota hai: technology everyday work ko aur clear aur useful kaise bana sakti hai?',
+    'From developer tools and Android experiences to responsive web products, DeveloperHCR turns curiosity into practical experiments. We focus on clear interfaces, useful details, and technology that feels approachable.':
+      'Developer tools aur Android experiences se responsive web products tak, DeveloperHCR curiosity ko practical experiments mein badalta hai. Hum clear interfaces, useful details aur approachable technology par focus karte hain.',
+    'Discover projects that turn practical needs into hands-on software—from an AI-assisted workspace and desktop-inspired experiences to a browser-based billing demo. Explore a demo or follow the work on GitHub.':
+      'Practical needs ko hands-on software mein badalne wale projects dekhein—from AI-assisted workspace aur desktop-inspired experiences se browser-based billing demo tak. Demo explore karein ya GitHub par progress dekhein.',
+    'From first sketch to polished interface, we explore responsive web experiences, Android apps, desktop-style interactions, and AI-assisted tools. Our focus is turning promising ideas into clear, useful journeys.':
+      'First sketch se polished interface tak, hum responsive web experiences, Android apps, desktop-style interactions aur AI-assisted tools explore karte hain. Focus promising ideas ko clear aur useful journeys mein badalne par hai.',
+    'Interfaces that adapt to every screen, pair accessible navigation with modern visual design, and help people find what they need without friction.':
+      'Aise interfaces jo har screen par fit hote hain, accessible navigation ko modern design se jodte hain aur logon ko bina friction zaroori cheezein dhoondhne mein help karte hain.',
+    'Touch-friendly app concepts and desktop-style environments that bring familiar workflows to new form factors, with usability guiding every interaction.':
+      'Touch-friendly app concepts aur desktop-style environments familiar workflows ko naye form factors mein laate hain, jahan har interaction usability ko dhyan mein rakhta hai.',
+    'Practical helpers for coding, learning, and productivity—designed to support human judgment, explain their limits, and keep the workflow in focus.':
+      'Coding, learning aur productivity ke practical helpers—jo human judgment ko support karein, apni limits samjhayen aur workflow par focus rakhein.',
+    'AI works best when it supports the person doing the work. We explore thoughtful ways to bring useful assistance into software and developer workflows.':
+      'AI tab best kaam karta hai jab woh kaam karne wale person ko support kare. Hum software aur developer workflows mein useful assistance laane ke thoughtful tareeke explore karte hain.',
+    'Current experiments include code assistance, plain-language explanations, error analysis, and model-backed features. Each product defines its own capabilities and connected services; availability depends on the product.':
+      'Current experiments mein code assistance, simple explanations, error analysis aur model-backed features hain. Har product ki capabilities aur connected services alag hain; availability product par depend karti hai.',
+    'Find the official DevX OS release here. Before installing, verify the release version, read its notes, and confirm that it suits your device.':
+      'DevX OS ki official release yahan dekhein. Install se pehle version verify karein, release notes padhein aur device compatibility check karein.',
+    'Get DevX OS 3.0 Stable from the official HCRAPP GitHub release. Review its release details and your device compatibility before installing.':
+      'DevX OS 3.0 Stable official HCRAPP GitHub release se download karein. Install se pehle release details aur device compatibility review karein.',
+    'Good documentation makes a project easier to explore, build, and improve. Start with the guide below, and check its version because some instructions are from an older release.':
+      'Good documentation project ko explore, build aur improve karna easy banata hai. Neeche wali guide se shuru karein aur version check karein, kyunki kuch instructions older release ke hain.',
+    'This repository includes a legacy DevX OS 2.0.1 beta setup and build guide. Treat it as historical reference: verify every step against the current release before using it.':
+      'Is repository mein DevX OS 2.0.1 beta ki legacy setup aur build guide hai. Isse historical reference samjhein aur use se pehle har step ko current release se verify karein.',
+    'Take a closer look at the visual identity behind DeveloperHCR. This compact gallery brings together our logo and digital artwork—snapshots of the ideas and details that shape our projects.':
+      'DeveloperHCR ki visual identity ko kareeb se dekhein. Is compact gallery mein logo aur digital artwork hain—un ideas aur details ki jhalak jo projects ko shape karti hain.',
+    'Have an idea, a project question, or a collaboration in mind? Send a note with a little context. Your email app will open a draft so you can review it before sending.':
+      'Koi idea, project question ya collaboration ka plan hai? Thoda context dekar note bhejein. Aapka email app draft kholega jise bhejne se pehle aap review kar sakte hain.',
+    'Website status check': 'Website status check',
+    'The public status page loaded successfully. This confirms that this page is reachable; it does not measure application backend health or machine uptime.':
+      'Public status page successfully load hua. Isse sirf page reachability confirm hoti hai; yeh backend health ya machine uptime measure nahi karta.',
+    'Admin access': 'Admin access',
+    'Your quick operational snapshot: check the public status page, review the hosting setup, and see when the last check ran. This panel is read-only and cannot control the hosting service.':
+      'Quick status snapshot: public status page check karein, hosting setup dekhein aur last check ka time jaanein. Yeh panel read-only hai aur hosting service control nahi karta.',
+    'Open admin dashboard': 'Admin dashboard kholein',
+    'This static website cannot securely authenticate administrators. The password only gates this browser and does not protect server data.':
+      'Yeh static website admin ko securely authenticate nahi kar sakti. Password sirf is browser par demo lock hai, server data secure nahi karta.',
+    'Admin dashboard': 'Admin dashboard',
+    'Admin password': 'Admin password',
+    'Confirm password': 'Password confirm karein',
+    'Unlock dashboard': 'Dashboard unlock karein',
+    Close: 'Close karein',
+    'Website status': 'Website status',
+    'Website server': 'Website server',
+    'Static site (GitHub Pages)': 'Static site (GitHub Pages)',
+    'Backend API': 'Backend API',
+    'Not configured': 'Configure nahi hai',
+    'Not checked yet.': 'Abhi check nahi hua.',
+    'A successful check means the public status page responded; it does not expose machine uptime, deployment logs, or backend health.':
+      'Successful check ka matlab public status page ne response diya; machine uptime, deployment logs ya backend health nahi dikhti.',
+    'Refresh status': 'Status refresh karein',
+    'Lock dashboard': 'Dashboard lock karein',
     'Return to Home': 'Home par wapas jaayein',
     'Data Web Backend': 'Data web backend',
     "it's working": 'Yeh kaam kar raha hai',

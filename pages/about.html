@@ -359,6 +359,16 @@ input, textarea, select {
 }
 textarea { min-height: 130px; resize: vertical; }
 .muted { color: var(--muted); }
+.admin-dashboard[open] { width: min(720px, calc(100% - 2rem)); max-height: min(90vh, 760px); overflow: auto; border: 1px solid var(--border); border-radius: 18px; padding: 1.5rem; background: var(--panel-strong); color: var(--text); box-shadow: var(--shadow); }
+.admin-dashboard::backdrop { background: rgba(2, 8, 12, 0.78); backdrop-filter: blur(5px); }
+.admin-status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1rem; margin: 1.25rem 0; }
+.admin-status-card { padding: 1rem; border: 1px solid var(--border); border-radius: 14px; background: rgba(103, 232, 249, 0.05); }
+.admin-status-card strong { display: block; margin-top: 0.35rem; }
+.admin-status-card .status-good { color: var(--success); }
+.admin-status-card .status-bad { color: #fda4af; }
+.admin-dialog-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
+.admin-dialog-actions .btn { border: 0; cursor: pointer; }
+.admin-warning { padding: 0.75rem 1rem; border-left: 3px solid var(--accent); background: rgba(245, 158, 11, 0.08); }
 .menu-toggle { display: none; }
 @media (max-width: 860px) {
   .hero-section, .project-grid, .feature-grid, .info-grid, .footer-content, .form-row {
@@ -419,7 +429,7 @@ textarea { min-height: 130px; resize: vertical; }
     <section class="page-banner">
         <div class="container">
             <h1>About DeveloperHCR</h1>
-            <p class="page-copy">An independent software and technology brand building useful digital experiences, AI-assisted tools, Android software, and modern web solutions.</p>
+            <p class="page-copy">From developer tools and Android experiences to responsive web products, DeveloperHCR turns curiosity into practical experiments. We focus on clear interfaces, useful details, and technology that feels approachable.</p>
         </div>
     </section>
 
@@ -544,6 +554,57 @@ textarea { min-height: 130px; resize: vertical; }
         </div>
     </main>
 
+    <section class="page-content" aria-labelledby="admin-access-title">
+        <div class="container">
+            <section class="panel glass-panel">
+                <h2 id="admin-access-title">Admin access</h2>
+                <p class="muted">Your quick operational snapshot: check the public status page, review the hosting setup, and see when the last check ran. This panel is read-only and cannot control the hosting service.</p>
+                <button class="btn btn-secondary" id="open-admin" type="button">Open admin dashboard</button>
+                <p class="muted admin-warning">This static website cannot securely authenticate administrators. The password only gates this browser and does not protect server data.</p>
+            </section>
+        </div>
+    </section>
+
+    <dialog class="admin-dashboard" id="admin-dialog" aria-labelledby="admin-dialog-title">
+        <h2 id="admin-dialog-title">Admin dashboard</h2>
+        <form id="admin-password-form">
+            <p id="admin-password-instructions" class="muted"></p>
+            <label for="admin-password">Admin password</label>
+            <input id="admin-password" type="password" autocomplete="current-password" minlength="12" required>
+            <div id="admin-confirmation-wrap" hidden>
+                <label for="admin-password-confirm">Confirm password</label>
+                <input id="admin-password-confirm" type="password" autocomplete="new-password" minlength="12">
+            </div>
+            <p id="admin-auth-status" class="muted" role="status" aria-live="polite"></p>
+            <div class="admin-dialog-actions">
+                <button class="btn btn-primary" type="submit" id="admin-submit">Unlock dashboard</button>
+                <button class="btn btn-secondary" type="button" id="close-admin">Close</button>
+            </div>
+        </form>
+        <section id="admin-status-panel" hidden aria-label="Website status">
+            <div class="admin-status-grid">
+                <article class="admin-status-card">
+                    <span class="muted">Website server</span>
+                    <strong id="admin-server-status" aria-live="polite">Checking...</strong>
+                </article>
+                <article class="admin-status-card">
+                    <span class="muted">Hosting</span>
+                    <strong>Static site (GitHub Pages)</strong>
+                </article>
+                <article class="admin-status-card">
+                    <span class="muted">Backend API</span>
+                    <strong>Not configured</strong>
+                </article>
+            </div>
+            <p id="admin-last-checked" class="muted" aria-live="polite">Not checked yet.</p>
+            <p class="muted">A successful check means the public status page responded; it does not expose machine uptime, deployment logs, or backend health.</p>
+            <div class="admin-dialog-actions">
+                <button class="btn btn-primary" id="refresh-admin-status" type="button">Refresh status</button>
+                <button class="btn btn-secondary" id="lock-admin" type="button">Lock dashboard</button>
+            </div>
+        </section>
+    </dialog>
+
     <footer class="site-footer">
         <div class="container footer-content">
             <div class="footer-info">
@@ -567,5 +628,6 @@ textarea { min-height: 130px; resize: vertical; }
     <script src="../js/main.js?v=20261115-premium"></script>
     <script src="../js/navigation.js"></script>
     <script src="../js/language.js"></script>
+    <script src="../js/about-admin.js"></script>
 </body>
 </html>

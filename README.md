@@ -32,12 +32,14 @@ The site is a static HTML and JavaScript project. Styles are embedded in the HTM
 | Projects | HCRAPP, DevX OS, and DevX Billing summaries, tags, release links, a DevX OS browser preview, and a sandboxed DevX Billing preview |
 | Contact | Email, public location, Google Map, and a message form that opens a prefilled email in the visitor's email app |
 | Downloads | Link to the official DevX OS 3.0 stable APK release |
-| About, Services, AI & API, Documentation, Gallery | Company and product information |
+| About, Services, AI & API, Documentation, Gallery | Company and product information; About includes a browser-local demo status dashboard |
 | Privacy, Terms | Website privacy and usage information |
 
 The site supports English, Hindi, and Hinglish. Navigation, language selection, page-view badge display, and copyright year use lightweight JavaScript.
 
 The contact form uses a `mailto:` link to open the visitor's configured email app with the message addressed to `developerhcr@gmail.com`. The visitor must review and send the email; the website itself does not transmit or store form submissions.
+
+The About page's admin dashboard checks whether the static status page responds. Its password is stored only in the current browser and is not server-side authentication; the static site does not provide a backend API or machine-level server monitoring.
 
 ### DevX OS browser demo
 
