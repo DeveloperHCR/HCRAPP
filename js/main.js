@@ -4,86 +4,137 @@ if (toggle && nav) {
   toggle.addEventListener('click', () => nav.classList.toggle('open'));
 }
 
-const advancedModeStyles = document.createElement('style');
-advancedModeStyles.textContent = `
-  body.advanced-mode {
-    --bg: #040b12;
-    --bg-strong: #01070d;
-    --card: rgba(12, 22, 33, 0.9);
-    --panel: rgba(9, 18, 28, 0.82);
-    --panel-strong: rgba(8, 16, 24, 0.92);
-    --border: rgba(103, 232, 249, 0.24);
-    --shadow: 0 28px 60px rgba(2, 8, 12, 0.7);
+const sharedStyles = document.createElement('style');
+sharedStyles.textContent = `
+  body.light-mode {
+    --bg: #edf4fa;
+    --bg-strong: #f8fbff;
+    --panel: rgba(255, 255, 255, 0.84);
+    --panel-strong: #ffffff;
+    --card: rgba(255, 255, 255, 0.94);
+    --text: #15283b;
+    --muted: #52677d;
+    --primary: #087f9d;
+    --secondary: #6d4ad1;
+    --accent: #a65308;
+    --success: #08754f;
+    --border: rgba(31, 57, 82, 0.16);
+    --shadow: 0 18px 45px rgba(36, 61, 84, 0.14);
+    --glow: 0 0 22px rgba(8, 127, 157, 0.16);
+    color-scheme: light;
+    background:
+      radial-gradient(circle at top, rgba(8, 145, 178, 0.1), transparent 34%),
+      radial-gradient(circle at right, rgba(109, 74, 209, 0.08), transparent 25%),
+      linear-gradient(135deg, #ffffff, #edf4fa 48%, #f8fbff);
   }
 
-  body.advanced-mode::before {
-    background-image: linear-gradient(rgba(103, 232, 249, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(103, 232, 249, 0.05) 1px, transparent 1px);
-    background-size: 26px 26px;
+  body.light-mode::before {
+    background-image: linear-gradient(rgba(21, 40, 59, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(21, 40, 59, 0.035) 1px, transparent 1px);
   }
 
-  body.advanced-mode .site-header {
-    background: rgba(4, 14, 20, 0.78);
-    border-bottom-color: rgba(103, 232, 249, 0.2);
-    box-shadow: 0 12px 26px rgba(2, 8, 12, 0.3);
+  body.light-mode::after { opacity: 0.25; }
+  body.light-mode .site-header { background: rgba(248, 251, 255, 0.9); }
+  body.light-mode .main-nav a { color: #31475d; }
+  body.light-mode .main-nav a:hover,
+  body.light-mode .main-nav a.active { color: var(--primary); background: rgba(8, 127, 157, 0.1); }
+  body.light-mode .glass-panel,
+  body.light-mode .project-card,
+  body.light-mode .info-card,
+  body.light-mode .panel,
+  body.light-mode .detail-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: var(--border);
+    box-shadow: var(--shadow);
+  }
+  body.light-mode .site-footer { background: rgba(237, 244, 250, 0.92); }
+  body.light-mode .page-banner {
+    background: linear-gradient(135deg, rgba(8, 145, 178, 0.08), rgba(109, 74, 209, 0.06));
+    border-bottom-color: var(--border);
+  }
+  body.light-mode .meta-chip,
+  body.light-mode .tag,
+  body.light-mode .admin-btn {
+    color: var(--muted);
+    border-color: var(--border);
+    background: rgba(8, 127, 157, 0.06);
+  }
+  body.light-mode .btn-secondary {
+    color: #4a347f;
+    background: rgba(109, 74, 209, 0.08);
+    border-color: rgba(109, 74, 209, 0.24);
+  }
+  body.light-mode input,
+  body.light-mode textarea,
+  body.light-mode select {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.94);
+    border-color: var(--border);
+  }
+  body.light-mode .status-pill { background: rgba(255, 255, 255, 0.92); }
+  body.light-mode .admin-dashboard[open] { background: #ffffff; color: var(--text); }
+  body.light-mode .admin-status-card { background: rgba(8, 127, 157, 0.05); border-color: var(--border); }
+  body.light-mode .admin-warning { background: rgba(166, 83, 8, 0.07); }
+
+  .brand-logo { flex: 0 0 auto; }
+  .brand-logo a { white-space: nowrap; }
+  .site-logo { flex: 0 0 auto; }
+  .main-nav { flex: 1 1 auto; min-width: 0; }
+  .main-nav ul { justify-content: flex-end; flex-wrap: nowrap; gap: 0.2rem; }
+  .main-nav a {
+    padding: 0.48rem clamp(0.28rem, 0.45vw, 0.5rem);
+    font-size: clamp(0.74rem, 0.82vw, 0.88rem);
+    white-space: nowrap;
   }
 
-  body.advanced-mode .glass-panel,
-  body.advanced-mode .project-card,
-  body.advanced-mode .info-card,
-  body.advanced-mode .panel {
-    background: linear-gradient(180deg, rgba(13, 24, 34, 0.9), rgba(8, 16, 24, 0.9));
-    border-color: rgba(103, 232, 249, 0.22);
-    box-shadow: 0 24px 60px rgba(2, 8, 12, 0.5);
-  }
-
-  body.advanced-mode .btn-primary {
-    background: linear-gradient(135deg, #67e8f9, #8b5cf6);
-    box-shadow: 0 12px 35px rgba(103, 232, 249, 0.28);
-  }
-
-  body.advanced-mode .project-card:hover,
-  body.advanced-mode .info-card:hover,
-  body.advanced-mode .glass-panel:hover {
-    transform: translateY(-4px) scale(1.005);
-    border-color: rgba(103, 232, 249, 0.5);
-    box-shadow: 0 26px 70px rgba(12, 18, 30, 0.7);
-  }
-
-  body.advanced-mode .main-nav a.active,
-  body.advanced-mode .main-nav a:hover {
-    box-shadow: inset 0 0 0 1px rgba(103, 232, 249, 0.25);
-  }
-
-  body.advanced-mode .status-pill {
-    background: rgba(4, 15, 20, 0.9);
-    border-color: rgba(103, 232, 249, 0.35);
-  }
-
-  .advanced-toggle {
+  .theme-toggle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex: 0 0 auto;
+    gap: 0.35rem;
     padding: 0.55rem 0.85rem;
     border-radius: 999px;
     border: 1px solid rgba(103, 232, 249, 0.28);
     background: rgba(103, 232, 249, 0.08);
     color: var(--text, #eef6ff);
     cursor: pointer;
-    font-size: 0.78rem;
+    font-size: 0.82rem;
     font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   }
 
-  .advanced-toggle:hover {
+  .theme-toggle:hover {
     transform: translateY(-1px);
     box-shadow: 0 0 18px rgba(103, 232, 249, 0.2);
   }
 
-  body.advanced-mode .advanced-toggle {
-    background: rgba(103, 232, 249, 0.18);
-    border-color: rgba(103, 232, 249, 0.4);
+  .theme-label-dark { display: none; }
+  body.light-mode .theme-label-light { display: none; }
+  body.light-mode .theme-label-dark { display: inline; }
+
+  .hero-section {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    padding-top: clamp(3rem, 6vw, 5rem);
+  }
+  .hero-content { max-width: 660px; }
+  .hero-content h1 { max-width: 12ch; }
+  .hero-content > p { max-width: 58ch; }
+  .hero-artwork { width: min(100%, 520px); justify-self: end; }
+  .hero-artwork .artwork-img { min-height: clamp(320px, 38vw, 460px); }
+
+  @media (max-width: 1100px) and (min-width: 861px) {
+    .nav-container { flex-wrap: wrap; padding-block: 0.5rem; }
+    .main-nav { order: 3; flex: 1 0 100%; }
+    .main-nav ul { justify-content: center; flex-wrap: wrap; }
+  }
+  @media (max-width: 620px) {
+    .theme-toggle { width: 42px; height: 38px; padding: 0.4rem; }
+    .theme-label-light, .theme-label-dark { display: none !important; }
+  }
+  @media (max-width: 860px) {
+    .hero-section { grid-template-columns: 1fr; gap: 1.5rem; }
+    .hero-artwork { justify-self: center; }
   }
 
   .reveal-card {
@@ -126,7 +177,7 @@ advancedModeStyles.textContent = `
     box-shadow: 0 0 12px rgba(52, 211, 153, 0.9);
   }
 `;
-document.head.appendChild(advancedModeStyles);
+document.head.appendChild(sharedStyles);
 
 const yearNode = document.getElementById('year');
 if (yearNode) {
@@ -191,32 +242,49 @@ links.forEach((link) => {
   }
 });
 const navContainer = document.querySelector('.nav-container');
-let advancedToggle = navContainer?.querySelector('.advanced-toggle');
-if (navContainer && !advancedToggle) {
-  advancedToggle = document.createElement('button');
-  advancedToggle.type = 'button';
-  advancedToggle.className = 'advanced-toggle';
-  advancedToggle.setAttribute('aria-label', 'Toggle advanced mode');
-  advancedToggle.textContent = 'Advanced mode';
+let themeToggle = navContainer?.querySelector('.theme-toggle');
+if (navContainer && !themeToggle) {
+  themeToggle = document.createElement('button');
+  themeToggle.type = 'button';
+  themeToggle.className = 'theme-toggle';
+  themeToggle.setAttribute('aria-label', 'Toggle light and dark mode');
+  const icon = document.createElement('span');
+  icon.className = 'theme-icon';
+  icon.setAttribute('aria-hidden', 'true');
+  icon.textContent = '☼';
+  const lightModeLabel = document.createElement('span');
+  lightModeLabel.className = 'theme-label-light';
+  lightModeLabel.textContent = 'Light mode';
+  const darkModeLabel = document.createElement('span');
+  darkModeLabel.className = 'theme-label-dark';
+  darkModeLabel.textContent = 'Dark mode';
+  themeToggle.append(icon, lightModeLabel, darkModeLabel);
   const menuToggle = navContainer.querySelector('.menu-toggle');
   if (menuToggle) {
-    navContainer.insertBefore(advancedToggle, menuToggle.nextSibling);
+    navContainer.insertBefore(themeToggle, menuToggle);
   } else {
-    navContainer.appendChild(advancedToggle);
+    navContainer.appendChild(themeToggle);
   }
 }
 
-const savedAdvancedMode = localStorage.getItem('developerhcr-advanced-mode') === 'true';
-document.body.classList.toggle('advanced-mode', savedAdvancedMode);
-if (advancedToggle) {
-  advancedToggle.setAttribute('aria-pressed', String(savedAdvancedMode));
-  advancedToggle.textContent = savedAdvancedMode ? 'Premium on' : 'Advanced mode';
-  advancedToggle.addEventListener('click', () => {
-    const isNowAdvanced = !document.body.classList.contains('advanced-mode');
-    document.body.classList.toggle('advanced-mode', isNowAdvanced);
-    advancedToggle.textContent = isNowAdvanced ? 'Premium on' : 'Advanced mode';
-    advancedToggle.setAttribute('aria-pressed', String(isNowAdvanced));
-    localStorage.setItem('developerhcr-advanced-mode', String(isNowAdvanced));
+let savedTheme = 'dark';
+try {
+  savedTheme = localStorage.getItem('developerhcr-theme') || 'dark';
+} catch (error) {
+  console.error('Unable to read the saved color theme.', error);
+}
+document.body.classList.toggle('light-mode', savedTheme === 'light');
+
+if (themeToggle) {
+  themeToggle.setAttribute('aria-pressed', String(savedTheme === 'light'));
+  themeToggle.addEventListener('click', () => {
+    const isLightMode = document.body.classList.toggle('light-mode');
+    themeToggle.setAttribute('aria-pressed', String(isLightMode));
+    try {
+      localStorage.setItem('developerhcr-theme', isLightMode ? 'light' : 'dark');
+    } catch (error) {
+      console.error('Unable to save the selected color theme.', error);
+    }
   });
 }
 const heroArtwork = document.querySelector('.hero-artwork .glass-panel');
