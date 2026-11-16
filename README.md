@@ -62,7 +62,7 @@ The GitHub stars badge is live. Website views count page loads through the visit
 - **DevX Billing repository:** [github.com/DeveloperHCR/DevX_Billing](https://github.com/DeveloperHCR/DevX_Billing)
 - **DevX Billing release:** [DevX_billing_1.3.2](https://github.com/DeveloperHCR/DevX_Billing/releases/tag/DevX_billing_1.3.2)
 - **GitHub release/tag:** [DevXOS-3.0(stable)](https://github.com/DeveloperHCR/HCRAPP/releases/tag/DevXOS-3.0(stable))
-- **Public location:** Phuljori, Giridih, Jharkhand, India ([Google Maps](https://maps.app.goo.gl/k4rmCBtXUHK1BVem9))
+- **Public location:** Phuljori, Giridih, Jharkhand, India ([Google Maps](https://maps.app.goo.gl/qQdrrygNBAHfPKD16))
 - **YouTube:** [DeveloperHCR](https://youtube.com/@developerhcr)
 - **Email:** [developerhcr@gmail.com](mailto:developerhcr@gmail.com)
 - **Stable DevX OS APK:** [Download](<https://github.com/DeveloperHCR/HCRAPP/releases/download/DevXOS-3.0(stable)/DevXOS3.0.apk>)
