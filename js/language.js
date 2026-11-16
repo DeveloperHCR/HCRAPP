@@ -226,6 +226,17 @@ const translations = {
     'Restore dashboard': 'डैशबोर्ड सामान्य आकार में करें',
     'A successful check confirms the public page responded. GitHub Pages hosts this website, so your personal PC does not need to stay on. This check cannot report machine uptime, deployment logs, or backend health.':
       'सफल जाँच का अर्थ है कि सार्वजनिक पृष्ठ ने जवाब दिया। यह वेबसाइट GitHub Pages पर होस्ट है, इसलिए आपका निजी कंप्यूटर चालू रखने की ज़रूरत नहीं है। यह जाँच मशीन अपटाइम, डिप्लॉयमेंट लॉग या बैकएंड स्थिति नहीं दिखा सकती।',
+    'A successful check confirms the public page responded. GitHub Pages hosts this website, so your personal PC does not need to stay on. This check cannot report machine uptime, deployment logs, or backend health. If you run a separate local server, please keep your computer on while it serves that local site.':
+      'सफल जाँच का अर्थ है कि सार्वजनिक पृष्ठ ने जवाब दिया। यह वेबसाइट GitHub Pages पर होस्ट है, इसलिए आपका निजी कंप्यूटर चालू रखने की ज़रूरत नहीं है। यह जाँच मशीन अपटाइम, डिप्लॉयमेंट लॉग या बैकएंड स्थिति नहीं दिखाती। यदि आप अलग लोकल सर्वर चला रहे हैं, तो उस लोकल साइट को सर्व करने के दौरान कंप्यूटर चालू रखें।',
+    'DeveloperHCR Engine': 'DeveloperHCR खोज',
+    'Site pages': 'साइट पृष्ठ',
+    'Quick links to published pages. These shortcuts do not change site content or hosting.':
+      'प्रकाशित पृष्ठों के शॉर्टकट। इनसे साइट की सामग्री या होस्टिंग नहीं बदलती।',
+    'Admin page shortcuts': 'एडमिन पृष्ठ शॉर्टकट',
+    'Back to Home': 'होम पर वापस जाएँ',
+    'Status page': 'स्थिति पृष्ठ',
+    "DeveloperHCR Engine sends your search terms directly to Google when you submit. DeveloperHCR does not receive or store those search terms. Google's handling of search data is covered by its":
+      'DeveloperHCR Engine में खोज सबमिट करने पर आपके शब्द सीधे Google को भेजे जाते हैं। DeveloperHCR उन खोज शब्दों को प्राप्त या संग्रहीत नहीं करता। खोज डेटा का उपयोग Google की',
     'Light mode': 'लाइट मोड',
     'Dark mode': 'डार्क मोड',
     'Toggle light and dark mode': 'लाइट और डार्क मोड बदलें',
@@ -461,6 +472,17 @@ const translations = {
     'Restore dashboard': 'Dashboard normal size karein',
     'A successful check confirms the public page responded. GitHub Pages hosts this website, so your personal PC does not need to stay on. This check cannot report machine uptime, deployment logs, or backend health.':
       'Successful check ka matlab public page ne response diya. Yeh website GitHub Pages par host hai, isliye aapke personal PC ko on rakhne ki zaroorat nahi. Yeh machine uptime, deployment logs ya backend health nahi dikha sakta.',
+    'A successful check confirms the public page responded. GitHub Pages hosts this website, so your personal PC does not need to stay on. This check cannot report machine uptime, deployment logs, or backend health. If you run a separate local server, please keep your computer on while it serves that local site.':
+      'Successful check ka matlab public page ne response diya. Yeh website GitHub Pages par host hai, isliye personal PC on rakhna zaroori nahi. Yeh machine uptime, deployment logs ya backend health nahi dikhata. Agar aap alag local server chala rahe hain, to local site serve karte waqt computer on rakhein.',
+    'DeveloperHCR Engine': 'DeveloperHCR Engine',
+    'Site pages': 'Site pages',
+    'Quick links to published pages. These shortcuts do not change site content or hosting.':
+      'Published pages ke quick links. In shortcuts se site content ya hosting change nahi hoti.',
+    'Admin page shortcuts': 'Admin page shortcuts',
+    'Back to Home': 'Home par wapas jaayein',
+    'Status page': 'Status page',
+    "DeveloperHCR Engine sends your search terms directly to Google when you submit. DeveloperHCR does not receive or store those search terms. Google's handling of search data is covered by its":
+      'DeveloperHCR Engine par search submit karne par terms seedhe Google ko bheje jaate hain. DeveloperHCR un search terms ko receive ya store nahi karta. Search data ko Google ki',
     'Light mode': 'Light mode',
     'Dark mode': 'Dark mode',
     'Toggle light and dark mode': 'Light aur dark mode toggle karein',

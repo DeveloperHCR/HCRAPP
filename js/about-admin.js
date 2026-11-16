@@ -83,7 +83,7 @@ if (adminDialog instanceof HTMLDialogElement && openAdminButton instanceof HTMLB
         } else {
           serverStatus.textContent = 'Server is running';
           serverStatus.className = 'status-good';
-          serverMessage.textContent = `Website responded with HTTP ${response.status}. Hosted on GitHub Pages, so your PC can stay off.`;
+          serverMessage.textContent = `Website responded with HTTP ${response.status}. GitHub Pages hosts this site, so your PC can stay off. If you run a local server on your computer, please keep your computer on while it serves that local site.`;
         }
       } catch (error) {
         serverStatus.textContent = 'Server status unavailable';
