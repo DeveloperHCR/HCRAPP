@@ -103,11 +103,11 @@
     .row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
     .notice{font-size:.88rem;color:var(--muted);margin:.4rem 0 0}
     .danger{color:var(--danger)} .success{color:var(--success)} .warn{color:var(--warn)}
-    dialog{width:min(760px,calc(100% - 1rem));border:1px solid var(--border);border-radius:18px;padding:0;background:var(--bg);color:var(--text);box-shadow:var(--shadow)}
-    dialog::backdrop{background:rgba(2,8,12,.6);backdrop-filter:blur(4px)}
+    dialog{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;border:0;border-radius:0;padding:0;background:var(--bg);color:var(--text);box-shadow:none}
+    dialog::backdrop{background:rgba(2,8,12,.7);backdrop-filter:blur(4px)}
     .dialog-head{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1rem;border-bottom:1px solid var(--border)}
     .dialog-head h2{margin:0;font-size:1.05rem}
-    .dialog-body{padding:1rem;max-height:min(78vh,760px);overflow:auto}
+    .dialog-body{padding:1rem;height:calc(100dvh - 58px);max-height:none;overflow:auto}
     .close-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:10px;padding:.35rem .6rem;cursor:pointer}
     .divider{height:1px;background:var(--border);margin:1rem 0}
     .pages-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.45rem;margin-top:.5rem}
@@ -221,6 +221,7 @@
           <span id="ai-limit-note" class="hidden"></span>
           <div id="ai-result" class="ai-result hidden" aria-live="polite"></div>
         </div>
+        <div class="row" style="justify-content:center;margin-top:.9rem"><a class="pill-btn" id="engine-guide-btn" href="documentation.html">Guide →</a></div>
       </div>
 
       <div class="quick-links" id="quick-links" aria-label="All pages and shortcuts">
@@ -232,7 +233,7 @@
         <a class="quick-link" href="services.html"><strong>Services</strong><span>Inner website</span></a>
         <a class="quick-link" href="api.html"><strong>AI &amp; API</strong><span>Inner website</span></a>
         <a class="quick-link" href="downloads.html"><strong>Downloads</strong><span>Inner website / APKs</span></a>
-        <a class="quick-link" href="documentation.html"><strong>Docs</strong><span>Inner website</span></a>
+        <a class="quick-link" href="documentation.html"><strong>Docs →</strong><span>Guide &amp; documentation</span></a>
         <a class="quick-link" href="gallery.html"><strong>Gallery</strong><span>Inner website</span></a>
         <a class="quick-link" href="devx-os-demo.html"><strong>DevX OS Demo</strong><span>Inner website demo</span></a>
         <a class="quick-link" href="contact.html"><strong>Contact</strong><span>Inner website</span></a>
@@ -336,7 +337,7 @@
       </div>
       <div class="divider"></div>
       <h3>AI usage</h3>
-      <p class="notice">On-device AI used: <strong id="settings-ai-used">0</strong> · Remaining: <strong id="settings-ai-left">12</strong></p>
+      <p class="notice">On-device AI used: <strong id="settings-ai-used">0</strong> · Remaining: <strong id="settings-ai-left">12</strong> · Time limit: <strong>2 min</strong> cooldown per AI search (admin unlimited).</p>
       <div class="divider"></div>
       <h3>Extensions (local, no cloud)</h3>
       <p class="notice">Browser-like local extensions/features saved on this device (localStorage/cookies):</p>
@@ -353,9 +354,10 @@
   <script>
   (function () {
     const AI_LIMIT = 12;
+    const AI_COOLDOWN_MS = 2 * 60 * 1000;
     const ADMIN_USER = 'developerhcr';
     const ADMIN_PASS = '111999***';
-    const K = { theme:'developerhcr-engine-theme', settings:'developerhcr-engine-settings', users:'developerhcr-engine-users', session:'developerhcr-engine-session', aiUsed:'developerhcr-engine-ai-used', adminProfile:'developerhcr-engine-admin-profile' };
+    const K = { theme:'developerhcr-engine-theme', settings:'developerhcr-engine-settings', users:'developerhcr-engine-users', session:'developerhcr-engine-session', aiUsed:'developerhcr-engine-ai-used', aiLast:'developerhcr-engine-ai-last', adminProfile:'developerhcr-engine-admin-profile' };
     const $ = (id) => document.getElementById(id);
     const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     const safeParse = (v, f) => { try { return v ? JSON.parse(v) : f; } catch { return f; } };
@@ -445,16 +447,25 @@
     function getAiUsed() { const n = parseInt(localStorage.getItem(K.aiUsed) || '0', 10); return Number.isFinite(n) && n >= 0 ? n : 0; }
     function setAiUsed(n) { localStorage.setItem(K.aiUsed, String(Math.max(0,n))); }
     function aiLeft() { return Math.max(0, AI_LIMIT - getAiUsed()); }
+    function getAiLast() { const n = parseInt(localStorage.getItem(K.aiLast) || '0', 10); return Number.isFinite(n) && n > 0 ? n : 0; }
+    function setAiLast(ts) { localStorage.setItem(K.aiLast, String(ts || 0)); }
+    function aiCooldownLeftMs() { const last = getAiLast(); if (!last) return 0; return Math.max(0, AI_COOLDOWN_MS - (Date.now() - last)); }
+    function formatCooldown(ms) { const s = Math.ceil(ms / 1000); const m = Math.floor(s / 60); const r = s % 60; return m > 0 ? (m + 'm ' + r + 's') : (r + 's'); }
     function refreshAiUi() {
       const admin = isAdmin(getSession());
       const left = aiLeft();
+      const cooldown = admin ? 0 : aiCooldownLeftMs();
       const aiLeftTab = $('ai-left-tab'); if (aiLeftTab) aiLeftTab.textContent = admin ? '∞' : String(left);
-      const aiLeftChip = $('ai-left-chip'); if (aiLeftChip) aiLeftChip.textContent = admin ? 'Unlimited (Admin)' : `${left} left (${AI_LIMIT} limit)`;
+      const aiLeftChip = $('ai-left-chip'); if (aiLeftChip) aiLeftChip.textContent = admin ? 'Unlimited (Admin)' : `${left} left (${AI_LIMIT} limit) · 2 min cooldown`;
       const settingsUsed = $('settings-ai-used'); if (settingsUsed) settingsUsed.textContent = getAiUsed();
       const settingsLeft = $('settings-ai-left'); if (settingsLeft) settingsLeft.textContent = admin ? 'Unlimited (admin)' : String(left);
-      $('ai-submit').disabled = !admin && left <= 0;
+      const submit = $('ai-submit'); if (submit) submit.disabled = !admin && (left <= 0 || cooldown > 0);
       const aiLimitNote = $('ai-limit-note');
-      if (aiLimitNote) { aiLimitNote.textContent = ''; aiLimitNote.className = 'subnote hidden'; }
+      if (aiLimitNote) {
+        if (!admin && cooldown > 0) { aiLimitNote.textContent = `Please wait ${formatCooldown(cooldown)} before next AI search (2 min limit).`; aiLimitNote.className = 'subnote warn'; }
+        else if (!admin && left <= 0) { aiLimitNote.textContent = 'AI search limit reached for this browser profile.'; aiLimitNote.className = 'subnote warn'; }
+        else { aiLimitNote.textContent = ''; aiLimitNote.className = 'subnote hidden'; }
+      }
     }
 
     function setMode(mode, persist) {
@@ -472,7 +483,7 @@
     $('open-settings').addEventListener('click', () => { refreshAiUi(); openDialog('settings-dialog'); });
     document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', () => closeDialog(btn.getAttribute('data-close'))));
     ['style','mode','shortcuts','autofs'].forEach(key => { const el=$('setting-'+key); if(el) el.addEventListener('change', () => { settings[key]=el.value; applySettings(); $('settings-msg').textContent='Settings saved locally. Multi-style applied.'; }); });
-    $('clear-local').addEventListener('click', () => { [K.theme,K.settings,K.users,K.session,K.aiUsed,K.adminProfile,'developerhcr-theme','developerhcr-style','developerhcr-extensions','developerhcr-last-search','developerhcr-recent-searches'].forEach(k=>{ try{localStorage.removeItem(k);}catch{} delCookie(k); }); settings=Object.assign({}, { style:'cyan-dark', mode:'web', shortcuts:'on', autofs:'on' }); $('settings-msg').textContent='Local engine data, cookies, and extensions cleared on this browser.'; applySettings(); refreshAiUi(); renderAccount(); renderExtensions(); });
+    $('clear-local').addEventListener('click', () => { [K.theme,K.settings,K.users,K.session,K.aiUsed,K.aiLast,K.adminProfile,'developerhcr-theme','developerhcr-style','developerhcr-extensions','developerhcr-last-search','developerhcr-recent-searches'].forEach(k=>{ try{localStorage.removeItem(k);}catch{} delCookie(k); }); settings=Object.assign({}, { style:'cyan-dark', mode:'web', shortcuts:'on', autofs:'on' }); $('settings-msg').textContent='Local engine data, cookies, and extensions cleared on this browser.'; applySettings(); refreshAiUi(); renderAccount(); renderExtensions(); });
 
     function renderDeviceInfo() {
       const grid = $('device-info-grid');
@@ -508,7 +519,7 @@
       const menuAdminBadge = $('menu-admin-badge'); if (menuAdminBadge) menuAdminBadge.classList.toggle('hidden', !admin);
       const menuSignin = $('menu-signin'); if (menuSignin) menuSignin.classList.toggle('hidden', loggedIn);
       const menuSignout = $('menu-signout'); if (menuSignout) menuSignout.classList.toggle('hidden', !loggedIn);
-      const menuAdmin = $('menu-admin'); if (menuAdmin) menuAdmin.classList.toggle('hidden', !loggedIn);
+      const menuAdmin = $('menu-admin'); if (menuAdmin) { menuAdmin.classList.toggle('hidden', !loggedIn); menuAdmin.textContent = admin ? 'Account (Admin)' : 'Account'; }
       refreshAiUi();
     }
 
@@ -798,7 +809,7 @@
       // greetings
       if (/^(hi|hii+|hello|helo|hey|heyy+|namaste|hola|yo|good\s*(morning|afternoon|evening|night))[\s!.,]*$/i.test(raw) || /^(hi|hello|hey)\b/.test(q) && q.length < 20) {
         const s = getSession();
-        return { html: `<h3>On-device AI</h3><p>${s && s.name ? `Hi ${esc(s.name)}!` : 'Hi!'} 👋 How can I help you today? You can ask me to find an app or game, check if a website looks risky, or ask about DeveloperHCR pages and downloads. Web search is unlimited; AI is ${isAdmin(s)?'unlimited for admin':'limited to 12 searches per browser'}.</p><ul><li><a href="downloads.html">Downloads</a></li><li><a href="projects.html">Projects</a></li><li><a href="${webUrl}" target="_blank" rel="noreferrer">Search the web</a></li></ul>` };
+        return { html: `<h3>On-device AI</h3><p>${s && s.name ? `Hi ${esc(s.name)}!` : 'Hi!'} 👋 How can I help you today? You can ask me to find an app or game, check if a website looks risky, or ask about DeveloperHCR pages and downloads. Web search is unlimited; AI is ${isAdmin(s)?'unlimited for admin':'limited to 12 searches per browser with a 2 minute cooldown per search'}.</p><ul><li><a href="downloads.html">Downloads</a></li><li><a href="projects.html">Projects</a></li><li><a href="documentation.html">Guide</a></li><li><a href="${webUrl}" target="_blank" rel="noreferrer">Search the web</a></li></ul>` };
       }
 
       // virus / safety check
@@ -839,15 +850,25 @@
       }
 
       // fallback
-      return { html: `<h3>On-device AI answer</h3><p>I can help with greetings, DeveloperHCR info, downloads, finding apps/games, and basic website safety checks. I don't have a specific local match for "<strong>${esc(raw)}</strong>".</p><ul><li><a href="${webUrl}" target="_blank" rel="noreferrer">Search on Google (unlimited)</a></li><li><a href="home.html">Home</a></li><li><a href="downloads.html">Downloads</a></li><li><a href="projects.html">Projects</a></li></ul><p class="muted">Local answer generated on your device (no cloud).</p>` };
+      return { html: `<h3>On-device AI answer</h3><p>I can help with greetings, DeveloperHCR info, downloads, finding apps/games, and basic website safety checks. I don't have a specific local match for "<strong>${esc(raw)}</strong>".</p><ul><li><a href="${webUrl}" target="_blank" rel="noreferrer">Search on Google (unlimited)</a></li><li><a href="documentation.html">Guide</a></li><li><a href="home.html">Home</a></li><li><a href="downloads.html">Downloads</a></li><li><a href="projects.html">Projects</a></li></ul><p class="muted">Local answer generated on your device (no cloud).</p>` };
     }
 
     $('ai-form').addEventListener('submit', (e) => {
       e.preventDefault();
       const admin = isAdmin(getSession());
-      if (!admin && aiLeft() <= 0) { refreshAiUi(); return; }
+      if (!admin) {
+        if (aiLeft() <= 0) { refreshAiUi(); return; }
+        const cooldown = aiCooldownLeftMs();
+        if (cooldown > 0) {
+          const box = $('ai-result');
+          box.innerHTML = `<h3>Please wait</h3><p>AI time limit: wait <strong>${esc(formatCooldown(cooldown))}</strong> before your next AI search (2 minute cooldown). Web search is unlimited.</p>`;
+          box.classList.remove('hidden');
+          refreshAiUi();
+          return;
+        }
+      }
       const q = $('ai-query').value.trim(); if (!q) return;
-      if (!admin) setAiUsed(getAiUsed() + 1);
+      if (!admin) { setAiUsed(getAiUsed() + 1); setAiLast(Date.now()); }
       refreshAiUi();
       const box = $('ai-result');
       box.innerHTML = aiResponse(q).html;
