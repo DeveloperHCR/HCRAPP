@@ -8,7 +8,7 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/DeveloperHCR/HCRAPP?style=for-the-badge&logo=github&label=GitHub%20stars)](https://github.com/DeveloperHCR/HCRAPP/stargazers)
 [![README views](https://visitor-badge.laobi.icu/badge?page_id=DeveloperHCR.HCRAPP-README&left_text=README%20views&logo=github&right_color=0891b2)](https://visitor-badge.laobi.icu/)
-[![Commits applied](https://img.shields.io/badge/commits_applied-93-0891b2?style=for-the-badge&logo=git&logoColor=white)](#commits-applied)
+[![Commits applied](https://img.shields.io/badge/commits_applied-94-0891b2?style=for-the-badge&logo=git&logoColor=white)](#commits-applied)
 
 DeveloperHCR designs premium digital experiences across web, Android, AI-assisted tools, and developer-first software. This repository contains the official static website, DevX OS release information, visual assets, and supporting documentation for the project ecosystem.
 
@@ -102,10 +102,10 @@ The GitHub Actions workflow in [`.github/workflows/static.yml`](.github/workflow
 
 ## Commits applied
 
-**Total commits applied (all time): 93** — tracked alongside GitHub stars and README/website views. Latest: `f881020` (2026-11-21) — Add APK download passwords and make AI searches unlimited.
+**Total commits applied (all time): 94** — tracked alongside GitHub stars and README/website views. Latest: `2a3cd9c` (2026-11-21) — Improve header alignment, mobile comfort, and repo updates.
 
 <details>
-<summary>All commits applied over time (chronological, 93 commits)</summary>
+<summary>All commits applied over time (chronological, 94 commits)</summary>
 
 - `9edfc87` (2026-10-07) — Initial commit
 - `5a06690` (2026-10-07) — Create README.md
@@ -200,6 +200,7 @@ The GitHub Actions workflow in [`.github/workflows/static.yml`](.github/workflow
 - `5073e9a` (2026-11-21) — Set Google as default engine search and improve full-screen results
 - `7069531` (2026-11-21) — Improve docs and About and refine Engine UI and AI limits
 - `f881020` (2026-11-21) — Add APK download passwords and make AI searches unlimited
+- `2a3cd9c` (2026-11-21) — Improve header alignment, mobile comfort, and repo updates
 
 </details>
 
