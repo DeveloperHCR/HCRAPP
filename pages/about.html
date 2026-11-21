@@ -83,6 +83,7 @@ img { max-width: 100%; display: block; }
   min-height: 76px;
   gap: 1rem;
 }
+.brand-logo { flex: 0 0 auto; min-width: 0; }
 .brand-logo a {
   display: inline-flex;
   align-items: center;
@@ -90,10 +91,14 @@ img { max-width: 100%; display: block; }
   font-size: clamp(1.2rem, 2vw, 2rem);
   font-weight: 700;
   letter-spacing: 0.04em;
+  line-height: 1;
+  white-space: nowrap;
 }
 .site-logo {
   width: 42px;
   height: 42px;
+  flex: 0 0 auto;
+  display: block;
   object-fit: cover;
   border: 1px solid rgba(103, 232, 249, 0.35);
   border-radius: 50%;
@@ -426,7 +431,7 @@ textarea { min-height: 130px; resize: vertical; }
                 <ul>
                     <li><a href="home.html">Home</a></li>
                     <li><a href="search.html">Engine</a></li>
-                    <li><a href="about.html">About</a></li>
+                    <li><a href="about.html" class="active">About</a></li>
                     <li><a href="projects.html">Projects</a></li>
                     <li><a href="services.html">Services</a></li>
                     <li><a href="api.html">AI & API</a></li>
@@ -546,6 +551,22 @@ textarea { min-height: 130px; resize: vertical; }
                     </ul>
                 </article>
             </div>
+
+            <section class="panel glass-panel repo-updates" aria-labelledby="about-repo-updates-title">
+                <h2 id="about-repo-updates-title">Repository & latest updates</h2>
+                <p class="muted">DeveloperHCR/HCRAPP continues to evolve with UI fixes, engine improvements, and documentation updates. Here is the current snapshot from this repository.</p>
+                <div class="update-meta" aria-label="Repository update summary">
+                    <span class="meta-chip" id="about-repo-total-commits">Total commits: 93</span>
+                    <span class="meta-chip" id="about-repo-latest-commit">Latest: f881020 · 2026-11-21</span>
+                </div>
+                <p id="about-repo-latest-message" class="muted" style="margin-top:0.9rem;">Add APK download passwords and make AI searches unlimited</p>
+                <div class="update-links">
+                    <a href="https://github.com/DeveloperHCR/HCRAPP" target="_blank" rel="noreferrer">Repository</a>
+                    <a href="https://github.com/DeveloperHCR/HCRAPP/commits/main" target="_blank" rel="noreferrer">Commits</a>
+                    <a href="https://github.com/DeveloperHCR/HCRAPP/releases" target="_blank" rel="noreferrer">Releases</a>
+                    <a href="downloads.html">Downloads</a>
+                </div>
+            </section>
 
             <div class="info-grid">
                 <section class="info-card glass-panel">
@@ -668,7 +689,34 @@ textarea { min-height: 130px; resize: vertical; }
         </div>
     </footer>
 
-    <script src="../js/main.js?v=20261116-theme"></script>
+    <script src="../js/main.js?v=20261121-mobile"></script>
+    <script>
+      (function(){
+        var repoTotal = document.getElementById('about-repo-total-commits');
+        var repoLatest = document.getElementById('about-repo-latest-commit');
+        var repoMessage = document.getElementById('about-repo-latest-message');
+        fetch('https://api.github.com/repos/DeveloperHCR/HCRAPP/commits?per_page=1&sha=main', { headers: { 'Accept': 'application/vnd.github+json' }})
+          .then(function(r){
+            var link = r.headers.get('Link') || '';
+            var m = link.match(/[?&]page=(\d+)>; rel="last"/);
+            var countPromise = m ? Promise.resolve(parseInt(m[1], 10)) : r.clone().json().then(function(j){ return Array.isArray(j) ? j.length : null; });
+            var commitPromise = r.json().then(function(j){ return Array.isArray(j) && j[0] ? j[0] : null; });
+            return Promise.all([countPromise, commitPromise]);
+          })
+          .then(function(res){
+            var count = res[0], commit = res[1];
+            if(count && repoTotal){ repoTotal.textContent = 'Total commits: ' + count; }
+            if(commit){
+              var sha = (commit.sha || '').slice(0, 7);
+              var msg = (commit.commit && commit.commit.message ? commit.commit.message : '').split('\n')[0];
+              var date = (commit.commit && commit.commit.author && commit.commit.author.date ? commit.commit.author.date : '').slice(0, 10);
+              if(repoLatest && sha && date){ repoLatest.textContent = 'Latest: ' + sha + ' · ' + date; }
+              if(repoMessage && msg){ repoMessage.textContent = msg; }
+            }
+          })
+          .catch(function(){});
+      })();
+    </script>
     <script src="../js/navigation.js"></script>
     <script src="../js/language.js"></script>
     <script src="../js/about-admin.js?v=20261116-engine-options"></script>

@@ -8,7 +8,7 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/DeveloperHCR/HCRAPP?style=for-the-badge&logo=github&label=GitHub%20stars)](https://github.com/DeveloperHCR/HCRAPP/stargazers)
 [![README views](https://visitor-badge.laobi.icu/badge?page_id=DeveloperHCR.HCRAPP-README&left_text=README%20views&logo=github&right_color=0891b2)](https://visitor-badge.laobi.icu/)
-[![Commits applied](https://img.shields.io/badge/commits_applied-153-0891b2?style=for-the-badge&logo=git&logoColor=white)](#commits-applied)
+[![Commits applied](https://img.shields.io/badge/commits_applied-93-0891b2?style=for-the-badge&logo=git&logoColor=white)](#commits-applied)
 
 DeveloperHCR designs premium digital experiences across web, Android, AI-assisted tools, and developer-first software. This repository contains the official static website, DevX OS release information, visual assets, and supporting documentation for the project ecosystem.
 
@@ -30,11 +30,11 @@ The site is a static HTML and JavaScript project. Styles are embedded in the HTM
 | Page | What it contains |
 | --- | --- |
 | Engine (default landing, first page) | DeveloperHCR Engine at `pages/search.html` with **unlimited** web search and full-screen results shown on the website (no other tab), on-device AI limited to **12 searches per browser** (unlimited for admin), multi-style themes, Chrome/Google-style local login/signup (no cloud), profile picture, device/CPU info, cookies/local extensions, top navigation and quick links to all inner and outer websites, and live commit/stats display |
-| Home | DeveloperHCR introduction, featured projects, GitHub stars, commits applied, and demo links |
+| Home | DeveloperHCR introduction, featured projects, GitHub stars, commits applied, repository/latest update snapshot, and demo links |
 | Projects | HCRAPP, DevX OS, and DevX Billing summaries, tags, release links, a DevX OS browser preview, and a sandboxed DevX Billing preview |
 | Contact | Email, public location, Google Map, and a message form that opens a prefilled email in the visitor's email app |
 | Downloads | Link to the official DevX OS 3.0 stable APK release |
-| About, Services, AI & API, Documentation, Gallery | Company and product information; About includes a browser-local demo status dashboard |
+| About, Services, AI & API, Documentation, Gallery | Company and product information; About includes a browser-local demo status dashboard and repository/latest update snapshot |
 | Privacy, Terms | Website privacy and usage information |
 
 The site supports English, Hindi, and Hinglish. Navigation, language selection, page-view badge display, and copyright year use lightweight JavaScript.
@@ -102,10 +102,10 @@ The GitHub Actions workflow in [`.github/workflows/static.yml`](.github/workflow
 
 ## Commits applied
 
-**Total commits applied (all time): 153** — tracked alongside GitHub stars and README/website views.
+**Total commits applied (all time): 93** — tracked alongside GitHub stars and README/website views. Latest: `f881020` (2026-11-21) — Add APK download passwords and make AI searches unlimited.
 
 <details>
-<summary>All commits applied over time (chronological, includes 76 listed entries)</summary>
+<summary>All commits applied over time (chronological, 93 commits)</summary>
 
 - `9edfc87` (2026-10-07) — Initial commit
 - `5a06690` (2026-10-07) — Create README.md
@@ -183,6 +183,23 @@ The GitHub Actions workflow in [`.github/workflows/static.yml`](.github/workflow
 - `f50d09e` (2026-11-16) — Expand About admin dashboard
 - `7196735` (2026-11-16) — Center admin server status
 - `bf5d270` (2026-11-16) — Add DeveloperHCR search engine page
+- `6648600` (2026-11-21) — Enhance DeveloperHCR Engine and add commit stats
+- `f748533` (2026-11-21) — Clarify unlimited web search and 12-search AI limit in Engine
+- `033ce5d` (2026-11-21) — Fix engine logo, add on-site results, and improve settings/login UI
+- `84ce21f` (2026-11-21) — Enhance engine with admin login, on-site results, and downloads
+- `69004ec` (2026-11-21) — Show web results on page and add profile/device features
+- `4b76c77` (2026-11-21) — Redirect engine searches to Google and add multi-style links
+- `d5637c2` (2026-11-21) — Fix admin login and add fullscreen, cookies, and extensions
+- `6afd8c8` (2026-11-21) — Show full-screen web results on-site without other tabs
+- `4f23451` (2026-11-21) — Hide engine navigation and controls in overflow menu
+- `8204ce0` (2026-11-21) — Refresh About page and README project overview
+- `6ac2994` (2026-11-21) — Simplify engine hero and show account in header
+- `ced3f75` (2026-11-21) — Simplify search page with Google-like layout
+- `3821599` (2026-11-21) — Move device account to dedicated Engine page
+- `c503dba` (2026-11-21) — Improve engine full-screen web results and source opening
+- `5073e9a` (2026-11-21) — Set Google as default engine search and improve full-screen results
+- `7069531` (2026-11-21) — Improve docs and About and refine Engine UI and AI limits
+- `f881020` (2026-11-21) — Add APK download passwords and make AI searches unlimited
 
 </details>
 

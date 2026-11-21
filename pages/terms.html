@@ -56,6 +56,7 @@ img { max-width: 100%; display: block; }
   min-height: 76px;
   gap: 1rem;
 }
+.brand-logo { flex: 0 0 auto; min-width: 0; }
 .brand-logo a {
   display: inline-flex;
   align-items: center;
@@ -63,10 +64,14 @@ img { max-width: 100%; display: block; }
   font-size: clamp(1.2rem, 2vw, 2rem);
   font-weight: 700;
   letter-spacing: 0.04em;
+  line-height: 1;
+  white-space: nowrap;
 }
 .site-logo {
   width: 42px;
   height: 42px;
+  flex: 0 0 auto;
+  display: block;
   object-fit: cover;
   border: 1px solid rgba(103, 232, 249, 0.35);
   border-radius: 50%;
@@ -318,7 +323,7 @@ textarea { min-height: 130px; resize: vertical; }
   <section class="page-banner"><div class="container"><h1>Terms & Conditions</h1><p class="page-copy">These terms govern use of the DeveloperHCR website and associated materials.</p></div></section>
   <main class="page-content"><div class="container"><div class="panel"><p class="page-copy">The website is provided for informational and demonstration purposes. DeveloperHCR may update, modify or improve content at any time. Users should exercise caution when interacting with downloadable software and external links.</p></div></div></main>
   <footer class="site-footer"><div class="container footer-content"><div class="footer-info"><h3>DeveloperHCR™</h3><p>Use responsibly.</p></div><div class="footer-links"><h4>Quick Links</h4><ul><li><a href="privacy.html">Privacy</a></li><li><a href="contact.html">Contact</a></li></ul></div></div><div class="footer-bottom"><p>&copy; <span id="year">2026</span> DeveloperHCR™. All rights reserved.</p></div></footer>
-  <script src="../js/main.js?v=20261116-theme"></script><script src="../js/navigation.js"></script>
+  <script src="../js/main.js?v=20261121-mobile"></script><script src="../js/navigation.js"></script>
     <script src="../js/language.js"></script>
 </body>
 </html>

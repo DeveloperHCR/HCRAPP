@@ -27,8 +27,8 @@
     .topbar{position:sticky;top:0;z-index:30;backdrop-filter:blur(16px);background:rgba(7,19,31,.82);border-bottom:1px solid var(--border)}
     body.light-mode .topbar{background:rgba(248,251,255,.94)}
     .topbar-inner{width:min(1320px,calc(100% - 1.2rem));margin:0 auto;min-height:64px;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;padding:.4rem 0;position:relative}
-    .brand{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;margin-right:.1rem}
-    .brand-mark{width:34px;height:34px;border-radius:50%;object-fit:cover;border:1px solid var(--border);background:var(--surface)}
+    .brand{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;margin-right:.1rem;line-height:1;white-space:nowrap;flex:0 0 auto;min-width:0}
+    .brand-mark{width:34px;height:34px;display:block;flex:0 0 auto;border-radius:50%;object-fit:cover;border:1px solid var(--border);background:var(--surface)}
     .top-actions{display:flex;gap:.4rem;align-items:center;margin-left:auto;flex-wrap:wrap;position:relative}
     .engine-menu-button{margin-left:.1rem;border:1px solid var(--border);background:var(--surface);color:var(--text);width:40px;height:40px;border-radius:12px;cursor:pointer;display:inline-grid;place-items:center;font-size:1.35rem;line-height:1}
     .engine-menu-button:hover,.engine-menu-button:focus-visible{border-color:var(--accent);outline:none}
