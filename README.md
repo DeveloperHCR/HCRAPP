@@ -95,7 +95,7 @@ The GitHub Actions workflow in [`.github/workflows/static.yml`](.github/workflow
 ├── data/web/            # Nested static backend-status page
 ├── js/                  # Site navigation and small UI behaviors
 ├── pages/               # Site pages; index.html remains at the root
-├── About.md             # Legacy DevX OS setup guide
+├── About.md             # About DeveloperHCR and project overview (served at /HCRAPP/About.md)
 └── index.html           # Website homepage
 ```
 
