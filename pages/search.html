@@ -29,16 +29,16 @@
     .topbar-inner{width:min(1320px,calc(100% - 1.2rem));margin:0 auto;min-height:64px;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;padding:.4rem 0;position:relative}
     .brand{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;margin-right:.1rem}
     .brand-mark{width:34px;height:34px;border-radius:50%;object-fit:cover;border:1px solid var(--border);background:var(--surface)}
-    .engine-menu-button{margin-left:auto;border:1px solid var(--border);background:var(--surface);color:var(--text);width:40px;height:40px;border-radius:12px;cursor:pointer;display:inline-grid;place-items:center;font-size:1.35rem;line-height:1}
+    .top-actions{display:flex;gap:.4rem;align-items:center;margin-left:auto;flex-wrap:wrap;position:relative}
+    .engine-menu-button{margin-left:.1rem;border:1px solid var(--border);background:var(--surface);color:var(--text);width:40px;height:40px;border-radius:12px;cursor:pointer;display:inline-grid;place-items:center;font-size:1.35rem;line-height:1}
     .engine-menu-button:hover,.engine-menu-button:focus-visible{border-color:var(--accent);outline:none}
     .engine-menu{position:absolute;top:calc(100% + .35rem);right:0;width:min(360px,calc(100vw - 1rem));max-height:min(78vh,720px);overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:.75rem;z-index:45}
     .engine-menu[hidden]{display:none!important}
-    .engine-menu .page-nav{display:flex;flex-direction:column;align-items:stretch;gap:.2rem;flex:0 0 auto;margin:0 0 .65rem}
+    .engine-menu .page-nav{display:flex;flex-direction:column;align-items:stretch;gap:.2rem;flex:0 0 auto;margin:0}
     .engine-menu .page-nav a{display:block;padding:.55rem .7rem;border-radius:10px;color:var(--muted);font-size:.92rem;white-space:normal}
     .engine-menu .page-nav a:hover,.engine-menu .page-nav a.active{color:var(--accent);background:rgba(103,232,249,.12)}
     body.light-mode .engine-menu .page-nav a:hover,body.light-mode .engine-menu .page-nav a.active{background:rgba(8,127,157,.1)}
-    .engine-menu .top-actions{display:flex;gap:.45rem;align-items:center;margin-left:0;flex-wrap:wrap;position:relative;padding-top:.55rem;border-top:1px solid var(--border)}
-    .top-actions{display:flex;gap:.4rem;align-items:center;margin-left:auto;flex-wrap:wrap;position:relative}
+    .engine-menu-actions{display:flex;gap:.45rem;align-items:center;flex-wrap:wrap;margin-top:.65rem;padding-top:.55rem;border-top:1px solid var(--border)}
     .pill-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);padding:.45rem .75rem;border-radius:999px;cursor:pointer;font-size:.84rem}
     .pill-btn:hover,.pill-btn:focus-visible{border-color:var(--accent);outline:none}
     .pill-btn.primary{background:var(--accent);color:#04151d;border-color:transparent;font-weight:700}
@@ -50,6 +50,7 @@
     body.light-mode .avatar-btn{color:#fff}
     .account-menu{position:absolute;top:calc(100% + .45rem);right:0;width:min(320px,calc(100vw - 1rem));background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:.8rem;z-index:40}
     .engine-menu .account-menu{position:static;top:auto;right:auto;width:100%;margin-top:.5rem;box-shadow:none}
+    .topbar .top-actions > .account-menu{position:absolute;top:calc(100% + .45rem);right:0}
     .account-menu h3{margin:0 0 .2rem;font-size:1rem}.account-menu p{margin:.2rem 0;color:var(--muted);font-size:.88rem}
     .menu-actions{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.6rem}
     .badge-admin{display:inline-flex;align-items:center;padding:.15rem .5rem;border-radius:999px;background:rgba(245,158,11,.18);color:var(--warn);border:1px solid rgba(245,158,11,.35);font-size:.75rem;font-weight:700}
@@ -140,6 +141,24 @@
         <img class="brand-mark" src="../assets/images/developerhcr-logo.png" alt="DeveloperHCR logo">
         <span>DeveloperHCR</span>
       </a>
+      <div class="top-actions">
+        <button class="avatar-btn" id="avatar-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="Account">?</button>
+        <div class="account-menu hidden" id="account-menu" role="menu" aria-label="Account menu">
+          <div class="profile-row">
+            <div class="avatar-lg" id="menu-avatar" aria-hidden="true">?</div>
+            <div>
+              <h3 id="menu-user-name">Guest</h3>
+              <p id="menu-user-sub">Not signed in · device local</p>
+              <p id="menu-admin-badge" class="hidden"><span class="badge-admin">ADMIN</span> Unlimited AI enabled</p>
+            </div>
+          </div>
+          <div class="menu-actions">
+            <button class="pill-btn primary" id="menu-signin" type="button">Sign in / Sign up</button>
+            <button class="pill-btn hidden" id="menu-admin" type="button">Admin</button>
+            <button class="pill-btn hidden" id="menu-signout" type="button">Sign out</button>
+          </div>
+        </div>
+      </div>
       <button class="engine-menu-button" id="engine-menu-button" type="button" aria-controls="engine-menu" aria-expanded="false" aria-label="Open menu" title="Menu"><span aria-hidden="true">⋮</span></button>
       <div class="engine-menu" id="engine-menu" hidden>
         <nav class="page-nav" aria-label="All pages">
@@ -156,24 +175,8 @@
           <a href="privacy.html">Privacy</a>
           <a href="terms.html">Terms</a>
         </nav>
-        <div class="top-actions">
+        <div class="engine-menu-actions">
           <button class="pill-btn" id="open-settings" type="button">Settings</button>
-          <button class="avatar-btn" id="avatar-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="Account">?</button>
-          <div class="account-menu hidden" id="account-menu" role="menu" aria-label="Account menu">
-            <div class="profile-row">
-              <div class="avatar-lg" id="menu-avatar" aria-hidden="true">?</div>
-              <div>
-                <h3 id="menu-user-name">Guest</h3>
-                <p id="menu-user-sub">Not signed in · device local</p>
-                <p id="menu-admin-badge" class="hidden"><span class="badge-admin">ADMIN</span> Unlimited AI enabled</p>
-              </div>
-            </div>
-            <div class="menu-actions">
-              <button class="pill-btn primary" id="menu-signin" type="button">Sign in / Sign up</button>
-              <button class="pill-btn hidden" id="menu-admin" type="button">Admin</button>
-              <button class="pill-btn hidden" id="menu-signout" type="button">Sign out</button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -182,14 +185,6 @@
   <main>
     <section class="hero">
       <h1 class="logo">DeveloperHCR <span>Eng</span><span class="g2">ine</span></h1>
-      <p class="tagline" id="greeting">Unlimited DeveloperHCR Engine web search with full-screen results on this website (no other tab), on-device AI limited to 12 searches (admin: unlimited), multi-style website, and quick access to inner and outer websites.</p>
-      <div class="stats-row" aria-label="Repository and engine stats">
-        <span class="stat-chip"><strong>Stars:</strong> <a href="https://github.com/DeveloperHCR/HCRAPP/stargazers" target="_blank" rel="noreferrer">GitHub</a></span>
-        <span class="stat-chip"><strong>Commits applied:</strong> <span id="commit-count">76</span></span>
-        <span class="stat-chip"><strong>Web search:</strong> Unlimited</span>
-        <span class="stat-chip"><strong>AI:</strong> <span id="ai-left-chip">12 left (12 limit)</span></span>
-        <span class="stat-chip"><strong>Account:</strong> <span id="account-chip">Guest</span></span>
-      </div>
 
       <div class="engine-card">
         <div class="fs-controls">
@@ -527,8 +522,8 @@
     function refreshAiUi() {
       const admin = isAdmin(getSession());
       const left = aiLeft();
-      $('ai-left-tab').textContent = admin ? '∞' : String(left);
-      $('ai-left-chip').textContent = admin ? 'Unlimited (Admin)' : `${left} left (${AI_LIMIT} limit)`;
+      const aiLeftTab = $('ai-left-tab'); if (aiLeftTab) aiLeftTab.textContent = admin ? '∞' : String(left);
+      const aiLeftChip = $('ai-left-chip'); if (aiLeftChip) aiLeftChip.textContent = admin ? 'Unlimited (Admin)' : `${left} left (${AI_LIMIT} limit)`;
       $('settings-ai-used').textContent = getAiUsed();
       $('settings-ai-left').textContent = admin ? 'Unlimited (admin)' : String(left);
       $('ai-submit').disabled = !admin && left <= 0;
@@ -584,7 +579,7 @@
       $('admin-panel').classList.toggle('hidden', !(loggedIn && admin));
       $('current-admin-badge').classList.toggle('hidden', !admin);
       $('delete-account-btn').classList.toggle('hidden', admin);
-      $('account-chip').textContent = loggedIn ? (session.name || session.username) + (admin ? ' (Admin)' : '') : 'Guest';
+      const accountChip = $('account-chip'); if (accountChip) accountChip.textContent = loggedIn ? (session.name || session.username) + (admin ? ' (Admin)' : '') : 'Guest';
       renderAvatarEl($('avatar-btn'), avatar, fallback);
       renderAvatarEl($('menu-avatar'), avatar, fallback);
       renderAvatarEl($('profile-avatar'), avatar, fallback);
@@ -889,7 +884,7 @@
 
     // AI
     const corpus = [
-      { keys:['commit','commits','applied','history'], answer: () => `DeveloperHCR/HCRAPP has <strong>${$('commit-count').textContent || '76'}</strong> commits applied in all time. You can view the full chronological list in README and on GitHub.`, links:[['Commits on GitHub','https://github.com/DeveloperHCR/HCRAPP/commits/main'],['Home','home.html']] },
+      { keys:['commit','commits','applied','history'], answer: () => `DeveloperHCR/HCRAPP has <strong>${(($('commit-count') || $('footer-commits') || {}).textContent || '76')}</strong> commits applied in all time. You can view the full chronological list in README and on GitHub.`, links:[['Commits on GitHub','https://github.com/DeveloperHCR/HCRAPP/commits/main'],['Home','home.html']] },
       { keys:['star','stars','github','repo','repository'], answer: () => 'The project repository is DeveloperHCR/HCRAPP on GitHub. You can view stars, code, releases, and commits there.', links:[['Repository','https://github.com/DeveloperHCR/HCRAPP'],['Stargazers','https://github.com/DeveloperHCR/HCRAPP/stargazers']] },
       { keys:['devx os','devxos','android os','desktop os','admin panel demo'], answer: () => 'DevX OS 3.0 is a desktop-style Android environment concept by DeveloperHCR. The site includes a browser demo and downloads for the stable APK.', links:[['DevX OS demo','devx-os-demo.html#admin-panel'],['Downloads','downloads.html'],['DevX OS release','https://github.com/DeveloperHCR/HCRAPP/releases/tag/DevXOS-3.0(stable)']] },
       { keys:['billing','invoice','devx billing','shop'], answer: () => 'DevX Billing 1.3.2 is a shop/invoice management app. You can download the official APK from the Downloads page and try the web demo (use sample data only; browser storage is local/origin-shared).', links:[['Downloads','downloads.html'],['Web demo','https://developerhcr.github.io/DevX_Billing/'],['Release','https://github.com/DeveloperHCR/DevX_Billing/releases/tag/DevX_billing_1.3.2']] },
@@ -974,7 +969,7 @@
     // Live commit count
     fetch('https://api.github.com/repos/DeveloperHCR/HCRAPP/commits?per_page=1&sha=main', { headers: { 'Accept': 'application/vnd.github+json' } })
       .then(r => { const link=r.headers.get('Link')||''; const m=link.match(/[?&]page=(\d+)>; rel="last"/); if(m) return parseInt(m[1],10); return r.json().then(j => Array.isArray(j)?j.length:null); })
-      .then(count => { if(!count) return; $('commit-count').textContent = count; $('footer-commits').textContent = count; }).catch(() => {});
+      .then(count => { if(!count) return; const commitCount = $('commit-count'); if (commitCount) commitCount.textContent = count; const footerCommits = $('footer-commits'); if (footerCommits) footerCommits.textContent = count; }).catch(() => {});
 
     // Engine overflow menu (three-dots): nav + settings/account
     const engineMenuButton = $('engine-menu-button');
@@ -1003,9 +998,12 @@
 
     // Init
     const session = getSession();
-    const hour = new Date().getHours();
-    const part = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
-    $('greeting').textContent = (session && session.name ? `${part}, ${session.name}. ` : '') + 'Unlimited DeveloperHCR Engine web search with full-screen results on this website (no other tab), on-device AI limited to 12 searches (admin: unlimited), multi-style website, and quick access to inner and outer websites.';
+    const greetingEl = $('greeting');
+    if (greetingEl) {
+      const hour = new Date().getHours();
+      const part = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+      greetingEl.textContent = (session && session.name ? `${part}, ${session.name}. ` : '') + 'Unlimited DeveloperHCR Engine web search with full-screen results on this website (no other tab), on-device AI limited to 12 searches (admin: unlimited), multi-style website, and quick access to inner and outer websites.';
+    }
     $('year').textContent = new Date().getFullYear();
     applySettings(); refreshAiUi(); renderAccount(); renderExtensions(); applyExtensions();
     if (!getSession()) { try { openDialog('login-dialog'); } catch {} }
