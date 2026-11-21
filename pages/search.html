@@ -38,7 +38,10 @@
     .pill-btn:hover,.pill-btn:focus-visible{border-color:var(--accent);outline:none}
     .pill-btn.primary{background:var(--accent);color:#04151d;border-color:transparent;font-weight:700}
     body.light-mode .pill-btn.primary{color:#fff}
-    .avatar-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#04151d;font-weight:700;cursor:pointer;display:grid;place-items:center}
+    .avatar-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#04151d;font-weight:700;cursor:pointer;display:grid;place-items:center;overflow:hidden;padding:0}
+    .avatar-btn img,.avatar-lg img{width:100%;height:100%;object-fit:cover;display:block}
+    .avatar-lg{width:56px;height:56px;border-radius:50%;border:1px solid var(--border);background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#04151d;font-weight:700;display:grid;place-items:center;overflow:hidden;font-size:1.2rem;flex:0 0 auto}
+    body.light-mode .avatar-lg{color:#fff}
     body.light-mode .avatar-btn{color:#fff}
     .account-menu{position:absolute;top:calc(100% + .45rem);right:0;width:min(320px,calc(100vw - 1rem));background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:.8rem;z-index:40}
     .account-menu h3{margin:0 0 .2rem;font-size:1rem}.account-menu p{margin:.2rem 0;color:var(--muted);font-size:.88rem}
@@ -97,6 +100,11 @@
     .pages-list a:hover{border-color:var(--accent);color:var(--accent)}
     .admin-card{border:1px solid rgba(245,158,11,.35);background:rgba(245,158,11,.08);border-radius:14px;padding:.9rem;margin-top:.8rem}
     .admin-card h3{margin:0 0 .35rem;color:var(--warn)}
+    .profile-row{display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;margin:.2rem 0 .6rem}
+    .device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.55rem;margin-top:.6rem}
+    .device-item{padding:.65rem .7rem;border:1px solid var(--border);border-radius:12px;background:var(--surface-2)}
+    .device-item strong{display:block;font-size:.8rem;color:var(--muted);margin-bottom:.15rem;font-weight:600}
+    .device-item span{display:block;word-break:break-word;font-size:.92rem}
     footer{margin-top:2rem;text-align:center;color:var(--muted);font-size:.85rem} footer a{color:var(--accent)}
     @media (max-width:760px){.search-form{flex-direction:column}.search-form button[type="submit"]{min-height:48px}.topbar-inner{justify-content:center}.top-actions{margin-left:0;justify-content:center}.page-nav{justify-content:center}.embed-wrap iframe{height:420px}}
   </style>
@@ -126,9 +134,14 @@
         <button class="pill-btn" id="open-settings" type="button">Settings</button>
         <button class="avatar-btn" id="avatar-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="Account">?</button>
         <div class="account-menu hidden" id="account-menu" role="menu" aria-label="Account menu">
-          <h3 id="menu-user-name">Guest</h3>
-          <p id="menu-user-sub">Not signed in · device local</p>
-          <p id="menu-admin-badge" class="hidden"><span class="badge-admin">ADMIN</span> Unlimited AI enabled</p>
+          <div class="profile-row">
+            <div class="avatar-lg" id="menu-avatar" aria-hidden="true">?</div>
+            <div>
+              <h3 id="menu-user-name">Guest</h3>
+              <p id="menu-user-sub">Not signed in · device local</p>
+              <p id="menu-admin-badge" class="hidden"><span class="badge-admin">ADMIN</span> Unlimited AI enabled</p>
+            </div>
+          </div>
           <div class="menu-actions">
             <button class="pill-btn primary" id="menu-signin" type="button">Sign in / Sign up</button>
             <button class="pill-btn hidden" id="menu-admin" type="button">Admin</button>
@@ -221,8 +234,23 @@
         </form>
       </div>
       <div id="account-logged-in" class="hidden">
-        <p>Signed in as <strong id="current-user-name"></strong> (<span id="current-user-handle"></span>) <span id="current-admin-badge" class="badge-admin hidden">ADMIN</span></p>
-        <p class="notice" id="account-status-note">Local-only session. No cloud sync.</p>
+        <div class="profile-row">
+          <div class="avatar-lg" id="profile-avatar" aria-hidden="true">?</div>
+          <div>
+            <p style="margin:0">Signed in as <strong id="current-user-name"></strong> (<span id="current-user-handle"></span>) <span id="current-admin-badge" class="badge-admin hidden">ADMIN</span></p>
+            <p class="notice" id="account-status-note" style="margin:.2rem 0 0">Local-only session. No cloud sync.</p>
+          </div>
+        </div>
+        <div class="panel" style="margin-top:.7rem;padding:.85rem;">
+          <h3 style="margin:0 0 .45rem;font-size:1rem;color:var(--accent);">Profile picture (local)</h3>
+          <p class="notice" style="margin-top:0">Add or change your profile picture on this device only. It is saved in browser local storage (no cloud).</p>
+          <div class="row" style="margin-top:.5rem;">
+            <input id="profile-pic-input" type="file" accept="image/*" aria-label="Upload profile picture">
+            <button class="pill-btn" id="remove-pic-btn" type="button">Remove picture</button>
+          </div>
+          <p id="profile-pic-msg" class="notice" aria-live="polite"></p>
+        </div>
+
         <div id="admin-panel" class="admin-card hidden">
           <h3>Admin options</h3>
           <p class="muted">Admin account has unlimited AI searches and access to local engine controls.</p>
@@ -237,6 +265,13 @@
             <button class="pill-btn" id="admin-open-settings" type="button">Open settings</button>
           </div>
         </div>
+
+        <div class="panel" style="margin-top:.8rem;padding:.85rem;">
+          <h3 style="margin:0 0 .35rem;font-size:1rem;color:var(--accent);">Device info (on your device / CPU)</h3>
+          <p class="notice" style="margin-top:0">Shown locally from your browser — no cloud upload.</p>
+          <div class="device-grid" id="device-info-grid" aria-live="polite"></div>
+        </div>
+
         <div class="row" style="margin-top:.7rem;">
           <button class="pill-btn" id="logout-btn" type="button">Sign out</button>
           <button class="pill-btn" id="delete-account-btn" type="button">Delete local account</button>
@@ -288,7 +323,7 @@
     const AI_LIMIT = 12;
     const ADMIN_USER = 'developerhcr';
     const ADMIN_PASS = '111999***';
-    const K = { theme:'developerhcr-engine-theme', settings:'developerhcr-engine-settings', users:'developerhcr-engine-users', session:'developerhcr-engine-session', aiUsed:'developerhcr-engine-ai-used' };
+    const K = { theme:'developerhcr-engine-theme', settings:'developerhcr-engine-settings', users:'developerhcr-engine-users', session:'developerhcr-engine-session', aiUsed:'developerhcr-engine-ai-used', adminProfile:'developerhcr-engine-admin-profile' };
     const $ = (id) => document.getElementById(id);
     const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     const safeParse = (v, f) => { try { return v ? JSON.parse(v) : f; } catch { return f; } };
@@ -303,6 +338,26 @@
     function saveUsers(u) { write(K.users, u); }
     function getSession() { return read(K.session, null); }
     function setSession(s) { if (s) write(K.session, s); else localStorage.removeItem(K.session); }
+    function getAdminProfile() { return read(K.adminProfile, {}); }
+    function saveAdminProfile(p) { write(K.adminProfile, Object.assign(getAdminProfile(), p)); }
+    function getAvatarForSession(session) {
+      if (!session) return '';
+      if (isAdmin(session)) return (getAdminProfile().avatar || '');
+      const user = getUsers().find(u => (u.username||'').toLowerCase() === (session.username||'').toLowerCase());
+      return (user && user.avatar) || '';
+    }
+    function setAvatarForSession(session, dataUrl) {
+      if (!session) return;
+      if (isAdmin(session)) { saveAdminProfile({ avatar: dataUrl || '' }); return; }
+      const users = getUsers();
+      const idx = users.findIndex(u => (u.username||'').toLowerCase() === (session.username||'').toLowerCase());
+      if (idx >= 0) { users[idx].avatar = dataUrl || ''; saveUsers(users); }
+    }
+    function renderAvatarEl(el, avatar, fallbackText) {
+      if (!el) return;
+      if (avatar) { el.innerHTML = `<img src="${avatar}" alt="Profile picture">`; }
+      else { el.textContent = fallbackText || '?'; }
+    }
 
     function applyTheme() {
       document.body.classList.toggle('light-mode', settings.theme === 'light');
@@ -348,30 +403,57 @@
     $('open-settings').addEventListener('click', () => { refreshAiUi(); openDialog('settings-dialog'); });
     document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', () => closeDialog(btn.getAttribute('data-close'))));
     ['theme','mode','shortcuts','accent','embed','open'].forEach(key => { const el=$('setting-'+key); if(el) el.addEventListener('change', () => { settings[key]=el.value; applySettings(); $('settings-msg').textContent='Settings saved locally.'; }); });
-    $('clear-local').addEventListener('click', () => { [K.theme,K.settings,K.users,K.session,K.aiUsed,'developerhcr-theme'].forEach(k=>localStorage.removeItem(k)); settings=Object.assign({}, defaultSettings, {theme:'dark'}); $('settings-msg').textContent='Local engine data cleared on this browser.'; applySettings(); refreshAiUi(); renderAccount(); });
+    $('clear-local').addEventListener('click', () => { [K.theme,K.settings,K.users,K.session,K.aiUsed,K.adminProfile,'developerhcr-theme'].forEach(k=>localStorage.removeItem(k)); settings=Object.assign({}, defaultSettings, {theme:'dark'}); $('settings-msg').textContent='Local engine data cleared on this browser.'; applySettings(); refreshAiUi(); renderAccount(); });
+
+    function renderDeviceInfo() {
+      const grid = $('device-info-grid');
+      if (!grid) return;
+      const nav = navigator || {};
+      const cores = nav.hardwareConcurrency;
+      const mem = nav.deviceMemory;
+      const items = [
+        ['CPU cores (logical)', cores ? String(cores) : 'Unavailable'],
+        ['Device memory (approx.)', mem ? (mem + ' GB') : 'Unavailable'],
+        ['Platform', nav.platform || 'Unavailable'],
+        ['Language', nav.language || 'Unavailable'],
+        ['Online', nav.onLine ? 'Yes' : 'No'],
+        ['Screen', (screen && screen.width) ? `${screen.width} × ${screen.height}` : 'Unavailable'],
+        ['Pixel ratio', window.devicePixelRatio ? String(window.devicePixelRatio) : 'Unavailable'],
+        ['Time zone', (Intl && Intl.DateTimeFormat) ? Intl.DateTimeFormat().resolvedOptions().timeZone : 'Unavailable'],
+        ['User agent', nav.userAgent || 'Unavailable']
+      ];
+      grid.innerHTML = items.map(([k,v]) => `<div class="device-item"><strong>${esc(k)}</strong><span>${esc(v)}</span></div>`).join('');
+    }
 
     function renderAccount() {
       const session = getSession();
       const loggedIn = !!(session && session.username);
       const admin = isAdmin(session);
+      const avatar = getAvatarForSession(session);
+      const fallback = loggedIn ? (session.name || session.username).trim().charAt(0).toUpperCase() : '?';
       $('account-logged-out').classList.toggle('hidden', loggedIn);
       $('account-logged-in').classList.toggle('hidden', !loggedIn);
       $('admin-panel').classList.toggle('hidden', !(loggedIn && admin));
       $('current-admin-badge').classList.toggle('hidden', !admin);
       $('delete-account-btn').classList.toggle('hidden', admin);
       $('account-chip').textContent = loggedIn ? (session.name || session.username) + (admin ? ' (Admin)' : '') : 'Guest';
-      $('avatar-btn').textContent = loggedIn ? (session.name || session.username).trim().charAt(0).toUpperCase() : '?';
+      renderAvatarEl($('avatar-btn'), avatar, fallback);
+      renderAvatarEl($('menu-avatar'), avatar, fallback);
+      renderAvatarEl($('profile-avatar'), avatar, fallback);
       $('menu-user-name').textContent = loggedIn ? (session.name || session.username) : 'Guest';
       $('menu-user-sub').textContent = loggedIn ? ('@' + session.username + ' · device local') : 'Not signed in · device local';
       $('menu-admin-badge').classList.toggle('hidden', !admin);
       $('menu-signin').classList.toggle('hidden', loggedIn);
       $('menu-signout').classList.toggle('hidden', !loggedIn);
       $('menu-admin').classList.toggle('hidden', !admin);
+      const picInput = $('profile-pic-input'); if (picInput) picInput.disabled = !loggedIn;
+      const removePic = $('remove-pic-btn'); if (removePic) removePic.disabled = !loggedIn || !avatar;
       if (loggedIn) {
         $('current-user-name').textContent = session.name || session.username;
         $('current-user-handle').textContent = '@' + session.username;
         $('account-status-note').textContent = admin ? 'Admin session active on this device. AI searches are unlimited.' : 'Local-only session. No cloud sync.';
         $('admin-user-count').textContent = String(getUsers().length);
+        renderDeviceInfo();
       }
       refreshAiUi();
     }
@@ -419,26 +501,79 @@
     $('admin-reset-ai').addEventListener('click', () => { setAiUsed(0); refreshAiUi(); $('settings-msg').textContent='AI search counter reset locally.'; });
     $('admin-open-settings').addEventListener('click', () => openDialog('settings-dialog'));
 
+    function toProfileDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        if (!file) return reject(new Error('No file'));
+        if (!file.type || !file.type.startsWith('image/')) return reject(new Error('Please choose an image file.'));
+        const reader = new FileReader();
+        reader.onerror = () => reject(new Error('Could not read image.'));
+        reader.onload = () => {
+          const img = new Image();
+          img.onerror = () => reject(new Error('Could not load image.'));
+          img.onload = () => {
+            const max = 256, w = img.width || max, h = img.height || max;
+            const scale = Math.min(1, max / Math.max(w, h));
+            const cw = Math.max(1, Math.round(w * scale)), ch = Math.max(1, Math.round(h * scale));
+            const canvas = document.createElement('canvas'); canvas.width = cw; canvas.height = ch;
+            const ctx = canvas.getContext('2d'); if (!ctx) return reject(new Error('Could not process image.'));
+            ctx.drawImage(img, 0, 0, cw, ch);
+            resolve(canvas.toDataURL('image/jpeg', 0.85));
+          };
+          img.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    const picInputEl = $('profile-pic-input');
+    if (picInputEl) picInputEl.addEventListener('change', async (e) => {
+      const session = getSession(); const msg = $('profile-pic-msg');
+      if (!session) { if (msg) msg.textContent = 'Sign in to add a profile picture.'; return; }
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      try {
+        const dataUrl = await toProfileDataUrl(file);
+        setAvatarForSession(session, dataUrl);
+        if (msg) { msg.textContent = 'Profile picture saved locally on this device.'; msg.className = 'notice success'; }
+      } catch (err) {
+        if (msg) { msg.textContent = err && err.message ? err.message : 'Could not save profile picture.'; msg.className = 'notice danger'; }
+      }
+      e.target.value = '';
+      renderAccount();
+    });
+    const removePicBtn = $('remove-pic-btn');
+    if (removePicBtn) removePicBtn.addEventListener('click', () => {
+      const session = getSession(); const msg = $('profile-pic-msg');
+      if (!session) return;
+      setAvatarForSession(session, '');
+      if (msg) { msg.textContent = 'Profile picture removed.'; msg.className = 'notice'; }
+      renderAccount();
+    });
+
     // Web search on-site
     function renderWebResults(query) {
       const q = query.trim();
       if (!q) return;
       const enc = encodeURIComponent(q);
-      const google = `https://www.google.com/search?q=${enc}`;
+      const google = `https://www.google.com/search?q=${enc}&safe=active`;
       const links = [
-        ['Google', google, 'Open full Google results'],
-        ['Bing', `https://www.bing.com/search?q=${enc}`, 'Search on Bing'],
-        ['DuckDuckGo', `https://duckduckgo.com/?q=${enc}`, 'Private web search'],
-        ['YouTube', `https://www.youtube.com/results?search_query=${enc}`, 'Video results'],
+        ['Google (All results)', google, 'Full Google web results'],
+        ['Bing', `https://www.bing.com/search?q=${enc}`, 'Web results on Bing'],
+        ['DuckDuckGo', `https://duckduckgo.com/?q=${enc}`, 'Private web results'],
+        ['Images', `https://www.google.com/search?tbm=isch&q=${enc}`, 'Image results'],
+        ['Videos', `https://www.youtube.com/results?search_query=${enc}`, 'Video results'],
+        ['News', `https://news.google.com/search?q=${enc}`, 'News results'],
+        ['Maps', `https://www.google.com/maps/search/${enc}`, 'Places and maps'],
         ['GitHub', `https://github.com/search?q=${enc}&type=repositories`, 'Code and repositories'],
         ['Wikipedia', `https://en.wikipedia.org/wiki/Special:Search?search=${enc}`, 'Encyclopedia results']
       ];
       const cards = links.map(l => `<a class="result-link" href="${l[1]}" target="_blank" rel="noreferrer"><strong>${l[0]}</strong><span>${l[2]}</span></a>`).join('');
       const embed = settings.embed === 'on'
-        ? `<div class="embed-wrap"><iframe title="Search results for ${esc(q)}" src="https://www.bing.com/search?q=${enc}" loading="lazy" referrerpolicy="no-referrer"></iframe></div><p class="notice">Embedded results view (Bing) shown on this website when allowed by your browser/network. If the embed is blocked, use the result links above or open on Google.</p>`
-        : `<p class="notice">Results are shown on this website as quick links. Enable embedded view in Settings to try an on-page results frame.</p>`;
-      $('web-results').innerHTML = `<h3>Results for "${esc(q)}"</h3><p class="muted">Unlimited DeveloperHCR Engine web search · results displayed on this website.</p><div class="result-links">${cards}</div>${embed}<div class="row" style="margin-top:.6rem;"><a class="pill-btn primary" href="${google}" target="_blank" rel="noreferrer">Open on Google</a></div>`;
+        ? `<div class="embed-wrap"><iframe title="Web results for ${esc(q)}" src="https://www.bing.com/search?q=${enc}" loading="lazy" referrerpolicy="no-referrer"></iframe></div><p class="notice">Embedded web results view shown on this website when allowed by your browser/network. If blocked, use the result cards above or open on Google.</p>`
+        : `<p class="notice">Web results are shown on this website as result cards/links. Enable “Show on website (embed + links)” in Settings for an on-page results frame.</p>`;
+      $('web-results').innerHTML = `<h3>Web results for "${esc(q)}"</h3><p class="muted">Unlimited DeveloperHCR Engine search · results displayed on this page. Open any result source below for full results.</p><div class="result-links">${cards}</div>${embed}<div class="row" style="margin-top:.6rem;"><a class="pill-btn primary" href="${google}" target="_blank" rel="noreferrer">Open full results on Google</a></div>`;
       $('web-results').classList.remove('hidden');
+      $('web-results').scrollIntoView({behavior:'smooth', block:'nearest'});
       $('open-google-direct').href = google;
       $('open-google-direct').target = '_blank';
       $('open-google-direct').rel = 'noreferrer';
