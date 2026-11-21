@@ -105,6 +105,15 @@
     .device-item{padding:.65rem .7rem;border:1px solid var(--border);border-radius:12px;background:var(--surface-2)}
     .device-item strong{display:block;font-size:.8rem;color:var(--muted);margin-bottom:.15rem;font-weight:600}
     .device-item span{display:block;word-break:break-word;font-size:.92rem}
+    body.compact-mode .quick-links{gap:.4rem}.compact-mode .quick-link{padding:.55rem .6rem}
+    body.search-fullscreen .topbar{position:static}
+    body.search-fullscreen .page-nav,body.search-fullscreen .stats-row,body.search-fullscreen #quick-links,body.search-fullscreen #account-section,body.search-fullscreen footer,body.search-fullscreen .tagline{display:none!important}
+    body.search-fullscreen main{min-height:100vh;display:grid;place-items:center;align-content:center;width:min(1100px,calc(100% - 1.2rem));padding:1rem 0}
+    body.search-fullscreen .hero{padding:0;width:100%}
+    body.search-fullscreen .engine-card{padding:1.2rem}
+    body.search-fullscreen .search-form input{font-size:1.12rem;padding:1.05rem 1.1rem}
+    body.search-fullscreen .logo{font-size:clamp(2rem,6vw,3.8rem);margin-bottom:.6rem}
+    .fs-controls{display:flex;justify-content:flex-end;margin-bottom:.6rem;gap:.4rem}
     footer{margin-top:2rem;text-align:center;color:var(--muted);font-size:.85rem} footer a{color:var(--accent)}
     @media (max-width:760px){.search-form{flex-direction:column}.search-form button[type="submit"]{min-height:48px}.topbar-inner{justify-content:center}.top-actions{margin-left:0;justify-content:center}.page-nav{justify-content:center}.embed-wrap iframe{height:420px}}
   </style>
@@ -165,6 +174,9 @@
       </div>
 
       <div class="engine-card">
+        <div class="fs-controls">
+          <button class="pill-btn" id="fullscreen-btn" type="button" aria-pressed="false" title="Full screen search mode">Full screen search</button>
+        </div>
         <div class="mode-tabs" role="tablist" aria-label="Search mode">
           <button class="mode-tab active" id="tab-web" role="tab" aria-selected="true" type="button">Web Search (Unlimited)</button>
           <button class="mode-tab" id="tab-ai" role="tab" aria-selected="false" type="button">AI Search (<span id="ai-left-tab">12</span> left)</button>
@@ -225,16 +237,26 @@
       <div id="account-logged-out" class="grid-2">
         <form id="login-form" autocomplete="off">
           <h3>Sign in</h3>
-          <div class="field"><label for="login-user">Username or email</label><input id="login-user" required placeholder="DeveloperHCR or your username"></div>
-          <div class="field"><label for="login-pass">Password</label><input id="login-pass" type="password" required></div>
-          <button class="pill-btn primary" type="submit">Sign in</button>
+          <div class="field"><label for="login-user">Username</label><input id="login-user" required placeholder="DeveloperHCR or your username" autocomplete="username"></div>
+          <div class="field"><label for="login-pass">Password</label><input id="login-pass" type="password" required autocomplete="current-password"></div>
+          <div class="row">
+            <button class="pill-btn primary" type="submit">Sign in</button>
+            <button class="pill-btn" id="admin-quick-login" type="button">Sign in as Admin</button>
+          </div>
           <p id="login-msg" class="notice" aria-live="polite"></p>
+          <div class="divider"></div>
+          <h3 style="font-size:.98rem;margin:.1rem 0 .4rem;">Continue with (local, no cloud)</h3>
+          <p class="notice" style="margin-top:0">Google-style sign-in options below are local/device demos only (no cloud, no real OAuth).</p>
+          <div class="row">
+            <button class="pill-btn" id="google-local-login" type="button">Continue with Google (local)</button>
+            <button class="pill-btn" id="guest-local-login" type="button">Continue as Guest (local)</button>
+          </div>
         </form>
         <form id="signup-form" autocomplete="off">
-          <h3>Create account</h3>
+          <h3>Create local account</h3>
           <div class="field"><label for="signup-name">Display name</label><input id="signup-name" required maxlength="40"></div>
           <div class="field"><label for="signup-user">Username</label><input id="signup-user" required maxlength="24" pattern="[A-Za-z0-9_\-]{3,24}" title="3-24 letters, numbers, _ or -"></div>
-          <div class="field"><label for="signup-pass">Password</label><input id="signup-pass" type="password" required minlength="4"></div>
+          <div class="field"><label for="signup-pass">Password</label><input id="signup-pass" type="password" required minlength="4" autocomplete="new-password"></div>
           <button class="pill-btn" type="submit">Create local account</button>
           <p id="signup-msg" class="notice" aria-live="polite"></p>
         </form>
@@ -291,6 +313,44 @@
     </footer>
   </main>
 
+  <dialog id="login-dialog" aria-labelledby="login-dialog-title">
+    <div class="dialog-head">
+      <h2 id="login-dialog-title">Sign in to DeveloperHCR Engine</h2>
+      <button class="close-btn" type="button" id="close-login-dialog">Continue</button>
+    </div>
+    <div class="dialog-body">
+      <p class="muted">Welcome. Sign in to continue (local device only, no cloud). Session and preferences can be saved in browser storage and cookies on this device.</p>
+      <div class="grid-2">
+        <form id="dialog-login-form" autocomplete="off">
+          <h3>Sign in</h3>
+          <div class="field"><label for="dialog-login-user">Username</label><input id="dialog-login-user" placeholder="DeveloperHCR or username" autocomplete="username"></div>
+          <div class="field"><label for="dialog-login-pass">Password</label><input id="dialog-login-pass" type="password" autocomplete="current-password"></div>
+          <div class="row">
+            <button class="pill-btn primary" type="submit">Sign in</button>
+            <button class="pill-btn" id="dialog-admin-login" type="button">Admin login</button>
+          </div>
+          <p id="dialog-login-msg" class="notice" aria-live="polite"></p>
+        </form>
+        <div>
+          <h3>Continue with (real-style, local, no cloud)</h3>
+          <p class="notice">These options create/use a local profile on this device only. No real Google/cloud authentication.</p>
+          <div class="row" style="margin:.5rem 0;">
+            <button class="pill-btn" id="dialog-google-login" type="button">Continue with Google (local)</button>
+          </div>
+          <div class="row" style="margin:.5rem 0;">
+            <button class="pill-btn" id="dialog-guest-login" type="button">Continue as Guest</button>
+          </div>
+          <div class="row" style="margin:.5rem 0;">
+            <button class="pill-btn" id="dialog-create-account" type="button">Create local account</button>
+          </div>
+          <p class="notice">Admin: <strong>DeveloperHCR</strong> / <strong>111999***</strong> (unlimited AI).</p>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <p class="notice"><strong>Cookies &amp; local storage:</strong> this site can store login/session, settings, profile picture, and extension preferences in localStorage and cookies on your device (no cloud). You can clear them in Settings.</p>
+    </div>
+  </dialog>
+
   <dialog id="settings-dialog" aria-labelledby="settings-title">
     <div class="dialog-head">
       <h2 id="settings-title">Engine settings</h2>
@@ -338,9 +398,14 @@
       <h3>Search behavior &amp; limits</h3>
       <p class="notice"><strong>DeveloperHCR Engine web search:</strong> unlimited — searches redirect to Google. <strong>On-device AI:</strong> 12 searches per browser profile for normal users; <strong>unlimited for admin (DeveloperHCR)</strong> when signed in. Used: <strong id="settings-ai-used">0</strong> · Remaining: <strong id="settings-ai-left">12</strong>.</p>
       <div class="divider"></div>
-      <h3>Device &amp; privacy</h3>
-      <p class="notice">Accounts, settings, and AI quota are stored locally in this browser only (localStorage). No cloud login or cloud storage.</p>
-      <div class="row" style="margin-top:.6rem;"><button class="pill-btn" id="clear-local" type="button">Clear local engine data</button></div>
+      <h3>Extensions (local, no cloud)</h3>
+      <p class="notice">Browser-like local extensions/features saved on this device (localStorage/cookies):</p>
+      <div class="grid-2" id="extensions-list" style="margin-top:.5rem;"></div>
+      <p id="extensions-msg" class="notice" aria-live="polite"></p>
+      <div class="divider"></div>
+      <h3>Cookies &amp; device privacy</h3>
+      <p class="notice">Accounts, settings, profile picture, AI quota, and extensions can be stored locally in this browser (localStorage and cookies). No cloud login or cloud storage.</p>
+      <div class="row" style="margin-top:.6rem;"><button class="pill-btn" id="clear-local" type="button">Clear local data, cookies &amp; extensions</button></div>
       <p id="settings-msg" class="notice" aria-live="polite"></p>
     </div>
   </dialog>
@@ -354,8 +419,15 @@
     const $ = (id) => document.getElementById(id);
     const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     const safeParse = (v, f) => { try { return v ? JSON.parse(v) : f; } catch { return f; } };
-    const read = (k, f) => safeParse(localStorage.getItem(k), f);
-    const write = (k, v) => localStorage.setItem(k, JSON.stringify(v));
+    function setCookie(name, value, days) {
+      try { const d = new Date(); d.setTime(d.getTime() + (days||365)*24*60*60*1000); document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax'; } catch {}
+    }
+    function getCookie(name) {
+      try { const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\\\/\+^])/g,'\\$1') + '=([^;]*)')); return m ? decodeURIComponent(m[1]) : null; } catch { return null; }
+    }
+    function delCookie(name) { try { document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;SameSite=Lax'; } catch {} }
+    const read = (k, f) => { try { const v = localStorage.getItem(k); if (v != null) return safeParse(v, f); } catch {} const c = getCookie(k); return c != null ? safeParse(c, f) : f; };
+    const write = (k, v) => { const s = JSON.stringify(v); try { localStorage.setItem(k, s); } catch {} setCookie(k, s, 365); };
 
     const STYLE_PRESETS = {
       'cyan-dark':   { light:false, accent:'#67e8f9', accent2:'#8b5cf6', bg:'#07131f', bg2:'#020b12', surface:'rgba(12,24,38,0.9)', surface2:'rgba(18,34,52,0.94)', text:'#eef6ff', muted:'#9fb7c8', border:'rgba(148,163,184,0.22)', grad:'radial-gradient(ellipse at 50% 20%, rgba(103,232,249,.12), transparent 40%), radial-gradient(ellipse at 80% 10%, rgba(139,92,246,.10), transparent 30%), linear-gradient(145deg,#020b12,#07131f 55%,#10102a)' },
@@ -390,7 +462,7 @@
     function getUsers() { return read(K.users, []); }
     function saveUsers(u) { write(K.users, u); }
     function getSession() { return read(K.session, null); }
-    function setSession(s) { if (s) write(K.session, s); else localStorage.removeItem(K.session); }
+    function setSession(s) { if (s) { write(K.session, s); } else { try { localStorage.removeItem(K.session); } catch {} delCookie(K.session); } }
     function getAdminProfile() { return read(K.adminProfile, {}); }
     function saveAdminProfile(p) { write(K.adminProfile, Object.assign(getAdminProfile(), p)); }
     function getAvatarForSession(session) {
@@ -460,7 +532,7 @@
     $('open-settings').addEventListener('click', () => { refreshAiUi(); openDialog('settings-dialog'); });
     document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', () => closeDialog(btn.getAttribute('data-close'))));
     ['style','mode','shortcuts','open'].forEach(key => { const el=$('setting-'+key); if(el) el.addEventListener('change', () => { settings[key]=el.value; applySettings(); $('settings-msg').textContent='Settings saved locally. Multi-style applied.'; }); });
-    $('clear-local').addEventListener('click', () => { [K.theme,K.settings,K.users,K.session,K.aiUsed,K.adminProfile,'developerhcr-theme','developerhcr-style'].forEach(k=>localStorage.removeItem(k)); settings=Object.assign({}, { style:'cyan-dark', mode:'web', shortcuts:'on', open:'same' }); $('settings-msg').textContent='Local engine data cleared on this browser.'; applySettings(); refreshAiUi(); renderAccount(); });
+    $('clear-local').addEventListener('click', () => { [K.theme,K.settings,K.users,K.session,K.aiUsed,K.adminProfile,'developerhcr-theme','developerhcr-style','developerhcr-extensions'].forEach(k=>{ try{localStorage.removeItem(k);}catch{} delCookie(k); }); settings=Object.assign({}, { style:'cyan-dark', mode:'web', shortcuts:'on', open:'same' }); $('settings-msg').textContent='Local engine data, cookies, and extensions cleared on this browser.'; applySettings(); refreshAiUi(); renderAccount(); renderExtensions(); });
 
     function renderDeviceInfo() {
       const grid = $('device-info-grid');
@@ -511,6 +583,8 @@
         $('account-status-note').textContent = admin ? 'Admin session active on this device. AI searches are unlimited.' : 'Local-only session. No cloud sync.';
         $('admin-user-count').textContent = String(getUsers().length);
         renderDeviceInfo();
+        const devPanel = $('device-info-grid') ? $('device-info-grid').closest('.panel') : null;
+        if (devPanel) devPanel.classList.toggle('hidden', !getExtensions().show_device_info);
       }
       refreshAiUi();
     }
@@ -525,17 +599,17 @@
       e.preventDefault();
       const usernameRaw = $('login-user').value.trim();
       const username = usernameRaw.toLowerCase();
-      const pass = $('login-pass').value;
-      if (username === ADMIN_USER && pass === ADMIN_PASS) {
+      const pass = $('login-pass').value.trimEnd();
+      if (username === ADMIN_USER && (pass === ADMIN_PASS || $('login-pass').value === ADMIN_PASS)) {
         setSession({ name:'DeveloperHCR', username:'DeveloperHCR', admin:true });
         $('login-msg').textContent = 'Admin signed in. Unlimited AI enabled on this device.'; $('login-msg').className='notice success';
-        $('login-form').reset(); renderAccount(); return;
+        $('login-form').reset(); closeLoginPrompt(); renderAccount(); return;
       }
-      const user = getUsers().find(u => (u.username || '').toLowerCase() === username && u.pass === pass);
-      if (!user) { $('login-msg').textContent = 'Invalid username/email or password for this device.'; $('login-msg').className='notice danger'; return; }
-      setSession({ name:user.name, username:user.username, admin:false });
+      const user = getUsers().find(u => (u.username || '').toLowerCase() === username && (u.pass === pass || u.pass === $('login-pass').value));
+      if (!user) { $('login-msg').textContent = 'Invalid username or password for this device. For admin use username: DeveloperHCR and the admin password.'; $('login-msg').className='notice danger'; return; }
+      setSession({ name:user.name, username:user.username, admin:false, provider: user.provider || 'local' });
       $('login-msg').textContent = 'Signed in locally.'; $('login-msg').className='notice success';
-      $('login-form').reset(); renderAccount();
+      $('login-form').reset(); closeLoginPrompt(); renderAccount();
     });
 
     $('signup-form').addEventListener('submit', (e) => {
@@ -557,6 +631,98 @@
     $('delete-account-btn').addEventListener('click', () => { const s=getSession(); if(!s || isAdmin(s)) return; saveUsers(getUsers().filter(u => (u.username||'').toLowerCase() !== (s.username||'').toLowerCase())); setSession(null); renderAccount(); $('settings-msg').textContent='Local account deleted from this browser.'; });
     $('admin-reset-ai').addEventListener('click', () => { setAiUsed(0); refreshAiUi(); $('settings-msg').textContent='AI search counter reset locally.'; });
     $('admin-open-settings').addEventListener('click', () => openDialog('settings-dialog'));
+
+    function closeLoginPrompt() { try { closeDialog('login-dialog'); } catch {} }
+    $('close-login-dialog').addEventListener('click', () => closeLoginPrompt());
+    $('login-dialog').addEventListener('cancel', (e) => { e.preventDefault(); closeLoginPrompt(); });
+    $('admin-quick-login').addEventListener('click', () => {
+      $('login-user').value = 'DeveloperHCR';
+      $('login-pass').value = ADMIN_PASS;
+      $('login-form').requestSubmit ? $('login-form').requestSubmit() : $('login-form').dispatchEvent(new Event('submit', {cancelable:true,bubbles:true}));
+    });
+    $('google-local-login').addEventListener('click', () => {
+      const name = (prompt('Continue with Google (local demo, no cloud). Enter display name or email to save on this device:', 'Google User') || '').trim() || 'Google User';
+      const base = name.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'').slice(0,16) || 'google_user';
+      const username = base + '_local';
+      const users = getUsers();
+      let user = users.find(u => (u.username||'').toLowerCase() === username);
+      if (!user) { user = { name, username, pass: 'google-local-demo', provider: 'google-local' }; users.push(user); saveUsers(users); }
+      else { user.name = name; user.provider = 'google-local'; saveUsers(users); }
+      setSession({ name: user.name, username: user.username, admin:false, provider:'google-local' });
+      $('login-msg').textContent = 'Signed in with Google-style local profile (no cloud).'; $('login-msg').className='notice success';
+      closeLoginPrompt(); renderAccount();
+    });
+    $('guest-local-login').addEventListener('click', () => {
+      setSession({ name:'Guest', username:'guest_local', admin:false, provider:'guest' });
+      $('login-msg').textContent = 'Continuing as guest on this device (local only).'; $('login-msg').className='notice success';
+      closeLoginPrompt(); renderAccount();
+    });
+
+    $('dialog-login-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      $('login-user').value = $('dialog-login-user').value;
+      $('login-pass').value = $('dialog-login-pass').value;
+      $('login-form').requestSubmit ? $('login-form').requestSubmit() : $('login-form').dispatchEvent(new Event('submit', {cancelable:true,bubbles:true}));
+      $('dialog-login-msg').textContent = $('login-msg').textContent || '';
+      $('dialog-login-msg').className = $('login-msg').className || 'notice';
+    });
+    $('dialog-admin-login').addEventListener('click', () => {
+      $('dialog-login-user').value = 'DeveloperHCR'; $('dialog-login-pass').value = ADMIN_PASS;
+      $('dialog-login-form').requestSubmit ? $('dialog-login-form').requestSubmit() : $('dialog-login-form').dispatchEvent(new Event('submit', {cancelable:true,bubbles:true}));
+    });
+    $('dialog-google-login').addEventListener('click', () => $('google-local-login').click());
+    $('dialog-guest-login').addEventListener('click', () => $('guest-local-login').click());
+    $('dialog-create-account').addEventListener('click', () => { closeLoginPrompt(); document.getElementById('account-section').scrollIntoView({behavior:'smooth'}); $('signup-name').focus(); });
+
+    // Local extensions (browser-like features, no cloud)
+    const EXT_KEY = 'developerhcr-extensions';
+    const EXT_DEFS = [
+      { id:'remember_last_search', label:'Remember last search', desc:'Save your last web search query locally on this device.' },
+      { id:'quick_new_tab', label:'Quick links in new tab', desc:'Open quick link/outer website clicks in a new tab.' },
+      { id:'show_device_info', label:'Show device info when signed in', desc:'Display device/CPU/browser info in the account area.' },
+      { id:'compact_mode', label:'Compact mode', desc:'Use tighter spacing for quick links and panels.' },
+      { id:'cookie_session', label:'Cookie session support', desc:'Keep local session/preferences mirrored in cookies (no cloud).' }
+    ];
+    function getExtensions() { return Object.assign({ remember_last_search:true, quick_new_tab:false, show_device_info:true, compact_mode:false, cookie_session:true }, read(EXT_KEY, {})); }
+    function saveExtensions(ext) { write(EXT_KEY, ext); }
+    function applyExtensions() {
+      const ext = getExtensions();
+      document.body.classList.toggle('compact-mode', !!ext.compact_mode);
+      const devPanel = $('device-info-grid') ? $('device-info-grid').closest('.panel') : null;
+      if (devPanel && getSession()) devPanel.classList.toggle('hidden', !ext.show_device_info);
+      const last = read('developerhcr-last-search', '');
+      if (ext.remember_last_search && last && $('web-query') && !$('web-query').value) $('web-query').value = last;
+      if ($('extensions-msg')) $('extensions-msg').textContent = 'Extensions saved locally (no cloud).';
+    }
+
+    // Full screen search mode
+    function setSearchFullscreen(on) {
+      document.body.classList.toggle('search-fullscreen', !!on);
+      const btn = $('fullscreen-btn');
+      if (btn) { btn.textContent = on ? 'Exit full screen' : 'Full screen search'; btn.setAttribute('aria-pressed', on ? 'true' : 'false'); }
+      try {
+        if (on && document.documentElement.requestFullscreen && !document.fullscreenElement) { document.documentElement.requestFullscreen().catch(() => {}); }
+        else if (!on && document.fullscreenElement && document.exitFullscreen) { document.exitFullscreen().catch(() => {}); }
+      } catch {}
+      if (on) { const f = $('panel-web').classList.contains('hidden') ? $('ai-query') : $('web-query'); if (f) f.focus(); }
+    }
+    $('fullscreen-btn').addEventListener('click', () => setSearchFullscreen(!document.body.classList.contains('search-fullscreen')));
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement && document.body.classList.contains('search-fullscreen')) {
+        document.body.classList.remove('search-fullscreen');
+        const btn = $('fullscreen-btn'); if (btn) { btn.textContent = 'Full screen search'; btn.setAttribute('aria-pressed', 'false'); }
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.body.classList.contains('search-fullscreen') && !document.fullscreenElement) setSearchFullscreen(false);
+      if ((e.key === '/' || e.key === 'f') && (e.ctrlKey || e.metaKey) && !e.shiftKey && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'SELECT') { /* avoid hijacking browser find; no-op */ }
+    });
+    function renderExtensions() {
+      const list = $('extensions-list'); if (!list) return;
+      const ext = getExtensions();
+      list.innerHTML = EXT_DEFS.map(d => `<label class="device-item" style="cursor:pointer;display:flex;gap:.6rem;align-items:flex-start;"><input type="checkbox" data-ext="${d.id}" ${ext[d.id]?'checked':''} style="margin-top:.2rem"><span><strong>${esc(d.label)}</strong><span style="color:var(--muted);font-size:.82rem;display:block;margin-top:.1rem">${esc(d.desc)}</span></span></label>`).join('');
+      list.querySelectorAll('input[data-ext]').forEach(cb => cb.addEventListener('change', () => { const e=getExtensions(); e[cb.getAttribute('data-ext')] = cb.checked; saveExtensions(e); renderExtensions(); applyExtensions(); }));
+    }
 
     function toProfileDataUrl(file) {
       return new Promise((resolve, reject) => {
@@ -615,6 +781,8 @@
       e.preventDefault();
       const q = $('web-query').value.trim();
       if (!q) return;
+      const ext = getExtensions();
+      if (ext.remember_last_search) { try { write('developerhcr-last-search', q); } catch {} }
       const url = googleSearchUrl(q);
       if (settings.open === 'new') window.open(url, '_blank', 'noopener');
       else window.location.href = url;
@@ -720,9 +888,10 @@
     const session = getSession();
     const hour = new Date().getHours();
     const part = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
-    $('greeting').textContent = (session && session.name ? `${part}, ${session.name}. ` : '') + 'Unlimited DeveloperHCR Engine web search (redirects to Google), on-device AI limited to 12 searches (admin: unlimited), multi-style website, and quick access to inner and outer websites.';
+    $('greeting').textContent = (session && session.name ? `${part}, ${session.name}. ` : '') + 'Unlimited DeveloperHCR Engine web search (redirects to Google), on-device AI limited to 12 searches (admin: unlimited), multi-style website, full screen search mode, and quick access to inner and outer websites.';
     $('year').textContent = new Date().getFullYear();
-    applySettings(); refreshAiUi(); renderAccount();
+    applySettings(); refreshAiUi(); renderAccount(); renderExtensions(); applyExtensions();
+    if (!getSession()) { try { openDialog('login-dialog'); } catch {} }
   })();
   </script>
 </body>
