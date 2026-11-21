@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="dark light">
-  <meta name="description" content="DeveloperHCR Engine — search the web, use on-device AI (12 searches), customize settings, and access all DeveloperHCR pages.">
+  <meta name="description" content="DeveloperHCR Engine — unlimited web search, on-device AI limited to 12 searches, multiple settings, local login/signup (no cloud), and links to all DeveloperHCR pages.">
   <title>DeveloperHCR Engine</title>
   <style>
     :root {
@@ -194,11 +194,12 @@
   <main>
     <section class="hero">
       <h1 class="logo">DeveloperHCR <span>Eng</span><span class="g2">ine</span></h1>
-      <p class="tagline" id="greeting">Search the web, use on-device AI, and explore every DeveloperHCR page.</p>
+      <p class="tagline" id="greeting">Unlimited DeveloperHCR Engine web search, on-device AI limited to 12 searches, and quick access to every DeveloperHCR page.</p>
 
-      <div class="stats-row" aria-label="Repository stats">
+      <div class="stats-row" aria-label="Repository and engine stats">
         <span class="stat-chip"><strong>Stars:</strong> <a href="https://github.com/DeveloperHCR/HCRAPP/stargazers" target="_blank" rel="noreferrer">view on GitHub</a></span>
         <span class="stat-chip"><strong>Commits applied:</strong> <span id="commit-count">76</span></span>
+        <span class="stat-chip"><strong>Web search:</strong> Unlimited</span>
         <span class="stat-chip"><strong>AI searches left:</strong> <span id="ai-left-chip">12</span>/12</span>
       </div>
 
@@ -216,7 +217,7 @@
             <button type="submit">Google Search</button>
           </form>
           <div class="subnote">
-            <span>Powered by Google. Customize behavior in Settings.</span>
+            <span>Unlimited DeveloperHCR Engine web search powered by Google. Customize behavior in Settings.</span>
             <span id="web-target-note">Results open in this tab.</span>
           </div>
         </div>
@@ -228,7 +229,7 @@
             <button type="submit" id="ai-submit">Ask AI</button>
           </form>
           <div class="subnote">
-            <span>On-device AI assistant (no cloud). Limited to 12 searches per browser.</span>
+            <span>On-device AI only (no cloud): limited to 12 searches per browser. DeveloperHCR Engine web search remains unlimited.</span>
             <span id="ai-limit-note"></span>
           </div>
           <div id="ai-result" class="ai-result hidden" aria-live="polite"></div>
@@ -336,8 +337,8 @@
         </div>
       </div>
       <div class="divider"></div>
-      <h3>AI search limit</h3>
-      <p class="notice">On-device AI is limited to <strong>12 searches total</strong> per browser profile. Used: <strong id="settings-ai-used">0</strong> · Remaining: <strong id="settings-ai-left">12</strong>. No cloud is used for this counter.</p>
+      <h3>Search limits</h3>
+      <p class="notice"><strong>DeveloperHCR Engine web search:</strong> unlimited. <strong>On-device AI search:</strong> limited to <strong>12 searches total</strong> per browser profile. Used: <strong id="settings-ai-used">0</strong> · Remaining: <strong id="settings-ai-left">12</strong>. No cloud is used for the AI counter.</p>
       <div class="divider"></div>
       <h3>Device &amp; privacy</h3>
       <p class="notice">Accounts, settings, and AI quota are stored in this browser only (localStorage). No cloud login, no server-side profile.</p>
@@ -566,7 +567,7 @@
     const session = getSession();
     const hour = new Date().getHours();
     const part = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
-    $('greeting').textContent = (session && session.name ? `${part}, ${session.name}. ` : '') + 'Search the web, use on-device AI, and explore every DeveloperHCR page.';
+    $('greeting').textContent = (session && session.name ? `${part}, ${session.name}. ` : '') + 'Unlimited DeveloperHCR Engine web search, on-device AI limited to 12 searches, and quick access to every DeveloperHCR page.';
     $('year').textContent = new Date().getFullYear();
 
     applySettings();
