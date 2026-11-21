@@ -8,7 +8,7 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/DeveloperHCR/HCRAPP?style=for-the-badge&logo=github&label=GitHub%20stars)](https://github.com/DeveloperHCR/HCRAPP/stargazers)
 [![README views](https://visitor-badge.laobi.icu/badge?page_id=DeveloperHCR.HCRAPP-README&left_text=README%20views&logo=github&right_color=0891b2)](https://visitor-badge.laobi.icu/)
-[![Commits applied](https://img.shields.io/badge/commits_applied-76-0891b2?style=for-the-badge&logo=git&logoColor=white)](#commits-applied)
+[![Commits applied](https://img.shields.io/badge/commits_applied-153-0891b2?style=for-the-badge&logo=git&logoColor=white)](#commits-applied)
 
 DeveloperHCR designs premium digital experiences across web, Android, AI-assisted tools, and developer-first software. This repository contains the official static website, DevX OS release information, visual assets, and supporting documentation for the project ecosystem.
 
@@ -29,7 +29,7 @@ The site is a static HTML and JavaScript project. Styles are embedded in the HTM
 
 | Page | What it contains |
 | --- | --- |
-| Engine (default landing, first page) | DeveloperHCR Engine at `pages/search.html` with **unlimited** Google web search, an on-device AI mode limited to **12 searches per browser**, multiple settings, device-local login/signup (no cloud), top navigation to all pages, and live commit/stats display |
+| Engine (default landing, first page) | DeveloperHCR Engine at `pages/search.html` with **unlimited** web search that redirects to Google, on-device AI limited to **12 searches per browser** (unlimited for admin), multi-style themes, Chrome/Google-style local login/signup (no cloud), profile picture, device/CPU info, top navigation and quick links to all inner and outer websites, and live commit/stats display |
 | Home | DeveloperHCR introduction, featured projects, GitHub stars, commits applied, and demo links |
 | Projects | HCRAPP, DevX OS, and DevX Billing summaries, tags, release links, a DevX OS browser preview, and a sandboxed DevX Billing preview |
 | Contact | Email, public location, Google Map, and a message form that opens a prefilled email in the visitor's email app |
@@ -43,7 +43,7 @@ The contact form uses a `mail to:` link to open the visitor's configured email a
 
 The About page's admin dashboard offers an expanded view, checks whether the static status page responds, and provides quick links to published pages. GitHub Pages hosts the site, so a personal PC does not need to stay on; if you run a separate local server on your computer, keep that computer on while serving the local site. The dashboard password is stored only in the current browser and is not server-side authentication; the static site does not provide a backend API or machine-level server monitoring.
 
-The DeveloperHCR Engine (default first page) provides unlimited web search and submits web search terms directly to Google. Its on-device AI mode is limited to 12 searches per browser profile. AI mode, settings, login/signup, and AI search quota are stored only in the browser (localStorage) with no cloud account or server-side storage.
+The DeveloperHCR Engine (default first page) provides unlimited web search and redirects searches to Google. Its on-device AI mode is limited to 12 searches per browser profile (unlimited for the admin account when signed in locally). The engine includes multiple website styles, Chrome/Google-style local login/signup (no cloud), local profile picture support, device/CPU/browser information shown on-device, and quick access to inner website pages and outer websites. AI mode, settings, login/signup, profile, and AI search quota are stored only in the browser (localStorage) with no cloud account or server-side storage.
 
 ### DevX OS browser demo
 
@@ -102,10 +102,10 @@ The GitHub Actions workflow in [`.github/workflows/static.yml`](.github/workflow
 
 ## Commits applied
 
-**Total commits applied (all time): 76** — tracked alongside GitHub stars and README/website views.
+**Total commits applied (all time): 153** — tracked alongside GitHub stars and README/website views.
 
 <details>
-<summary>All commits applied over time (chronological, 76)</summary>
+<summary>All commits applied over time (chronological, includes 76 listed entries)</summary>
 
 - `9edfc87` (2026-10-07) — Initial commit
 - `5a06690` (2026-10-07) — Create README.md

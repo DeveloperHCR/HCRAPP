@@ -155,7 +155,7 @@
   <main>
     <section class="hero">
       <h1 class="logo">DeveloperHCR <span>Eng</span><span class="g2">ine</span></h1>
-      <p class="tagline" id="greeting">Unlimited DeveloperHCR Engine web search, on-device AI limited to 12 searches (admin: unlimited), and quick access to every DeveloperHCR page.</p>
+      <p class="tagline" id="greeting">Unlimited DeveloperHCR Engine web search (redirects to Google), on-device AI limited to 12 searches (admin: unlimited), multi-style website, and quick access to inner and outer websites.</p>
       <div class="stats-row" aria-label="Repository and engine stats">
         <span class="stat-chip"><strong>Stars:</strong> <a href="https://github.com/DeveloperHCR/HCRAPP/stargazers" target="_blank" rel="noreferrer">GitHub</a></span>
         <span class="stat-chip"><strong>Commits applied:</strong> <span id="commit-count">76</span></span>
@@ -174,13 +174,12 @@
           <form class="search-form" id="web-form" role="search">
             <label class="sr-only" for="web-query">Search the web</label>
             <input id="web-query" name="q" type="search" placeholder="Search anything on DeveloperHCR Engine…" autocomplete="off" required>
-            <button type="submit">Search</button>
+            <button type="submit">Search on Google</button>
           </form>
           <div class="subnote">
-            <span>Unlimited DeveloperHCR Engine web search. Results shown on this website with quick links and embedded view when available.</span>
-            <span><a href="#" id="open-google-direct">Open on Google</a></span>
+            <span>Unlimited DeveloperHCR Engine web search. Searching redirects you to Google with your query.</span>
+            <span><a href="https://www.google.com/" id="open-google-direct" target="_blank" rel="noreferrer">Google</a></span>
           </div>
-          <div id="web-results" class="result-box hidden" aria-live="polite"></div>
         </div>
 
         <div id="panel-ai" role="tabpanel" aria-labelledby="tab-ai" class="hidden">
@@ -199,17 +198,24 @@
 
       <div class="quick-links" id="quick-links" aria-label="All pages and shortcuts">
         <a class="quick-link" href="search.html"><strong>Engine</strong><span>First page / search</span></a>
-        <a class="quick-link" href="home.html"><strong>Home</strong><span>Main site home</span></a>
-        <a class="quick-link" href="about.html"><strong>About</strong><span>DeveloperHCR info</span></a>
-        <a class="quick-link" href="projects.html"><strong>Projects</strong><span>Apps & demos</span></a>
-        <a class="quick-link" href="services.html"><strong>Services</strong><span>What we build</span></a>
-        <a class="quick-link" href="api.html"><strong>AI &amp; API</strong><span>AI and integrations</span></a>
-        <a class="quick-link" href="downloads.html"><strong>Downloads</strong><span>DevX OS & Billing APKs</span></a>
-        <a class="quick-link" href="documentation.html"><strong>Docs</strong><span>Guides and notes</span></a>
-        <a class="quick-link" href="gallery.html"><strong>Gallery</strong><span>Visual assets</span></a>
-        <a class="quick-link" href="contact.html"><strong>Contact</strong><span>Get in touch</span></a>
-        <a class="quick-link" href="privacy.html"><strong>Privacy</strong><span>Policy</span></a>
-        <a class="quick-link" href="terms.html"><strong>Terms</strong><span>Conditions</span></a>
+        <a class="quick-link" href="home.html"><strong>Home</strong><span>Inner website home</span></a>
+        <a class="quick-link" href="about.html"><strong>About</strong><span>Inner website</span></a>
+        <a class="quick-link" href="projects.html"><strong>Projects</strong><span>Inner website</span></a>
+        <a class="quick-link" href="services.html"><strong>Services</strong><span>Inner website</span></a>
+        <a class="quick-link" href="api.html"><strong>AI &amp; API</strong><span>Inner website</span></a>
+        <a class="quick-link" href="downloads.html"><strong>Downloads</strong><span>Inner website / APKs</span></a>
+        <a class="quick-link" href="documentation.html"><strong>Docs</strong><span>Inner website</span></a>
+        <a class="quick-link" href="gallery.html"><strong>Gallery</strong><span>Inner website</span></a>
+        <a class="quick-link" href="devx-os-demo.html"><strong>DevX OS Demo</strong><span>Inner website demo</span></a>
+        <a class="quick-link" href="contact.html"><strong>Contact</strong><span>Inner website</span></a>
+        <a class="quick-link" href="privacy.html"><strong>Privacy</strong><span>Inner website</span></a>
+        <a class="quick-link" href="terms.html"><strong>Terms</strong><span>Inner website</span></a>
+        <a class="quick-link" href="https://github.com/DeveloperHCR/HCRAPP" target="_blank" rel="noreferrer"><strong>GitHub Repo</strong><span>Outer website</span></a>
+        <a class="quick-link" href="https://github.com/DeveloperHCR" target="_blank" rel="noreferrer"><strong>DeveloperHCR GitHub</strong><span>Outer website</span></a>
+        <a class="quick-link" href="https://developerhcr.github.io/DevX_Billing/" target="_blank" rel="noreferrer"><strong>DevX Billing Web</strong><span>Outer website</span></a>
+        <a class="quick-link" href="https://github.com/DeveloperHCR/HCRAPP/releases" target="_blank" rel="noreferrer"><strong>Releases</strong><span>Outer website</span></a>
+        <a class="quick-link" href="https://github.com/DeveloperHCR/HCRAPP/stargazers" target="_blank" rel="noreferrer"><strong>Stargazers</strong><span>Outer website</span></a>
+        <a class="quick-link" href="https://www.google.com/" target="_blank" rel="noreferrer"><strong>Google</strong><span>Outer website</span></a>
       </div>
     </section>
 
@@ -281,7 +287,7 @@
 
     <footer>
       <p>DeveloperHCR Engine · first page · <a href="https://github.com/DeveloperHCR/HCRAPP" target="_blank" rel="noreferrer">DeveloperHCR/HCRAPP</a> · <a href="https://github.com/DeveloperHCR/HCRAPP/commits/main" target="_blank" rel="noreferrer"><span id="footer-commits">76</span> commits applied</a></p>
-      <p>&copy; <span id="year">2026</span> DeveloperHCR. Unlimited web search · AI 12/user (admin unlimited) · Local login (no cloud).</p>
+      <p>&copy; <span id="year">2026</span> DeveloperHCR. Unlimited web search (Google redirect) · AI 12/user (admin unlimited) · Multi-style · Local login (no cloud) · Inner &amp; outer links.</p>
     </footer>
   </main>
 
@@ -292,24 +298,45 @@
     </div>
     <div class="dialog-body">
       <div class="grid-2">
-        <div class="field"><label for="setting-theme">Theme</label><select id="setting-theme"><option value="dark">Dark</option><option value="light">Light</option></select></div>
-        <div class="field"><label for="setting-mode">Default search mode</label><select id="setting-mode"><option value="web">Web Search (Unlimited)</option><option value="ai">AI Search</option></select></div>
-        <div class="field"><label for="setting-shortcuts">Show quick links</label><select id="setting-shortcuts"><option value="on">Show</option><option value="off">Hide</option></select></div>
-        <div class="field"><label for="setting-accent">Accent style</label><select id="setting-accent"><option value="cyan">Cyan (default)</option><option value="violet">Violet</option><option value="amber">Amber</option></select></div>
-        <div class="field"><label for="setting-embed">Web results view</label><select id="setting-embed"><option value="on">Show on website (embed + links)</option><option value="links">Links only (on website)</option></select></div>
-        <div class="field"><label for="setting-open">Google button behavior</label><select id="setting-open"><option value="new">Open Google in new tab</option><option value="same">Open Google in this tab</option></select></div>
+        <div class="field"><label for="setting-style">Website style (multi-style)</label><select id="setting-style">
+          <option value="cyan-dark">Cyan Dark</option>
+          <option value="light">Light</option>
+          <option value="violet-dark">Violet Dark</option>
+          <option value="ocean-dark">Ocean Dark</option>
+          <option value="sunset-dark">Sunset Dark</option>
+          <option value="forest-dark">Forest Dark</option>
+          <option value="rose-dark">Rose Dark</option>
+          <option value="amber-dark">Amber Dark</option>
+          <option value="mono-dark">Mono Dark</option>
+        </select></div>
+        <div class="field"><label for="setting-mode">Default search mode</label><select id="setting-mode"><option value="web">Web Search (Unlimited, redirects to Google)</option><option value="ai">AI Search</option></select></div>
+        <div class="field"><label for="setting-shortcuts">Show quick links (inner &amp; outer)</label><select id="setting-shortcuts"><option value="on">Show</option><option value="off">Hide</option></select></div>
+        <div class="field"><label for="setting-open">Google search opens in</label><select id="setting-open"><option value="same">Same tab (redirect)</option><option value="new">New tab</option></select></div>
       </div>
       <div class="divider"></div>
-      <h3>All pages</h3>
-      <p class="notice">Upper navigation and settings show all DeveloperHCR pages:</p>
+      <h3>Inner websites (all pages)</h3>
+      <p class="notice">All DeveloperHCR pages on this website:</p>
       <div class="pages-list">
         <a href="search.html">Engine (first page)</a><a href="home.html">Home</a><a href="about.html">About</a><a href="projects.html">Projects</a>
         <a href="services.html">Services</a><a href="api.html">AI &amp; API</a><a href="downloads.html">Downloads</a><a href="documentation.html">Docs</a>
-        <a href="gallery.html">Gallery</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a>
+        <a href="gallery.html">Gallery</a><a href="devx-os-demo.html">DevX OS Demo</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a>
       </div>
       <div class="divider"></div>
-      <h3>Search limits</h3>
-      <p class="notice"><strong>DeveloperHCR Engine web search:</strong> unlimited. <strong>On-device AI:</strong> 12 searches per browser profile for normal users; <strong>unlimited for admin (DeveloperHCR)</strong> when signed in. Used: <strong id="settings-ai-used">0</strong> · Remaining: <strong id="settings-ai-left">12</strong>.</p>
+      <h3>Outer websites</h3>
+      <p class="notice">External DeveloperHCR and related links:</p>
+      <div class="pages-list">
+        <a href="https://github.com/DeveloperHCR/HCRAPP" target="_blank" rel="noreferrer">HCRAPP GitHub</a>
+        <a href="https://github.com/DeveloperHCR" target="_blank" rel="noreferrer">DeveloperHCR GitHub</a>
+        <a href="https://developerhcr.github.io/HCRAPP/" target="_blank" rel="noreferrer">HCRAPP Site</a>
+        <a href="https://developerhcr.github.io/DevX_Billing/" target="_blank" rel="noreferrer">DevX Billing Web</a>
+        <a href="https://github.com/DeveloperHCR/HCRAPP/releases" target="_blank" rel="noreferrer">HCRAPP Releases</a>
+        <a href="https://github.com/DeveloperHCR/HCRAPP/stargazers" target="_blank" rel="noreferrer">Stargazers</a>
+        <a href="https://github.com/DeveloperHCR/HCRAPP/commits/main" target="_blank" rel="noreferrer">Commits</a>
+        <a href="https://www.google.com/" target="_blank" rel="noreferrer">Google</a>
+      </div>
+      <div class="divider"></div>
+      <h3>Search behavior &amp; limits</h3>
+      <p class="notice"><strong>DeveloperHCR Engine web search:</strong> unlimited — searches redirect to Google. <strong>On-device AI:</strong> 12 searches per browser profile for normal users; <strong>unlimited for admin (DeveloperHCR)</strong> when signed in. Used: <strong id="settings-ai-used">0</strong> · Remaining: <strong id="settings-ai-left">12</strong>.</p>
       <div class="divider"></div>
       <h3>Device &amp; privacy</h3>
       <p class="notice">Accounts, settings, and AI quota are stored locally in this browser only (localStorage). No cloud login or cloud storage.</p>
@@ -330,8 +357,34 @@
     const read = (k, f) => safeParse(localStorage.getItem(k), f);
     const write = (k, v) => localStorage.setItem(k, JSON.stringify(v));
 
-    const defaultSettings = { theme: localStorage.getItem('developerhcr-theme') || 'dark', mode:'web', shortcuts:'on', accent:'cyan', embed:'on', open:'new' };
-    let settings = Object.assign({}, defaultSettings, read(K.settings, {}));
+    const STYLE_PRESETS = {
+      'cyan-dark':   { light:false, accent:'#67e8f9', accent2:'#8b5cf6', bg:'#07131f', bg2:'#020b12', surface:'rgba(12,24,38,0.9)', surface2:'rgba(18,34,52,0.94)', text:'#eef6ff', muted:'#9fb7c8', border:'rgba(148,163,184,0.22)', grad:'radial-gradient(ellipse at 50% 20%, rgba(103,232,249,.12), transparent 40%), radial-gradient(ellipse at 80% 10%, rgba(139,92,246,.10), transparent 30%), linear-gradient(145deg,#020b12,#07131f 55%,#10102a)' },
+      'light':       { light:true,  accent:'#087f9d', accent2:'#6d4ad1', bg:'#edf4fa', bg2:'#ffffff', surface:'rgba(255,255,255,0.94)', surface2:'rgba(245,250,255,0.97)', text:'#15283b', muted:'#52677d', border:'rgba(31,57,82,0.18)', grad:'radial-gradient(ellipse at 50% 20%, rgba(8,145,178,.10), transparent 40%), linear-gradient(145deg,#fff,#edf4fa 55%,#f8fbff)' },
+      'violet-dark': { light:false, accent:'#a78bfa', accent2:'#22d3ee', bg:'#120b24', bg2:'#070514', surface:'rgba(24,16,44,0.92)', surface2:'rgba(34,24,58,0.95)', text:'#f3efff', muted:'#b7a9d6', border:'rgba(167,139,250,0.22)', grad:'radial-gradient(ellipse at 45% 18%, rgba(167,139,250,.16), transparent 40%), radial-gradient(ellipse at 85% 12%, rgba(34,211,238,.10), transparent 30%), linear-gradient(145deg,#070514,#120b24 55%,#1a1033)' },
+      'ocean-dark':  { light:false, accent:'#38bdf8', accent2:'#34d399', bg:'#041926', bg2:'#021019', surface:'rgba(8,30,44,0.92)', surface2:'rgba(12,40,56,0.95)', text:'#eafaff', muted:'#9cc3d4', border:'rgba(56,189,248,0.22)', grad:'radial-gradient(ellipse at 50% 18%, rgba(56,189,248,.14), transparent 40%), radial-gradient(ellipse at 80% 10%, rgba(52,211,153,.10), transparent 30%), linear-gradient(145deg,#021019,#041926 55%,#06283a)' },
+      'sunset-dark': { light:false, accent:'#fb7185', accent2:'#f59e0b', bg:'#1f1020', bg2:'#120812', surface:'rgba(42,20,36,0.92)', surface2:'rgba(54,26,34,0.95)', text:'#fff1f2', muted:'#d8b4b8', border:'rgba(251,113,133,0.22)', grad:'radial-gradient(ellipse at 50% 18%, rgba(251,113,133,.14), transparent 40%), radial-gradient(ellipse at 80% 10%, rgba(245,158,11,.12), transparent 30%), linear-gradient(145deg,#120812,#1f1020 55%,#2a1420)' },
+      'forest-dark': { light:false, accent:'#34d399', accent2:'#a3e635', bg:'#071a14', bg2:'#030e0b', surface:'rgba(10,32,24,0.92)', surface2:'rgba(14,42,30,0.95)', text:'#ecfdf5', muted:'#9fc7b4', border:'rgba(52,211,153,0.22)', grad:'radial-gradient(ellipse at 50% 18%, rgba(52,211,153,.13), transparent 40%), radial-gradient(ellipse at 80% 10%, rgba(163,230,53,.10), transparent 30%), linear-gradient(145deg,#030e0b,#071a14 55%,#0b2a1f)' },
+      'rose-dark':   { light:false, accent:'#f472b6', accent2:'#818cf8', bg:'#1c1020', bg2:'#100812', surface:'rgba(36,18,38,0.92)', surface2:'rgba(46,24,48,0.95)', text:'#fdf2f8', muted:'#d8b4cc', border:'rgba(244,114,182,0.22)', grad:'radial-gradient(ellipse at 50% 18%, rgba(244,114,182,.14), transparent 40%), radial-gradient(ellipse at 80% 10%, rgba(129,140,248,.10), transparent 30%), linear-gradient(145deg,#100812,#1c1020 55%,#281428)' },
+      'amber-dark':  { light:false, accent:'#f59e0b', accent2:'#f97316', bg:'#1b1408', bg2:'#100c04', surface:'rgba(38,28,10,0.92)', surface2:'rgba(48,36,14,0.95)', text:'#fffbeb', muted:'#d6c29b', border:'rgba(245,158,11,0.22)', grad:'radial-gradient(ellipse at 50% 18%, rgba(245,158,11,.13), transparent 40%), radial-gradient(ellipse at 80% 10%, rgba(249,115,22,.10), transparent 30%), linear-gradient(145deg,#100c04,#1b1408 55%,#2a200c)' },
+      'mono-dark':   { light:false, accent:'#e5e7eb', accent2:'#9ca3af', bg:'#111318', bg2:'#090a0d', surface:'rgba(24,27,34,0.94)', surface2:'rgba(32,36,44,0.96)', text:'#f3f4f6', muted:'#a1a1aa', border:'rgba(229,231,235,0.18)', grad:'radial-gradient(ellipse at 50% 18%, rgba(229,231,235,.08), transparent 40%), linear-gradient(145deg,#090a0d,#111318 55%,#171a22)' }
+    };
+
+    function migrateSettings(s) {
+      const out = Object.assign({}, s);
+      if (!out.style) {
+        if (out.theme === 'light') out.style = 'light';
+        else if (out.accent === 'violet') out.style = 'violet-dark';
+        else if (out.accent === 'amber') out.style = 'amber-dark';
+        else out.style = 'cyan-dark';
+      }
+      if (!STYLE_PRESETS[out.style]) out.style = 'cyan-dark';
+      if (out.mode !== 'ai') out.mode = 'web';
+      if (out.shortcuts !== 'off') out.shortcuts = 'on';
+      if (out.open !== 'new') out.open = 'same';
+      return out;
+    }
+    const defaultSettings = { style: (localStorage.getItem('developerhcr-theme') === 'light' ? 'light' : 'cyan-dark'), mode:'web', shortcuts:'on', open:'same' };
+    let settings = migrateSettings(Object.assign({}, defaultSettings, read(K.settings, {})));
 
     function isAdmin(session) { return !!(session && (session.username || '').toLowerCase() === ADMIN_USER && session.admin === true); }
     function getUsers() { return read(K.users, []); }
@@ -359,16 +412,20 @@
       else { el.textContent = fallbackText || '?'; }
     }
 
-    function applyTheme() {
-      document.body.classList.toggle('light-mode', settings.theme === 'light');
-      try { localStorage.setItem('developerhcr-theme', settings.theme); } catch {}
-      document.documentElement.style.setProperty('--accent', settings.accent === 'violet' ? '#a78bfa' : settings.accent === 'amber' ? '#f59e0b' : (settings.theme === 'light' ? '#087f9d' : '#67e8f9'));
-      const t = $('setting-theme'); if (t) t.value = settings.theme;
+    function applyStyle() {
+      const p = STYLE_PRESETS[settings.style] || STYLE_PRESETS['cyan-dark'];
+      document.body.classList.toggle('light-mode', !!p.light);
+      document.documentElement.style.colorScheme = p.light ? 'light' : 'dark';
+      const vars = { '--bg':p.bg, '--bg2':p.bg2, '--surface':p.surface, '--surface-2':p.surface2, '--text':p.text, '--muted':p.muted, '--accent':p.accent, '--accent-2':p.accent2, '--border':p.border };
+      Object.keys(vars).forEach(k => document.documentElement.style.setProperty(k, vars[k]));
+      document.body.style.background = p.grad;
+      try { localStorage.setItem('developerhcr-theme', p.light ? 'light' : 'dark'); localStorage.setItem('developerhcr-style', settings.style); } catch {}
     }
     function applySettings() {
-      applyTheme();
+      settings = migrateSettings(settings);
+      applyStyle();
       $('quick-links').classList.toggle('hidden', settings.shortcuts === 'off');
-      [['setting-theme','theme'],['setting-mode','mode'],['setting-shortcuts','shortcuts'],['setting-accent','accent'],['setting-embed','embed'],['setting-open','open']].forEach(([id,key]) => { const el=$(id); if(el) el.value = settings[key]; });
+      [['setting-style','style'],['setting-mode','mode'],['setting-shortcuts','shortcuts'],['setting-open','open']].forEach(([id,key]) => { const el=$(id); if(el && settings[key] != null) el.value = settings[key]; });
       setMode(settings.mode || 'web', false);
       write(K.settings, settings);
     }
@@ -402,8 +459,8 @@
     function closeDialog(id){ const d=$(id); if(d&&d.close) d.close(); }
     $('open-settings').addEventListener('click', () => { refreshAiUi(); openDialog('settings-dialog'); });
     document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', () => closeDialog(btn.getAttribute('data-close'))));
-    ['theme','mode','shortcuts','accent','embed','open'].forEach(key => { const el=$('setting-'+key); if(el) el.addEventListener('change', () => { settings[key]=el.value; applySettings(); $('settings-msg').textContent='Settings saved locally.'; }); });
-    $('clear-local').addEventListener('click', () => { [K.theme,K.settings,K.users,K.session,K.aiUsed,K.adminProfile,'developerhcr-theme'].forEach(k=>localStorage.removeItem(k)); settings=Object.assign({}, defaultSettings, {theme:'dark'}); $('settings-msg').textContent='Local engine data cleared on this browser.'; applySettings(); refreshAiUi(); renderAccount(); });
+    ['style','mode','shortcuts','open'].forEach(key => { const el=$('setting-'+key); if(el) el.addEventListener('change', () => { settings[key]=el.value; applySettings(); $('settings-msg').textContent='Settings saved locally. Multi-style applied.'; }); });
+    $('clear-local').addEventListener('click', () => { [K.theme,K.settings,K.users,K.session,K.aiUsed,K.adminProfile,'developerhcr-theme','developerhcr-style'].forEach(k=>localStorage.removeItem(k)); settings=Object.assign({}, { style:'cyan-dark', mode:'web', shortcuts:'on', open:'same' }); $('settings-msg').textContent='Local engine data cleared on this browser.'; applySettings(); refreshAiUi(); renderAccount(); });
 
     function renderDeviceInfo() {
       const grid = $('device-info-grid');
@@ -550,37 +607,25 @@
       renderAccount();
     });
 
-    // Web search on-site
-    function renderWebResults(query) {
-      const q = query.trim();
-      if (!q) return;
-      const enc = encodeURIComponent(q);
-      const google = `https://www.google.com/search?q=${enc}&safe=active`;
-      const links = [
-        ['Google (All results)', google, 'Full Google web results'],
-        ['Bing', `https://www.bing.com/search?q=${enc}`, 'Web results on Bing'],
-        ['DuckDuckGo', `https://duckduckgo.com/?q=${enc}`, 'Private web results'],
-        ['Images', `https://www.google.com/search?tbm=isch&q=${enc}`, 'Image results'],
-        ['Videos', `https://www.youtube.com/results?search_query=${enc}`, 'Video results'],
-        ['News', `https://news.google.com/search?q=${enc}`, 'News results'],
-        ['Maps', `https://www.google.com/maps/search/${enc}`, 'Places and maps'],
-        ['GitHub', `https://github.com/search?q=${enc}&type=repositories`, 'Code and repositories'],
-        ['Wikipedia', `https://en.wikipedia.org/wiki/Special:Search?search=${enc}`, 'Encyclopedia results']
-      ];
-      const cards = links.map(l => `<a class="result-link" href="${l[1]}" target="_blank" rel="noreferrer"><strong>${l[0]}</strong><span>${l[2]}</span></a>`).join('');
-      const embed = settings.embed === 'on'
-        ? `<div class="embed-wrap"><iframe title="Web results for ${esc(q)}" src="https://www.bing.com/search?q=${enc}" loading="lazy" referrerpolicy="no-referrer"></iframe></div><p class="notice">Embedded web results view shown on this website when allowed by your browser/network. If blocked, use the result cards above or open on Google.</p>`
-        : `<p class="notice">Web results are shown on this website as result cards/links. Enable “Show on website (embed + links)” in Settings for an on-page results frame.</p>`;
-      $('web-results').innerHTML = `<h3>Web results for "${esc(q)}"</h3><p class="muted">Unlimited DeveloperHCR Engine search · results displayed on this page. Open any result source below for full results.</p><div class="result-links">${cards}</div>${embed}<div class="row" style="margin-top:.6rem;"><a class="pill-btn primary" href="${google}" target="_blank" rel="noreferrer">Open full results on Google</a></div>`;
-      $('web-results').classList.remove('hidden');
-      $('web-results').scrollIntoView({behavior:'smooth', block:'nearest'});
-      $('open-google-direct').href = google;
-      $('open-google-direct').target = '_blank';
-      $('open-google-direct').rel = 'noreferrer';
-      $('open-google-direct').onclick = null;
+    // Web search: redirect to Google
+    function googleSearchUrl(query) {
+      return 'https://www.google.com/search?q=' + encodeURIComponent(query.trim()) + '&safe=active';
     }
-    $('web-form').addEventListener('submit', (e) => { e.preventDefault(); renderWebResults($('web-query').value); });
-    $('open-google-direct').addEventListener('click', (e) => { const q=$('web-query').value.trim(); if(!q) return; e.preventDefault(); window.open('https://www.google.com/search?q='+encodeURIComponent(q),'_blank','noopener'); });
+    $('web-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const q = $('web-query').value.trim();
+      if (!q) return;
+      const url = googleSearchUrl(q);
+      if (settings.open === 'new') window.open(url, '_blank', 'noopener');
+      else window.location.href = url;
+    });
+    $('open-google-direct').addEventListener('click', (e) => {
+      const q = $('web-query').value.trim();
+      if (!q) return; // allow default link to google.com when empty
+      e.preventDefault();
+      const url = googleSearchUrl(q);
+      window.open(url, '_blank', 'noopener');
+    });
 
     // AI
     const corpus = [
@@ -639,7 +684,7 @@
 
       // result/help intent
       if (q === 'result' || q === 'results' || q.includes('show result')) {
-        return { html: `<h3>Results</h3><p>Use <strong>Web Search (Unlimited)</strong> to show search results on this website with quick links and an embedded results view. Use <strong>AI Search</strong> for on-device answers (12 per browser, unlimited for admin).</p><ul><li><a href="#" onclick="document.getElementById('tab-web').click();return false;">Switch to Web Search</a></li><li><a href="${webUrl}" target="_blank" rel="noreferrer">Open on Google</a></li></ul>` };
+        return { html: `<h3>Results</h3><p>Use <strong>Web Search (Unlimited)</strong> to search on Google (redirects to Google with your query). Use <strong>AI Search</strong> for on-device answers (12 per browser, unlimited for admin).</p><ul><li><a href="#" onclick="document.getElementById('tab-web').click();return false;">Switch to Web Search</a></li><li><a href="${webUrl}" target="_blank" rel="noreferrer">Open on Google</a></li></ul>` };
       }
 
       // corpus match
@@ -675,7 +720,7 @@
     const session = getSession();
     const hour = new Date().getHours();
     const part = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
-    $('greeting').textContent = (session && session.name ? `${part}, ${session.name}. ` : '') + 'Unlimited DeveloperHCR Engine web search, on-device AI limited to 12 searches (admin: unlimited), and quick access to every DeveloperHCR page.';
+    $('greeting').textContent = (session && session.name ? `${part}, ${session.name}. ` : '') + 'Unlimited DeveloperHCR Engine web search (redirects to Google), on-device AI limited to 12 searches (admin: unlimited), multi-style website, and quick access to inner and outer websites.';
     $('year').textContent = new Date().getFullYear();
     applySettings(); refreshAiUi(); renderAccount();
   })();

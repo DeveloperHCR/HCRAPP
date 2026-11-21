@@ -267,24 +267,58 @@ if (navContainer && !themeToggle) {
   }
 }
 
-let savedTheme = 'dark';
-try {
-  savedTheme = localStorage.getItem('developerhcr-theme') || 'dark';
-} catch (error) {
-  console.error('Unable to read the saved color theme.', error);
+const SITE_STYLE_PRESETS = {
+  'cyan-dark':   { light:false, primary:'#67e8f9', secondary:'#8b5cf6', accent:'#f59e0b', success:'#34d399', bg:'#07131f', bgStrong:'#020b12', panel:'rgba(10,20,30,0.8)', panelStrong:'#0a1724', card:'rgba(13,27,40,0.9)', text:'#eef6ff', muted:'#9fb7c8', border:'rgba(148,163,184,0.18)', bodyBg:'radial-gradient(circle at top, rgba(103,232,249,0.14), transparent 30%), radial-gradient(circle at right, rgba(139,92,246,0.12), transparent 24%), linear-gradient(135deg, #020b12, #0b1724 35%, #07131f)' },
+  'light':       { light:true,  primary:'#087f9d', secondary:'#6d4ad1', accent:'#a65308', success:'#08754f', bg:'#edf4fa', bgStrong:'#f8fbff', panel:'rgba(255,255,255,0.84)', panelStrong:'#ffffff', card:'rgba(255,255,255,0.94)', text:'#15283b', muted:'#52677d', border:'rgba(31,57,82,0.16)', bodyBg:'radial-gradient(circle at top, rgba(8,145,178,0.1), transparent 34%), radial-gradient(circle at right, rgba(109,74,209,0.08), transparent 25%), linear-gradient(135deg, #ffffff, #edf4fa 48%, #f8fbff)' },
+  'violet-dark': { light:false, primary:'#a78bfa', secondary:'#22d3ee', accent:'#f59e0b', success:'#34d399', bg:'#120b24', bgStrong:'#070514', panel:'rgba(24,16,44,0.82)', panelStrong:'#140d24', card:'rgba(28,20,48,0.92)', text:'#f3efff', muted:'#b7a9d6', border:'rgba(167,139,250,0.2)', bodyBg:'radial-gradient(circle at top, rgba(167,139,250,0.16), transparent 30%), radial-gradient(circle at right, rgba(34,211,238,0.10), transparent 24%), linear-gradient(135deg, #070514, #120b24 35%, #1a1033)' },
+  'ocean-dark':  { light:false, primary:'#38bdf8', secondary:'#34d399', accent:'#f59e0b', success:'#34d399', bg:'#041926', bgStrong:'#021019', panel:'rgba(8,30,44,0.82)', panelStrong:'#061d2b', card:'rgba(10,34,50,0.92)', text:'#eafaff', muted:'#9cc3d4', border:'rgba(56,189,248,0.2)', bodyBg:'radial-gradient(circle at top, rgba(56,189,248,0.14), transparent 30%), radial-gradient(circle at right, rgba(52,211,153,0.10), transparent 24%), linear-gradient(135deg, #021019, #041926 35%, #06283a)' },
+  'sunset-dark': { light:false, primary:'#fb7185', secondary:'#f59e0b', accent:'#f59e0b', success:'#34d399', bg:'#1f1020', bgStrong:'#120812', panel:'rgba(42,20,36,0.82)', panelStrong:'#241222', card:'rgba(48,24,40,0.92)', text:'#fff1f2', muted:'#d8b4b8', border:'rgba(251,113,133,0.2)', bodyBg:'radial-gradient(circle at top, rgba(251,113,133,0.14), transparent 30%), radial-gradient(circle at right, rgba(245,158,11,0.12), transparent 24%), linear-gradient(135deg, #120812, #1f1020 35%, #2a1420)' },
+  'forest-dark': { light:false, primary:'#34d399', secondary:'#a3e635', accent:'#f59e0b', success:'#34d399', bg:'#071a14', bgStrong:'#030e0b', panel:'rgba(10,32,24,0.82)', panelStrong:'#081f17', card:'rgba(12,36,28,0.92)', text:'#ecfdf5', muted:'#9fc7b4', border:'rgba(52,211,153,0.2)', bodyBg:'radial-gradient(circle at top, rgba(52,211,153,0.13), transparent 30%), radial-gradient(circle at right, rgba(163,230,53,0.10), transparent 24%), linear-gradient(135deg, #030e0b, #071a14 35%, #0b2a1f)' },
+  'rose-dark':   { light:false, primary:'#f472b6', secondary:'#818cf8', accent:'#f59e0b', success:'#34d399', bg:'#1c1020', bgStrong:'#100812', panel:'rgba(36,18,38,0.82)', panelStrong:'#211024', card:'rgba(40,22,42,0.92)', text:'#fdf2f8', muted:'#d8b4cc', border:'rgba(244,114,182,0.2)', bodyBg:'radial-gradient(circle at top, rgba(244,114,182,0.14), transparent 30%), radial-gradient(circle at right, rgba(129,140,248,0.10), transparent 24%), linear-gradient(135deg, #100812, #1c1020 35%, #281428)' },
+  'amber-dark':  { light:false, primary:'#f59e0b', secondary:'#f97316', accent:'#f59e0b', success:'#34d399', bg:'#1b1408', bgStrong:'#100c04', panel:'rgba(38,28,10,0.82)', panelStrong:'#221a08', card:'rgba(42,32,12,0.92)', text:'#fffbeb', muted:'#d6c29b', border:'rgba(245,158,11,0.2)', bodyBg:'radial-gradient(circle at top, rgba(245,158,11,0.13), transparent 30%), radial-gradient(circle at right, rgba(249,115,22,0.10), transparent 24%), linear-gradient(135deg, #100c04, #1b1408 35%, #2a200c)' },
+  'mono-dark':   { light:false, primary:'#e5e7eb', secondary:'#9ca3af', accent:'#d4d4d8', success:'#a3a3a3', bg:'#111318', bgStrong:'#090a0d', panel:'rgba(24,27,34,0.9)', panelStrong:'#171a21', card:'rgba(28,31,38,0.94)', text:'#f3f4f6', muted:'#a1a1aa', border:'rgba(229,231,235,0.16)', bodyBg:'radial-gradient(circle at top, rgba(229,231,235,0.08), transparent 30%), linear-gradient(135deg, #090a0d, #111318 35%, #171a22)' }
+};
+
+function getSavedSiteStyle() {
+  try {
+    const style = localStorage.getItem('developerhcr-style');
+    if (style && SITE_STYLE_PRESETS[style]) return style;
+    const theme = localStorage.getItem('developerhcr-theme') || 'dark';
+    return theme === 'light' ? 'light' : 'cyan-dark';
+  } catch (error) {
+    return 'cyan-dark';
+  }
 }
-document.body.classList.toggle('light-mode', savedTheme === 'light');
+
+function applySiteStyle(styleName, persist) {
+  const style = SITE_STYLE_PRESETS[styleName] ? styleName : 'cyan-dark';
+  const p = SITE_STYLE_PRESETS[style];
+  document.body.classList.toggle('light-mode', !!p.light);
+  const root = document.documentElement;
+  const vars = {
+    '--bg': p.bg, '--bg-strong': p.bgStrong, '--panel': p.panel, '--panel-strong': p.panelStrong, '--card': p.card,
+    '--text': p.text, '--muted': p.muted, '--primary': p.primary, '--secondary': p.secondary, '--accent': p.accent,
+    '--success': p.success, '--border': p.border
+  };
+  Object.keys(vars).forEach((k) => root.style.setProperty(k, vars[k]));
+  document.body.style.background = p.bodyBg;
+  if (persist) {
+    try {
+      localStorage.setItem('developerhcr-style', style);
+      localStorage.setItem('developerhcr-theme', p.light ? 'light' : 'dark');
+    } catch (error) {}
+  }
+  return style;
+}
+
+let savedStyle = applySiteStyle(getSavedSiteStyle(), false);
 
 if (themeToggle) {
-  themeToggle.setAttribute('aria-pressed', String(savedTheme === 'light'));
+  themeToggle.setAttribute('aria-pressed', String(document.body.classList.contains('light-mode')));
   themeToggle.addEventListener('click', () => {
-    const isLightMode = document.body.classList.toggle('light-mode');
-    themeToggle.setAttribute('aria-pressed', String(isLightMode));
-    try {
-      localStorage.setItem('developerhcr-theme', isLightMode ? 'light' : 'dark');
-    } catch (error) {
-      console.error('Unable to save the selected color theme.', error);
-    }
+    savedStyle = document.body.classList.contains('light-mode') ? 'cyan-dark' : 'light';
+    applySiteStyle(savedStyle, true);
+    themeToggle.setAttribute('aria-pressed', String(document.body.classList.contains('light-mode')));
   });
 }
 const heroArtwork = document.querySelector('.hero-artwork .glass-panel');
