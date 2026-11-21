@@ -29,7 +29,7 @@ The site is a static HTML and JavaScript project. Styles are embedded in the HTM
 
 | Page | What it contains |
 | --- | --- |
-| Engine (default landing, first page) | DeveloperHCR Engine at `pages/search.html` with **unlimited** web search that redirects to Google, on-device AI limited to **12 searches per browser** (unlimited for admin), multi-style themes, Chrome/Google-style local login/signup (no cloud), profile picture, device/CPU info, top navigation and quick links to all inner and outer websites, and live commit/stats display |
+| Engine (default landing, first page) | DeveloperHCR Engine at `pages/search.html` with **unlimited** web search and full-screen results shown on the website (no other tab), on-device AI limited to **12 searches per browser** (unlimited for admin), multi-style themes, Chrome/Google-style local login/signup (no cloud), profile picture, device/CPU info, cookies/local extensions, top navigation and quick links to all inner and outer websites, and live commit/stats display |
 | Home | DeveloperHCR introduction, featured projects, GitHub stars, commits applied, and demo links |
 | Projects | HCRAPP, DevX OS, and DevX Billing summaries, tags, release links, a DevX OS browser preview, and a sandboxed DevX Billing preview |
 | Contact | Email, public location, Google Map, and a message form that opens a prefilled email in the visitor's email app |
@@ -43,7 +43,7 @@ The contact form uses a `mail to:` link to open the visitor's configured email a
 
 The About page's admin dashboard offers an expanded view, checks whether the static status page responds, and provides quick links to published pages. GitHub Pages hosts the site, so a personal PC does not need to stay on; if you run a separate local server on your computer, keep that computer on while serving the local site. The dashboard password is stored only in the current browser and is not server-side authentication; the static site does not provide a backend API or machine-level server monitoring.
 
-The DeveloperHCR Engine (default first page) provides unlimited web search and redirects searches to Google. Its on-device AI mode is limited to 12 searches per browser profile (unlimited for the admin account when signed in locally). The engine includes multiple website styles, Chrome/Google-style local login/signup (no cloud), local profile picture support, device/CPU/browser information shown on-device, and quick access to inner website pages and outer websites. AI mode, settings, login/signup, profile, and AI search quota are stored only in the browser (localStorage) with no cloud account or server-side storage.
+The DeveloperHCR Engine (default first page) provides unlimited web search with full-screen results displayed on the website (no other tab) using embedded web result views and on-page result tools. Its on-device AI mode is limited to 12 searches per browser profile (unlimited for the admin account when signed in locally). The engine includes multiple website styles, full-screen search mode, Chrome/Google-style local login/signup (no cloud), local profile picture support, device/CPU/browser information shown on-device, local cookies/extensions, and quick access to inner website pages and outer websites. AI mode, settings, login/signup, profile, and AI search quota are stored locally in the browser (localStorage/cookies) with no cloud account or server-side storage.
 
 ### DevX OS browser demo
 

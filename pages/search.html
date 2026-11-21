@@ -108,12 +108,21 @@
     body.compact-mode .quick-links{gap:.4rem}.compact-mode .quick-link{padding:.55rem .6rem}
     body.search-fullscreen .topbar{position:static}
     body.search-fullscreen .page-nav,body.search-fullscreen .stats-row,body.search-fullscreen #quick-links,body.search-fullscreen #account-section,body.search-fullscreen footer,body.search-fullscreen .tagline{display:none!important}
-    body.search-fullscreen main{min-height:100vh;display:grid;place-items:center;align-content:center;width:min(1100px,calc(100% - 1.2rem));padding:1rem 0}
+    body.search-fullscreen main{min-height:100vh;display:grid;place-items:center;align-content:center;width:min(1400px,calc(100% - 1rem));padding:.5rem 0}
     body.search-fullscreen .hero{padding:0;width:100%}
-    body.search-fullscreen .engine-card{padding:1.2rem}
-    body.search-fullscreen .search-form input{font-size:1.12rem;padding:1.05rem 1.1rem}
-    body.search-fullscreen .logo{font-size:clamp(2rem,6vw,3.8rem);margin-bottom:.6rem}
+    body.search-fullscreen .engine-card{padding:1rem;width:100%}
+    body.search-fullscreen .search-form input{font-size:1.08rem;padding:1rem 1.05rem}
+    body.search-fullscreen .logo{font-size:clamp(1.8rem,5vw,3rem);margin-bottom:.4rem}
+    body.search-fullscreen #web-results{display:block!important}
+    body.search-fullscreen #web-results .embed-wrap iframe,.results-full-embed iframe{height:min(70vh,820px)}
     .fs-controls{display:flex;justify-content:flex-end;margin-bottom:.6rem;gap:.4rem}
+    .result-tabs{display:flex;flex-wrap:wrap;gap:.35rem;margin:.6rem 0}
+    .result-tab{border:1px solid var(--border);background:var(--surface);color:var(--text);padding:.4rem .65rem;border-radius:999px;cursor:pointer;font-size:.82rem}
+    .result-tab.active{border-color:var(--accent);color:var(--accent);background:rgba(103,232,249,.1)}
+    .results-meta{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;justify-content:space-between;margin:.35rem 0 .5rem}
+    .results-full-embed{margin-top:.6rem;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}
+    .results-full-embed iframe{width:100%;height:60vh;border:0}
+    .onsite-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.45rem;margin-top:.6rem}
     footer{margin-top:2rem;text-align:center;color:var(--muted);font-size:.85rem} footer a{color:var(--accent)}
     @media (max-width:760px){.search-form{flex-direction:column}.search-form button[type="submit"]{min-height:48px}.topbar-inner{justify-content:center}.top-actions{margin-left:0;justify-content:center}.page-nav{justify-content:center}.embed-wrap iframe{height:420px}}
   </style>
@@ -164,7 +173,7 @@
   <main>
     <section class="hero">
       <h1 class="logo">DeveloperHCR <span>Eng</span><span class="g2">ine</span></h1>
-      <p class="tagline" id="greeting">Unlimited DeveloperHCR Engine web search (redirects to Google), on-device AI limited to 12 searches (admin: unlimited), multi-style website, and quick access to inner and outer websites.</p>
+      <p class="tagline" id="greeting">Unlimited DeveloperHCR Engine web search with full-screen results on this website (no other tab), on-device AI limited to 12 searches (admin: unlimited), multi-style website, and quick access to inner and outer websites.</p>
       <div class="stats-row" aria-label="Repository and engine stats">
         <span class="stat-chip"><strong>Stars:</strong> <a href="https://github.com/DeveloperHCR/HCRAPP/stargazers" target="_blank" rel="noreferrer">GitHub</a></span>
         <span class="stat-chip"><strong>Commits applied:</strong> <span id="commit-count">76</span></span>
@@ -186,12 +195,13 @@
           <form class="search-form" id="web-form" role="search">
             <label class="sr-only" for="web-query">Search the web</label>
             <input id="web-query" name="q" type="search" placeholder="Search anything on DeveloperHCR Engine…" autocomplete="off" required>
-            <button type="submit">Search on Google</button>
+            <button type="submit">Search</button>
           </form>
           <div class="subnote">
-            <span>Unlimited DeveloperHCR Engine web search. Searching redirects you to Google with your query.</span>
-            <span><a href="https://www.google.com/" id="open-google-direct" target="_blank" rel="noreferrer">Google</a></span>
+            <span>Unlimited DeveloperHCR Engine web search. Results open in full screen on this website (no other tab).</span>
+            <span><button class="pill-btn" id="focus-results-btn" type="button" style="padding:.2rem .55rem;font-size:.8rem;">Full screen results</button></span>
           </div>
+          <div id="web-results" class="result-box hidden" aria-live="polite"></div>
         </div>
 
         <div id="panel-ai" role="tabpanel" aria-labelledby="tab-ai" class="hidden">
@@ -309,7 +319,7 @@
 
     <footer>
       <p>DeveloperHCR Engine · first page · <a href="https://github.com/DeveloperHCR/HCRAPP" target="_blank" rel="noreferrer">DeveloperHCR/HCRAPP</a> · <a href="https://github.com/DeveloperHCR/HCRAPP/commits/main" target="_blank" rel="noreferrer"><span id="footer-commits">76</span> commits applied</a></p>
-      <p>&copy; <span id="year">2026</span> DeveloperHCR. Unlimited web search (Google redirect) · AI 12/user (admin unlimited) · Multi-style · Local login (no cloud) · Inner &amp; outer links.</p>
+      <p>&copy; <span id="year">2026</span> DeveloperHCR. Unlimited web search · Full-screen results on this website (no other tab) · AI 12/user (admin unlimited) · Multi-style · Local login (no cloud) · Cookies &amp; extensions.</p>
     </footer>
   </main>
 
@@ -371,7 +381,7 @@
         </select></div>
         <div class="field"><label for="setting-mode">Default search mode</label><select id="setting-mode"><option value="web">Web Search (Unlimited, redirects to Google)</option><option value="ai">AI Search</option></select></div>
         <div class="field"><label for="setting-shortcuts">Show quick links (inner &amp; outer)</label><select id="setting-shortcuts"><option value="on">Show</option><option value="off">Hide</option></select></div>
-        <div class="field"><label for="setting-open">Google search opens in</label><select id="setting-open"><option value="same">Same tab (redirect)</option><option value="new">New tab</option></select></div>
+        <div class="field"><label for="setting-autofs">Auto full screen on search</label><select id="setting-autofs"><option value="on">On (recommended)</option><option value="off">Off</option></select></div>
       </div>
       <div class="divider"></div>
       <h3>Inner websites (all pages)</h3>
@@ -396,7 +406,7 @@
       </div>
       <div class="divider"></div>
       <h3>Search behavior &amp; limits</h3>
-      <p class="notice"><strong>DeveloperHCR Engine web search:</strong> unlimited — searches redirect to Google. <strong>On-device AI:</strong> 12 searches per browser profile for normal users; <strong>unlimited for admin (DeveloperHCR)</strong> when signed in. Used: <strong id="settings-ai-used">0</strong> · Remaining: <strong id="settings-ai-left">12</strong>.</p>
+      <p class="notice"><strong>DeveloperHCR Engine web search:</strong> unlimited — results shown in full screen on this website (no other tab) using embedded web results and on-page result tools. <strong>On-device AI:</strong> 12 searches per browser profile for normal users; <strong>unlimited for admin (DeveloperHCR)</strong> when signed in. Used: <strong id="settings-ai-used">0</strong> · Remaining: <strong id="settings-ai-left">12</strong>.</p>
       <div class="divider"></div>
       <h3>Extensions (local, no cloud)</h3>
       <p class="notice">Browser-like local extensions/features saved on this device (localStorage/cookies):</p>
@@ -452,10 +462,10 @@
       if (!STYLE_PRESETS[out.style]) out.style = 'cyan-dark';
       if (out.mode !== 'ai') out.mode = 'web';
       if (out.shortcuts !== 'off') out.shortcuts = 'on';
-      if (out.open !== 'new') out.open = 'same';
+      if (out.autofs !== 'off') out.autofs = 'on';
       return out;
     }
-    const defaultSettings = { style: (localStorage.getItem('developerhcr-theme') === 'light' ? 'light' : 'cyan-dark'), mode:'web', shortcuts:'on', open:'same' };
+    const defaultSettings = { style: (localStorage.getItem('developerhcr-theme') === 'light' ? 'light' : 'cyan-dark'), mode:'web', shortcuts:'on', autofs:'on' };
     let settings = migrateSettings(Object.assign({}, defaultSettings, read(K.settings, {})));
 
     function isAdmin(session) { return !!(session && (session.username || '').toLowerCase() === ADMIN_USER && session.admin === true); }
@@ -497,7 +507,7 @@
       settings = migrateSettings(settings);
       applyStyle();
       $('quick-links').classList.toggle('hidden', settings.shortcuts === 'off');
-      [['setting-style','style'],['setting-mode','mode'],['setting-shortcuts','shortcuts'],['setting-open','open']].forEach(([id,key]) => { const el=$(id); if(el && settings[key] != null) el.value = settings[key]; });
+      [['setting-style','style'],['setting-mode','mode'],['setting-shortcuts','shortcuts'],['setting-autofs','autofs']].forEach(([id,key]) => { const el=$(id); if(el && settings[key] != null) el.value = settings[key]; });
       setMode(settings.mode || 'web', false);
       write(K.settings, settings);
     }
@@ -531,8 +541,8 @@
     function closeDialog(id){ const d=$(id); if(d&&d.close) d.close(); }
     $('open-settings').addEventListener('click', () => { refreshAiUi(); openDialog('settings-dialog'); });
     document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', () => closeDialog(btn.getAttribute('data-close'))));
-    ['style','mode','shortcuts','open'].forEach(key => { const el=$('setting-'+key); if(el) el.addEventListener('change', () => { settings[key]=el.value; applySettings(); $('settings-msg').textContent='Settings saved locally. Multi-style applied.'; }); });
-    $('clear-local').addEventListener('click', () => { [K.theme,K.settings,K.users,K.session,K.aiUsed,K.adminProfile,'developerhcr-theme','developerhcr-style','developerhcr-extensions'].forEach(k=>{ try{localStorage.removeItem(k);}catch{} delCookie(k); }); settings=Object.assign({}, { style:'cyan-dark', mode:'web', shortcuts:'on', open:'same' }); $('settings-msg').textContent='Local engine data, cookies, and extensions cleared on this browser.'; applySettings(); refreshAiUi(); renderAccount(); renderExtensions(); });
+    ['style','mode','shortcuts','autofs'].forEach(key => { const el=$('setting-'+key); if(el) el.addEventListener('change', () => { settings[key]=el.value; applySettings(); $('settings-msg').textContent='Settings saved locally. Multi-style applied.'; }); });
+    $('clear-local').addEventListener('click', () => { [K.theme,K.settings,K.users,K.session,K.aiUsed,K.adminProfile,'developerhcr-theme','developerhcr-style','developerhcr-extensions','developerhcr-last-search','developerhcr-recent-searches'].forEach(k=>{ try{localStorage.removeItem(k);}catch{} delCookie(k); }); settings=Object.assign({}, { style:'cyan-dark', mode:'web', shortcuts:'on', autofs:'on' }); $('settings-msg').textContent='Local engine data, cookies, and extensions cleared on this browser.'; applySettings(); refreshAiUi(); renderAccount(); renderExtensions(); });
 
     function renderDeviceInfo() {
       const grid = $('device-info-grid');
@@ -773,26 +783,99 @@
       renderAccount();
     });
 
-    // Web search: redirect to Google
-    function googleSearchUrl(query) {
-      return 'https://www.google.com/search?q=' + encodeURIComponent(query.trim()) + '&safe=active';
+    // Web search: full screen results on this website (no other tab)
+    const INNER_PAGES = [
+      { title:'Home', url:'home.html', keys:'home developerhcr intro featured stars commits' },
+      { title:'About', url:'about.html', keys:'about mission focus developerhcr' },
+      { title:'Projects', url:'projects.html', keys:'projects hcrapp devx os devx billing apps demos' },
+      { title:'Services', url:'services.html', keys:'services web android ai tools' },
+      { title:'AI & API', url:'api.html', keys:'ai api integrations' },
+      { title:'Downloads', url:'downloads.html', keys:'download apk devx os devx billing releases' },
+      { title:'Documentation', url:'documentation.html', keys:'docs documentation guide readme' },
+      { title:'Gallery', url:'gallery.html', keys:'gallery images logo artwork' },
+      { title:'DevX OS Demo', url:'devx-os-demo.html', keys:'devx os demo desktop admin panel' },
+      { title:'Contact', url:'contact.html', keys:'contact email map message' },
+      { title:'Privacy', url:'privacy.html', keys:'privacy policy data' },
+      { title:'Terms', url:'terms.html', keys:'terms conditions legal' },
+      { title:'Engine', url:'search.html', keys:'engine search settings login ai' }
+    ];
+    let currentWebQuery = '';
+    let currentResultTab = 'web';
+    function resultUrl(type, q) {
+      const enc = encodeURIComponent(q);
+      if (type === 'web') return 'https://www.bing.com/search?q=' + enc;
+      if (type === 'images') return 'https://www.bing.com/images/search?q=' + enc;
+      if (type === 'videos') return 'https://www.bing.com/videos/search?q=' + enc;
+      if (type === 'news') return 'https://www.bing.com/news/search?q=' + enc;
+      if (type === 'maps') return 'https://www.bing.com/maps?q=' + enc;
+      if (type === 'duck') return 'https://duckduckgo.com/html/?q=' + enc;
+      if (type === 'wiki') return 'https://en.wikipedia.org/wiki/Special:Search?search=' + enc;
+      if (type === 'github') return 'https://github.com/search?q=' + enc + '&type=repositories';
+      return 'https://www.bing.com/search?q=' + enc;
     }
+    function getRecentSearches() { return read('developerhcr-recent-searches', []); }
+    function addRecentSearch(q) {
+      const list = getRecentSearches().filter(x => x && x.toLowerCase() !== q.toLowerCase());
+      list.unshift(q);
+      write('developerhcr-recent-searches', list.slice(0, 10));
+    }
+    function findInnerMatches(q) {
+      const t = (q || '').toLowerCase();
+      const words = t.split(/[^a-z0-9]+/).filter(Boolean);
+      return INNER_PAGES.filter(p => words.some(w => w.length > 1 && (p.title.toLowerCase().includes(w) || p.keys.includes(w)))).slice(0, 6);
+    }
+    function renderWebResults(query, tab) {
+      const q = (query || '').trim(); if (!q) return;
+      currentWebQuery = q; currentResultTab = tab || currentResultTab || 'web';
+      const enc = encodeURIComponent(q);
+      const src = resultUrl(currentResultTab, q);
+      const tabs = [
+        ['web','Web'],['images','Images'],['videos','Videos'],['news','News'],['maps','Maps'],['duck','DuckDuckGo'],['wiki','Wikipedia'],['github','GitHub']
+      ];
+      const tabHtml = tabs.map(([id,label]) => `<button type="button" class="result-tab ${currentResultTab===id?'active':''}" data-rtab="${id}">${label}</button>`).join('');
+      const suggestions = [q + ' info', q + ' download', q + ' latest', q + ' official site', q + ' tutorial'].map(s => `<button type="button" class="result-tab" data-rq="${esc(s)}">${esc(s)}</button>`).join('');
+      const recent = getRecentSearches().slice(0,6).map(s => `<button type="button" class="result-tab" data-rq="${esc(s)}">${esc(s)}</button>`).join('');
+      const inner = findInnerMatches(q);
+      const innerHtml = inner.length ? `<h4 style="margin:.9rem 0 .3rem;">On this website (inner pages)</h4><div class="onsite-list">${inner.map(p => `<a class="result-link" href="${p.url}"><strong>${esc(p.title)}</strong><span>Inner website page</span></a>`).join('')}</div>` : '';
+      $('web-results').innerHTML = `
+        <div class="results-meta">
+          <div>
+            <h3 style="margin:0">Full screen results for "${esc(q)}"</h3>
+            <p class="muted" style="margin:.15rem 0 0">Shown on this website · no other tab · unlimited DeveloperHCR Engine search</p>
+          </div>
+          <div class="row">
+            <button type="button" class="pill-btn" id="results-fullscreen-toggle">Full screen</button>
+            <button type="button" class="pill-btn" id="results-clear">Clear</button>
+          </div>
+        </div>
+        <div class="result-tabs" aria-label="Result types">${tabHtml}</div>
+        <div class="results-full-embed"><iframe name="results-frame" id="results-frame" title="Search results for ${esc(q)}" src="${src}" loading="eager" referrerpolicy="no-referrer"></iframe></div>
+        <p class="notice">If an embedded source blocks viewing in a frame, switch result type/source tabs above — results stay on this website (no other tab).</p>
+        <h4 style="margin:.7rem 0 .2rem;">Related searches</h4><div class="result-tabs">${suggestions}</div>
+        ${recent ? `<h4 style="margin:.7rem 0 .2rem;">Recent searches</h4><div class="result-tabs">${recent}</div>` : ''}
+        ${innerHtml}
+      `;
+      $('web-results').classList.remove('hidden');
+      $('web-results').querySelectorAll('[data-rtab]').forEach(btn => btn.addEventListener('click', () => { renderWebResults(currentWebQuery, btn.getAttribute('data-rtab')); }));
+      $('web-results').querySelectorAll('[data-rq]').forEach(btn => btn.addEventListener('click', () => { $('web-query').value = btn.getAttribute('data-rq') || ''; renderWebResults($('web-query').value, 'web'); }));
+      const fsBtn = $('results-fullscreen-toggle'); if (fsBtn) fsBtn.addEventListener('click', () => setSearchFullscreen(!document.body.classList.contains('search-fullscreen')));
+      const clearBtn = $('results-clear'); if (clearBtn) clearBtn.addEventListener('click', () => { $('web-results').classList.add('hidden'); $('web-results').innerHTML=''; $('web-query').focus(); if (document.body.classList.contains('search-fullscreen')) setSearchFullscreen(false); });
+      if (settings.autofs !== 'off') setSearchFullscreen(true);
+      $('web-results').scrollIntoView({behavior:'smooth', block:'start'});
+    }
+
     $('web-form').addEventListener('submit', (e) => {
       e.preventDefault();
       const q = $('web-query').value.trim();
       if (!q) return;
       const ext = getExtensions();
       if (ext.remember_last_search) { try { write('developerhcr-last-search', q); } catch {} }
-      const url = googleSearchUrl(q);
-      if (settings.open === 'new') window.open(url, '_blank', 'noopener');
-      else window.location.href = url;
+      addRecentSearch(q);
+      renderWebResults(q, 'web');
     });
-    $('open-google-direct').addEventListener('click', (e) => {
+    $('focus-results-btn').addEventListener('click', () => {
       const q = $('web-query').value.trim();
-      if (!q) return; // allow default link to google.com when empty
-      e.preventDefault();
-      const url = googleSearchUrl(q);
-      window.open(url, '_blank', 'noopener');
+      if (q) renderWebResults(q, currentResultTab || 'web'); else setSearchFullscreen(true);
     });
 
     // AI
@@ -852,7 +935,7 @@
 
       // result/help intent
       if (q === 'result' || q === 'results' || q.includes('show result')) {
-        return { html: `<h3>Results</h3><p>Use <strong>Web Search (Unlimited)</strong> to search on Google (redirects to Google with your query). Use <strong>AI Search</strong> for on-device answers (12 per browser, unlimited for admin).</p><ul><li><a href="#" onclick="document.getElementById('tab-web').click();return false;">Switch to Web Search</a></li><li><a href="${webUrl}" target="_blank" rel="noreferrer">Open on Google</a></li></ul>` };
+        return { html: `<h3>Results</h3><p>Use <strong>Web Search (Unlimited)</strong> to view full-screen web results on this website (no other tab). Use <strong>AI Search</strong> for on-device answers (12 per browser, unlimited for admin).</p><ul><li><a href="#" onclick="document.getElementById('tab-web').click();return false;">Switch to Web Search</a></li><li><a href="${webUrl}" target="_blank" rel="noreferrer">Open on Google</a></li></ul>` };
       }
 
       // corpus match
@@ -888,7 +971,7 @@
     const session = getSession();
     const hour = new Date().getHours();
     const part = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
-    $('greeting').textContent = (session && session.name ? `${part}, ${session.name}. ` : '') + 'Unlimited DeveloperHCR Engine web search (redirects to Google), on-device AI limited to 12 searches (admin: unlimited), multi-style website, full screen search mode, and quick access to inner and outer websites.';
+    $('greeting').textContent = (session && session.name ? `${part}, ${session.name}. ` : '') + 'Unlimited DeveloperHCR Engine web search with full-screen results on this website (no other tab), on-device AI limited to 12 searches (admin: unlimited), multi-style website, and quick access to inner and outer websites.';
     $('year').textContent = new Date().getFullYear();
     applySettings(); refreshAiUi(); renderAccount(); renderExtensions(); applyExtensions();
     if (!getSession()) { try { openDialog('login-dialog'); } catch {} }
