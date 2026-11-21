@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="dark light">
-  <meta name="description" content="DeveloperHCR Engine — first page with unlimited web search, on-device AI (12 searches, unlimited for admin), multiple settings, local Chrome/Google-style login, and all DeveloperHCR pages.">
+  <meta name="description" content="DeveloperHCR Engine — first page with unlimited web search, unlimited on-device AI, multiple settings, local device login, and all DeveloperHCR pages.">
   <title>DeveloperHCR Engine</title>
   <style>
     :root {
@@ -157,7 +157,7 @@
             <div>
               <h3 id="menu-user-name">Guest</h3>
               <p id="menu-user-sub">Not signed in · device local</p>
-              <p id="menu-admin-badge" class="hidden"><span class="badge-admin">ADMIN</span> Unlimited AI enabled</p>
+              <p id="menu-admin-badge" class="hidden"><span class="badge-admin">ADMIN</span> Admin access enabled</p>
             </div>
           </div>
           <div class="menu-actions">
@@ -337,7 +337,7 @@
       </div>
       <div class="divider"></div>
       <h3>AI usage</h3>
-      <p class="notice">On-device AI used: <strong id="settings-ai-used">0</strong> · Remaining: <strong id="settings-ai-left">12</strong> · Time limit: <strong>2 min</strong> cooldown per AI search (admin unlimited).</p>
+      <p class="notice">On-device AI used: <strong id="settings-ai-used">0</strong> · Remaining: <strong id="settings-ai-left">Unlimited</strong> (unlimited AI searches enabled).</p>
       <div class="divider"></div>
       <h3>Extensions (local, no cloud)</h3>
       <p class="notice">Browser-like local extensions/features saved on this device (localStorage/cookies):</p>
@@ -453,19 +453,13 @@
     function formatCooldown(ms) { const s = Math.ceil(ms / 1000); const m = Math.floor(s / 60); const r = s % 60; return m > 0 ? (m + 'm ' + r + 's') : (r + 's'); }
     function refreshAiUi() {
       const admin = isAdmin(getSession());
-      const left = aiLeft();
-      const cooldown = admin ? 0 : aiCooldownLeftMs();
-      const aiLeftTab = $('ai-left-tab'); if (aiLeftTab) aiLeftTab.textContent = admin ? '∞' : String(left);
-      const aiLeftChip = $('ai-left-chip'); if (aiLeftChip) aiLeftChip.textContent = admin ? 'Unlimited (Admin)' : `${left} left (${AI_LIMIT} limit) · 2 min cooldown`;
+      const aiLeftTab = $('ai-left-tab'); if (aiLeftTab) aiLeftTab.textContent = '∞';
+      const aiLeftChip = $('ai-left-chip'); if (aiLeftChip) aiLeftChip.textContent = admin ? 'Unlimited (Admin)' : 'Unlimited';
       const settingsUsed = $('settings-ai-used'); if (settingsUsed) settingsUsed.textContent = getAiUsed();
-      const settingsLeft = $('settings-ai-left'); if (settingsLeft) settingsLeft.textContent = admin ? 'Unlimited (admin)' : String(left);
-      const submit = $('ai-submit'); if (submit) submit.disabled = !admin && (left <= 0 || cooldown > 0);
+      const settingsLeft = $('settings-ai-left'); if (settingsLeft) settingsLeft.textContent = 'Unlimited';
+      const submit = $('ai-submit'); if (submit) submit.disabled = false;
       const aiLimitNote = $('ai-limit-note');
-      if (aiLimitNote) {
-        if (!admin && cooldown > 0) { aiLimitNote.textContent = `Please wait ${formatCooldown(cooldown)} before next AI search (2 min limit).`; aiLimitNote.className = 'subnote warn'; }
-        else if (!admin && left <= 0) { aiLimitNote.textContent = 'AI search limit reached for this browser profile.'; aiLimitNote.className = 'subnote warn'; }
-        else { aiLimitNote.textContent = ''; aiLimitNote.className = 'subnote hidden'; }
-      }
+      if (aiLimitNote) { aiLimitNote.textContent = ''; aiLimitNote.className = 'subnote hidden'; }
     }
 
     function setMode(mode, persist) {
@@ -809,7 +803,7 @@
       // greetings
       if (/^(hi|hii+|hello|helo|hey|heyy+|namaste|hola|yo|good\s*(morning|afternoon|evening|night))[\s!.,]*$/i.test(raw) || /^(hi|hello|hey)\b/.test(q) && q.length < 20) {
         const s = getSession();
-        return { html: `<h3>On-device AI</h3><p>${s && s.name ? `Hi ${esc(s.name)}!` : 'Hi!'} 👋 How can I help you today? You can ask me to find an app or game, check if a website looks risky, or ask about DeveloperHCR pages and downloads. Web search is unlimited; AI is ${isAdmin(s)?'unlimited for admin':'limited to 12 searches per browser with a 2 minute cooldown per search'}.</p><ul><li><a href="downloads.html">Downloads</a></li><li><a href="projects.html">Projects</a></li><li><a href="documentation.html">Guide</a></li><li><a href="${webUrl}" target="_blank" rel="noreferrer">Search the web</a></li></ul>` };
+        return { html: `<h3>On-device AI</h3><p>${s && s.name ? `Hi ${esc(s.name)}!` : 'Hi!'} 👋 How can I help you today? You can ask me to find an app or game, check if a website looks risky, or ask about DeveloperHCR pages and downloads. Web search and on-device AI searches are unlimited.</p><ul><li><a href="downloads.html">Downloads</a></li><li><a href="projects.html">Projects</a></li><li><a href="documentation.html">Guide</a></li><li><a href="${webUrl}" target="_blank" rel="noreferrer">Search the web</a></li></ul>` };
       }
 
       // virus / safety check
@@ -856,19 +850,8 @@
     $('ai-form').addEventListener('submit', (e) => {
       e.preventDefault();
       const admin = isAdmin(getSession());
-      if (!admin) {
-        if (aiLeft() <= 0) { refreshAiUi(); return; }
-        const cooldown = aiCooldownLeftMs();
-        if (cooldown > 0) {
-          const box = $('ai-result');
-          box.innerHTML = `<h3>Please wait</h3><p>AI time limit: wait <strong>${esc(formatCooldown(cooldown))}</strong> before your next AI search (2 minute cooldown). Web search is unlimited.</p>`;
-          box.classList.remove('hidden');
-          refreshAiUi();
-          return;
-        }
-      }
       const q = $('ai-query').value.trim(); if (!q) return;
-      if (!admin) { setAiUsed(getAiUsed() + 1); setAiLast(Date.now()); }
+      setAiUsed(getAiUsed() + 1);
       refreshAiUi();
       const box = $('ai-result');
       box.innerHTML = aiResponse(q).html;
