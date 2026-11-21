@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeveloperHCR — Software & Technology</title>
+    <style>
+:root {
+  --bg: #07131f;
+  --bg-strong: #020b12;
+  --panel: rgba(10, 20, 30, 0.8);
+  --panel-strong: #0a1724;
+  --card: rgba(13, 27, 40, 0.9);
+  --text: #eef6ff;
+  --muted: #9fb7c8;
+  --primary: #67e8f9;
+  --secondary: #8b5cf6;
+  --accent: #f59e0b;
+  --success: #34d399;
+  --border: rgba(148, 163, 184, 0.18);
+  --shadow: 0 20px 50px rgba(15, 23, 42, 0.65);
+  --glow: 0 0 24px rgba(103, 232, 249, 0.28);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  position: relative;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(103, 232, 249, 0.14), transparent 30%),
+    radial-gradient(circle at right, rgba(139, 92, 246, 0.12), transparent 24%),
+    linear-gradient(135deg, var(--bg-strong), #0b1724 35%, var(--bg));
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: linear-gradient(rgba(103, 232, 249, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(103, 232, 249, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(circle at center, black, transparent 78%);
+  pointer-events: none;
+}
+body::after {
+  content: "";
+  position: fixed;
+  width: 28rem;
+  height: 28rem;
+  border-radius: 50%;
+  top: 5%;
+  right: -10%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.20), transparent 62%);
+  pointer-events: none;
+  filter: blur(18px);
+}
+::selection { background: rgba(103, 232, 249, 0.25); }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+.container { width: min(1100px, calc(100% - 2rem)); margin: 0 auto; }
+.glass-panel, .project-card, .info-card, .panel {
+  background: rgba(11, 18, 27, 0.8);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+}
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(7, 19, 31, 0.8);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+}
+.nav-container {
+  width: min(1200px, calc(100% - 2rem));
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 76px;
+  gap: 1rem;
+}
+.brand-logo a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: clamp(1.2rem, 2vw, 2rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.site-logo {
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  border: 1px solid rgba(103, 232, 249, 0.35);
+  border-radius: 50%;
+}
+.brand-logo span { color: var(--primary); }
+.language-picker {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  color: var(--muted);
+}
+.language-select {
+  width: auto;
+  min-width: 108px;
+  padding: 0.6rem 0.7rem;
+  cursor: pointer;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0; margin: 0;
+  flex-wrap: wrap;
+}
+.main-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 999px;
+  color: #dfeaf5;
+  transition: 0.25s ease;
+  font-size: 0.95rem;
+}
+.main-nav a:hover,
+.main-nav a.active {
+  background: rgba(103, 232, 249, 0.12);
+  color: var(--primary);
+}
+.admin-btn {
+  border: 1px solid rgba(103, 232, 249, 0.25);
+  background: rgba(103, 232, 249, 0.08);
+}
+.hero-section, .page-banner {
+  padding: 4.5rem 0 2.5rem;
+}
+.hero-section {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 2rem;
+  align-items: center;
+  width: min(1200px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+.hero-content h1 {
+  font-size: clamp(2.2rem, 4vw, 4.3rem);
+  line-height: 1.08;
+  margin: 0 0 1rem;
+}
+.highlight { color: var(--primary); }
+.hero-content p, .intro-text, .page-copy {
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.4rem 0 0.5rem;
+}
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(103, 232, 249, 0.22);
+  background: rgba(103, 232, 249, 0.08);
+  color: var(--primary);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.3rem;
+  font-weight: 700;
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--glow);
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), #38bdf8);
+  color: #04151d;
+  box-shadow: 0 12px 30px rgba(56, 189, 248, 0.35);
+}
+.btn-secondary {
+  background: rgba(139, 92, 246, 0.12);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+.glass-panel {
+  border-radius: 20px;
+  padding: 1.2rem;
+}
+.hero-artwork .glass-panel {
+  padding: 1rem;
+  position: relative;
+  transform: perspective(1200px) rotateX(0deg) rotateY(0deg);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.artwork-img {
+  width: 100%;
+  min-height: 360px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.neon-badge {
+  position: absolute; right: 2rem; bottom: 2rem;
+  padding: 0.6rem 1rem; border-radius: 999px;
+  background: rgba(52, 211, 153, 0.15); color: var(--success);
+  border: 1px solid rgba(52, 211, 153, 0.35); font-weight: 700;
+}
+.secret-indicator {
+  display: none;
+  margin-top: 1rem;
+  width: fit-content;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(103, 232, 249, 0.12);
+  border: 1px solid rgba(103, 232, 249, 0.35);
+  color: var(--primary);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+body.secret-mode .secret-indicator {
+  display: inline-flex;
+}
+section { padding: 2rem 0; }
+.intro-section, .projects-preview, .page-content {
+  width: min(1200px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+.info-grid, .feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+.project-card, .info-card {
+  padding: 1.5rem;
+  border-radius: 18px;
+  min-height: 220px;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.project-card:hover, .info-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(103, 232, 249, 0.35);
+  box-shadow: 0 25px 45px rgba(2, 8, 12, 0.55);
+}
+.project-card h3, .info-card h3 { margin-top: 0; }
+.project-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: var(--primary);
+  font-weight: 700;
+}
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: rgba(2, 8, 12, 0.8);
+  margin-top: 3rem;
+}
+.footer-content {
+  width: min(1200px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.footer-links ul {
+  list-style: none; padding: 0; margin: 0;
+}
+.footer-links li + li { margin-top: 0.5rem; }
+.footer-bottom {
+  text-align: center;
+  padding: 1.1rem 0 1.5rem;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+.page-banner {
+  background: linear-gradient(135deg, rgba(103, 232, 249, 0.08), rgba(139, 92, 246, 0.08));
+  border-bottom: 1px solid var(--border);
+}
+.page-content {
+  padding-top: 2rem;
+}
+.page-copy {
+  max-width: 800px;
+}
+.info-card ul { margin: 0; padding-left: 1.1rem; color: var(--muted); }
+.panel {
+  border-radius: 18px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+label { display: block; margin-bottom: 0.5rem; color: var(--muted); }
+input, textarea, select, button {
+  font: inherit;
+}
+input, textarea, select {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(15, 23, 42, 0.8);
+  color: var(--text);
+}
+textarea { min-height: 130px; resize: vertical; }
+.muted { color: var(--muted); }
+.menu-toggle { display: none; }
+@media (max-width: 860px) {
+  .hero-section, .project-grid, .feature-grid, .info-grid, .footer-content, .form-row {
+    grid-template-columns: 1fr;
+  }
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px; height: 42px; border-radius: 10px; border: 1px solid var(--border); cursor: pointer;
+  }
+  .main-nav {
+    position: absolute;
+    top: 76px; left: 1rem; right: 1rem;
+    display: none;
+    background: rgba(7, 19, 31, 0.95); border: 1px solid var(--border); border-radius: 16px; padding: 0.75rem;
+  }
+  .main-nav.open { display: block; }
+  .main-nav ul { flex-direction: column; align-items: stretch; }
+  .main-nav a { justify-content: center; }
+}
+@media (max-width: 480px) {
+  .nav-container { gap: 0.45rem; }
+  .brand-logo a { font-size: 1rem; gap: 0.4rem; }
+  .site-logo { width: 34px; height: 34px; }
+  .language-select { min-width: 78px; padding: 0.55rem 0.4rem; }
+  .menu-toggle { width: 38px; height: 38px; }
+}
+.tag-list { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 1rem 0 0; list-style: none; }
+.tag { padding: 0.3rem 0.7rem; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); font-size: 0.85rem; }
+.github-stars { display: inline-flex; margin-top: 1.25rem; }
+.github-stars img { min-height: 28px; }
+.github-button .github-icon { width: 1.2rem; height: 1.2rem; fill: currentColor; }
+</style>
+
+</head>
+<body>
+    <header class="site-header">
+        <div class="nav-container">
+            <div class="brand-logo">
+                <a href="home.html"><img src="../assets/images/developerhcr-logo.png" alt="DeveloperHCR logo" class="site-logo">Developer<span>HCR™</span></a>
+            </div>
+            <nav class="main-nav" aria-label="Main navigation">
+                <ul>
+                    <li><a href="home.html" class="active">Home</a></li>
+                    <li><a href="search.html">Engine</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="api.html">AI & API</a></li>
+                    <li><a href="downloads.html">Downloads</a></li>
+                    <li><a href="documentation.html">Docs</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <label class="language-picker"><span class="sr-only">Language</span><select class="language-select" id="language-select" aria-label="Select language"><option value="en">English</option><option value="hi">हिन्दी</option><option value="hinglish">Hinglish</option></select></label>
+            <div class="menu-toggle" aria-label="Open menu"><span aria-hidden="true">☰</span></div>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Engineering the Future of <span class="highlight">Digital Experience</span></h1>
+            <p>Explore DeveloperHCR: practical tools and ambitious experiments across Android, AI-assisted workflows, desktop-style experiences, and the web. Every project starts with a simple question: how can technology make everyday work clearer and more useful?</p>
+            <div class="hero-meta" aria-label="DeveloperHCR highlights">
+                <div class="meta-chip">AI-first</div>
+                <div class="meta-chip">Windows style UI</div>
+                <div class="meta-chip">Productivity tools</div>
+            </div>
+            <div class="hero-buttons">
+                <a href="projects.html" class="btn btn-primary"> Explore Projects</a>
+                <a href="search.html" class="btn btn-secondary">DeveloperHCR Engine</a>
+                <a href="devx-os-demo.html#admin-panel" class="btn btn-secondary">Explore DevX OS Demo</a>
+                <a href="projects.html#devx-billing-demo" class="btn btn-secondary">Try DevX Billing Demo</a>
+                <a class="btn btn-secondary github-button" href="https://github.com/DeveloperHCR/HCRAPP" target="_blank" rel="noreferrer">
+                    <svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.3 9.42 7.87 10.95.58.1.79-.25.79-.56v-2.17c-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.35.95.1-.74.4-1.25.73-1.54-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.58.24 2.75.12 3.04.74.81 1.18 1.84 1.18 3.1 0 4.43-2.71 5.4-5.29 5.69.42.36.79 1.07.79 2.16v3.2c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"></path>
+                    </svg>
+                    <span>GitHub Repository</span>
+                </a>
+            </div>
+            <div class="secret-indicator" id="secret-indicator">Stealth mode active</div>
+            <div class="hero-badges" style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;margin-top:1.25rem;">
+                <a class="github-stars" href="https://github.com/DeveloperHCR/HCRAPP/stargazers" target="_blank" rel="noreferrer" aria-label="View DeveloperHCR GitHub stars" style="margin-top:0;">
+                    <img src="https://img.shields.io/github/stars/DeveloperHCR/HCRAPP?style=for-the-badge&amp;logo=github&amp;label=GitHub%20stars" alt="GitHub stars">
+                </a>
+                <a class="github-stars" href="https://github.com/DeveloperHCR/HCRAPP/commits/main" target="_blank" rel="noreferrer" aria-label="View all commits applied" style="margin-top:0;">
+                    <img id="commits-badge-home" src="https://img.shields.io/badge/commits_applied-76-0891b2?style=for-the-badge&amp;logo=git&amp;logoColor=white" alt="Commits applied: 76">
+                </a>
+                <span id="commits-count-home" class="meta-chip" aria-live="polite">Total commits: 76</span>
+            </div>
+        </div>
+        <div class="hero-artwork">
+            <div class="glass-panel">
+                <img src="../assets/images/hacker-artwork.svg" alt="DeveloperHCR Hacker-themed Artwork" class="artwork-img">
+                <div class="neon-badge">System Online</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="intro-section glass-container">
+        <div class="container">
+            <h2>About <span class="highlight">DeveloperHCR™</span></h2>
+            <p class="intro-text">
+                "DeveloperHCR™ is an independent software development and technology brand focused on creating innovative digital experiences, AI-powered applications, Android software, developer tools, desktop environments and modern web solutions."
+            </p>
+            <p>
+                We explore emerging technologies and develop practical software experiences through creativity, engineering, continuous learning and innovation. Our goal is to make technology more useful, accessible and productive.
+            </p>
+        </div>
+    </section>
+
+    <section class="projects-preview">
+        <div class="container">
+            <h2>Featured <span class="highlight">Projects</span></h2>
+            <div class="project-grid">
+                <div class="project-card glass-panel">
+                    <h3>HCRAPP</h3>
+                    <p>AI-assisted developer workspace project focused on coding tools, file management, virtual desktop concepts, utilities, and productivity features.</p>
+                    <ul class="tag-list" aria-label="Project tags">
+                        <li class="tag">AI-assisted</li>
+                        <li class="tag">Android</li>
+                        <li class="tag">Developer tools</li>
+                    </ul>
+                    <a href="https://github.com/DeveloperHCR/HCRAPP" target="_blank" rel="noreferrer" class="project-link">View Repository </a>
+                </div>
+                <div class="project-card glass-panel">
+                    <h3>DevX OS</h3>
+                    <p>Computer-style graphical desktop environment concept featuring a custom desktop GUI, window management, and file systems.</p>
+                    <ul class="tag-list" aria-label="Project tags">
+                        <li class="tag">Android</li>
+                        <li class="tag">Virtual desktop</li>
+                        <li><a class="tag" href="https://github.com/DeveloperHCR/HCRAPP/releases/tag/DevXOS-3.0(stable)" target="_blank" rel="noreferrer">DevXOS-3.0(stable)</a></li>
+                    </ul>
+                    <a href="devx-os-demo.html#admin-panel" class="project-link">Explore demo &amp; unlocked Admin Panel</a>
+                </div>
+                <div class="project-card glass-panel">
+                    <h3>DevX Billing 1.3.2</h3>
+                    <p>Browser-based shop and invoice management with product, customer, payment history, and reporting sections.</p>
+                    <ul class="tag-list" aria-label="DevX Billing tags">
+                        <li class="tag">Billing</li>
+                        <li class="tag">Invoices</li>
+                        <li class="tag">Browser storage</li>
+                    </ul>
+                    <a href="projects.html#devx-billing-demo" class="project-link">View sandboxed demo</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div class="footer-info">
+                <h3>DeveloperHCR™</h3>
+                <p>Official Email: <a href="mailto:developerhcr@gmail.com">developerhcr@gmail.com</a></p>
+                <p>GitHub: <a href="https://github.com/DeveloperHCR/HCRAPP" target="_blank" rel="noreferrer">github.com/DeveloperHCR/HCRAPP</a></p>
+            </div>
+            <div class="footer-links">
+                <h4>Legal & Info</h4>
+                <ul>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms & Conditions</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span id="year">2026</span> DeveloperHCR™. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/main.js?v=20261116-theme"></script>
+    <script>
+      (function(){
+        var badge = document.getElementById('commits-badge-home');
+        var label = document.getElementById('commits-count-home');
+        fetch('https://api.github.com/repos/DeveloperHCR/HCRAPP/commits?per_page=1&sha=main', { headers: { 'Accept': 'application/vnd.github+json' }})
+          .then(function(r){ var link = r.headers.get('Link') || ''; var m = link.match(/[?&]page=(\d+)>; rel="last"/); if(m){ return parseInt(m[1],10); } return r.json().then(function(j){ return Array.isArray(j) ? j.length : null; }); })
+          .then(function(count){ if(!count) return; if(badge){ badge.alt = 'Commits applied: ' + count; badge.src = 'https://img.shields.io/badge/commits_applied-' + count + '-0891b2?style=for-the-badge&logo=git&logoColor=white'; } if(label){ label.textContent = 'Total commits: ' + count; } })
+          .catch(function(){});
+      })();
+    </script>
+    <script src="../js/navigation.js"></script>
+    <script src="../js/language.js"></script>
+</body>
+</html>
