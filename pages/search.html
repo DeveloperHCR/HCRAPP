@@ -55,21 +55,29 @@
     .menu-actions{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.6rem}
     .badge-admin{display:inline-flex;align-items:center;padding:.15rem .5rem;border-radius:999px;background:rgba(245,158,11,.18);color:var(--warn);border:1px solid rgba(245,158,11,.35);font-size:.75rem;font-weight:700}
     main{width:min(1020px,calc(100% - 1.2rem));margin:0 auto;padding:1rem 0 3rem}
-    .hero{text-align:center;padding:clamp(1.2rem,4vw,3rem) 0 .8rem}
-    .logo{font-size:clamp(2.3rem,7vw,4.7rem);letter-spacing:-.04em;margin:0;font-weight:700}
+    .google-main{min-height:calc(100vh - 72px);display:flex;flex-direction:column;justify-content:center}
+    .google-main:has(#web-results:not(.hidden)),.google-main:has(#ai-result:not(.hidden)),.google-main:has(#quick-links:not(.hidden)){justify-content:flex-start}
+    .hero{text-align:center;padding:clamp(2rem,12vh,6rem) 0 1.5rem;width:100%}
+    .logo{font-size:clamp(2.6rem,8vw,5.2rem);letter-spacing:-.04em;margin:0 0 1.2rem;font-weight:700;color:var(--text)}
     .logo span{color:var(--accent)} .logo .g2{color:var(--accent-2)}
     .tagline{color:var(--muted);margin:.5rem 0 1.1rem;font-size:1.02rem}
     .stats-row{display:flex;flex-wrap:wrap;justify-content:center;gap:.55rem;margin-bottom:1rem}
     .stat-chip{display:inline-flex;align-items:center;gap:.35rem;padding:.38rem .68rem;border-radius:999px;border:1px solid var(--border);background:var(--surface);font-size:.8rem;color:var(--muted)}
     .stat-chip strong{color:var(--text)} .stat-chip a{color:var(--accent)}
     .engine-card{background:var(--surface);border:1px solid var(--border);border-radius:24px;box-shadow:var(--shadow);padding:1rem}
+    .google-card{background:transparent;border:0;box-shadow:none;padding:0;max-width:720px;margin:0 auto}
     .mode-tabs{display:inline-flex;gap:.3rem;padding:.25rem;border:1px solid var(--border);border-radius:999px;background:var(--surface-2);margin-bottom:.9rem;flex-wrap:wrap}
-    .mode-tab{border:0;background:transparent;color:var(--muted);padding:.5rem .85rem;border-radius:999px;cursor:pointer;font-weight:600}
+    .mode-tab{border:0;background:transparent;color:var(--muted);padding:.45rem .9rem;border-radius:999px;cursor:pointer;font-weight:600}
     .mode-tab.active{background:var(--accent);color:#04151d} body.light-mode .mode-tab.active{color:#fff}
+    .ai-tab-count{font-size:.78rem;font-weight:600;opacity:.9;margin-left:.15rem}
     .search-form{display:flex;gap:.55rem;align-items:stretch}
+    .google-search-form input{border-radius:999px;padding:1rem 1.25rem;box-shadow:0 1px 6px rgba(0,0,0,.18)}
+    body.light-mode .google-search-form input{box-shadow:0 1px 6px rgba(32,33,36,.18)}
     .search-form input{flex:1;min-width:0;padding:.95rem 1rem;border:1px solid var(--border);border-radius:14px;background:var(--surface-2);color:var(--text);font-size:1rem}
+    .google-search-form input{border-radius:999px;padding:1rem 1.25rem}
     .search-form input:focus{outline:2px solid rgba(103,232,249,.35);border-color:var(--accent)}
     .search-form button[type="submit"]{padding:.9rem 1.1rem;border:0;border-radius:14px;background:var(--accent);color:#04151d;font-weight:700;cursor:pointer}
+    .google-search-form button[type="submit"]{border-radius:999px;padding:.9rem 1.35rem}
     body.light-mode .search-form button[type="submit"]{color:#fff}
     .search-form button[type="submit"]:disabled{opacity:.5;cursor:not-allowed}
     .subnote{margin-top:.7rem;color:var(--muted);font-size:.84rem;display:flex;justify-content:space-between;gap:.75rem;flex-wrap:wrap}
@@ -182,42 +190,34 @@
     </div>
   </header>
 
-  <main>
+  <main class="google-main">
     <section class="hero">
-      <h1 class="logo">DeveloperHCR <span>Eng</span><span class="g2">ine</span></h1>
+      <h1 class="logo" aria-label="DeveloperHCR">DeveloperHCR</h1>
 
-      <div class="engine-card">
-        <div class="fs-controls">
-          <button class="pill-btn" id="fullscreen-btn" type="button" aria-pressed="false" title="Full screen search mode">Full screen search</button>
-        </div>
+      <div class="engine-card google-card">
+        <button class="hidden" id="fullscreen-btn" type="button" aria-pressed="false" tabindex="-1">Full screen search</button>
         <div class="mode-tabs" role="tablist" aria-label="Search mode">
-          <button class="mode-tab active" id="tab-web" role="tab" aria-selected="true" type="button">Web Search (Unlimited)</button>
-          <button class="mode-tab" id="tab-ai" role="tab" aria-selected="false" type="button">AI Search (<span id="ai-left-tab">12</span> left)</button>
+          <button class="mode-tab active" id="tab-web" role="tab" aria-selected="true" type="button">Web</button>
+          <button class="mode-tab" id="tab-ai" role="tab" aria-selected="false" type="button">AI <span id="ai-left-tab" class="ai-tab-count"></span></button>
         </div>
 
         <div id="panel-web" role="tabpanel" aria-labelledby="tab-web">
-          <form class="search-form" id="web-form" role="search">
-            <label class="sr-only" for="web-query">Search the web</label>
-            <input id="web-query" name="q" type="search" placeholder="Search anything on DeveloperHCR Engine…" autocomplete="off" required>
+          <form class="search-form google-search-form" id="web-form" role="search">
+            <label class="sr-only" for="web-query">Search</label>
+            <input id="web-query" name="q" type="search" placeholder="Search the web" autocomplete="off" autofocus required>
             <button type="submit">Search</button>
           </form>
-          <div class="subnote">
-            <span>Unlimited DeveloperHCR Engine web search. Results open in full screen on this website (no other tab).</span>
-            <span><button class="pill-btn" id="focus-results-btn" type="button" style="padding:.2rem .55rem;font-size:.8rem;">Full screen results</button></span>
-          </div>
+          <button class="hidden" id="focus-results-btn" type="button" tabindex="-1">Full screen results</button>
           <div id="web-results" class="result-box hidden" aria-live="polite"></div>
         </div>
 
         <div id="panel-ai" role="tabpanel" aria-labelledby="tab-ai" class="hidden">
-          <form class="search-form" id="ai-form" role="search">
-            <label class="sr-only" for="ai-query">Ask on-device AI</label>
-            <input id="ai-query" type="search" placeholder="Hi, hello, find app/game, check a URL for virus, ask about DeveloperHCR…" autocomplete="off" required>
-            <button type="submit" id="ai-submit">Ask AI</button>
+          <form class="search-form google-search-form" id="ai-form" role="search">
+            <label class="sr-only" for="ai-query">Ask AI</label>
+            <input id="ai-query" type="search" placeholder="Ask AI" autocomplete="off" required>
+            <button type="submit" id="ai-submit">Ask</button>
           </form>
-          <div class="subnote">
-            <span>On-device AI (no cloud): normal chat, app/game finder, URL safety help, and site answers. 12 searches for users, unlimited for admin.</span>
-            <span id="ai-limit-note"></span>
-          </div>
+          <span id="ai-limit-note" class="hidden"></span>
           <div id="ai-result" class="ai-result hidden" aria-live="polite"></div>
         </div>
       </div>
@@ -322,8 +322,8 @@
     </section>
 
     <footer>
-      <p>DeveloperHCR Engine · first page · <a href="https://github.com/DeveloperHCR/HCRAPP" target="_blank" rel="noreferrer">DeveloperHCR/HCRAPP</a> · <a href="https://github.com/DeveloperHCR/HCRAPP/commits/main" target="_blank" rel="noreferrer"><span id="footer-commits">76</span> commits applied</a></p>
-      <p>&copy; <span id="year">2026</span> DeveloperHCR. Unlimited web search · Full-screen results on this website (no other tab) · AI 12/user (admin unlimited) · Multi-style · Local login (no cloud) · Cookies &amp; extensions.</p>
+      <p><a href="home.html">Home</a> · <a href="about.html">About</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="contact.html">Contact</a></p>
+      <p>&copy; <span id="year">2026</span> DeveloperHCR</p>
     </footer>
   </main>
 
@@ -383,7 +383,7 @@
           <option value="amber-dark">Amber Dark</option>
           <option value="mono-dark">Mono Dark</option>
         </select></div>
-        <div class="field"><label for="setting-mode">Default search mode</label><select id="setting-mode"><option value="web">Web Search (Unlimited, redirects to Google)</option><option value="ai">AI Search</option></select></div>
+        <div class="field"><label for="setting-mode">Default search mode</label><select id="setting-mode"><option value="web">Web</option><option value="ai">AI</option></select></div>
         <div class="field"><label for="setting-shortcuts">Show quick links (inner &amp; outer)</label><select id="setting-shortcuts"><option value="on">Show</option><option value="off">Hide</option></select></div>
         <div class="field"><label for="setting-autofs">Auto full screen on search</label><select id="setting-autofs"><option value="on">On (recommended)</option><option value="off">Off</option></select></div>
       </div>
@@ -409,8 +409,8 @@
         <a href="https://www.google.com/" target="_blank" rel="noreferrer">Google</a>
       </div>
       <div class="divider"></div>
-      <h3>Search behavior &amp; limits</h3>
-      <p class="notice"><strong>DeveloperHCR Engine web search:</strong> unlimited — results shown in full screen on this website (no other tab) using embedded web results and on-page result tools. <strong>On-device AI:</strong> 12 searches per browser profile for normal users; <strong>unlimited for admin (DeveloperHCR)</strong> when signed in. Used: <strong id="settings-ai-used">0</strong> · Remaining: <strong id="settings-ai-left">12</strong>.</p>
+      <h3>AI usage</h3>
+      <p class="notice">On-device AI used: <strong id="settings-ai-used">0</strong> · Remaining: <strong id="settings-ai-left">12</strong></p>
       <div class="divider"></div>
       <h3>Extensions (local, no cloud)</h3>
       <p class="notice">Browser-like local extensions/features saved on this device (localStorage/cookies):</p>
@@ -465,11 +465,11 @@
       }
       if (!STYLE_PRESETS[out.style]) out.style = 'cyan-dark';
       if (out.mode !== 'ai') out.mode = 'web';
-      if (out.shortcuts !== 'off') out.shortcuts = 'on';
+      if (out.shortcuts !== 'on' && out.shortcuts !== 'off') out.shortcuts = 'off';
       if (out.autofs !== 'off') out.autofs = 'on';
       return out;
     }
-    const defaultSettings = { style: (localStorage.getItem('developerhcr-theme') === 'light' ? 'light' : 'cyan-dark'), mode:'web', shortcuts:'on', autofs:'on' };
+    const defaultSettings = { style: (localStorage.getItem('developerhcr-theme') === 'light' ? 'light' : 'cyan-dark'), mode:'web', shortcuts:'off', autofs:'on' };
     let settings = migrateSettings(Object.assign({}, defaultSettings, read(K.settings, {})));
 
     function isAdmin(session) { return !!(session && (session.username || '').toLowerCase() === ADMIN_USER && session.admin === true); }
@@ -524,11 +524,11 @@
       const left = aiLeft();
       const aiLeftTab = $('ai-left-tab'); if (aiLeftTab) aiLeftTab.textContent = admin ? '∞' : String(left);
       const aiLeftChip = $('ai-left-chip'); if (aiLeftChip) aiLeftChip.textContent = admin ? 'Unlimited (Admin)' : `${left} left (${AI_LIMIT} limit)`;
-      $('settings-ai-used').textContent = getAiUsed();
-      $('settings-ai-left').textContent = admin ? 'Unlimited (admin)' : String(left);
+      const settingsUsed = $('settings-ai-used'); if (settingsUsed) settingsUsed.textContent = getAiUsed();
+      const settingsLeft = $('settings-ai-left'); if (settingsLeft) settingsLeft.textContent = admin ? 'Unlimited (admin)' : String(left);
       $('ai-submit').disabled = !admin && left <= 0;
-      $('ai-limit-note').textContent = admin ? 'Admin signed in: unlimited AI searches enabled on this device.' : (left <= 0 ? 'AI search limit reached (12/12 used on this browser).' : `${left} of ${AI_LIMIT} AI searches remaining on this browser.`);
-      $('ai-limit-note').className = 'subnote ' + (admin ? 'success' : (left <= 0 ? 'danger' : ''));
+      const aiLimitNote = $('ai-limit-note');
+      if (aiLimitNote) { aiLimitNote.textContent = ''; aiLimitNote.className = 'subnote hidden'; }
     }
 
     function setMode(mode, persist) {
@@ -997,16 +997,8 @@
     }
 
     // Init
-    const session = getSession();
-    const greetingEl = $('greeting');
-    if (greetingEl) {
-      const hour = new Date().getHours();
-      const part = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
-      greetingEl.textContent = (session && session.name ? `${part}, ${session.name}. ` : '') + 'Unlimited DeveloperHCR Engine web search with full-screen results on this website (no other tab), on-device AI limited to 12 searches (admin: unlimited), multi-style website, and quick access to inner and outer websites.';
-    }
     $('year').textContent = new Date().getFullYear();
     applySettings(); refreshAiUi(); renderAccount(); renderExtensions(); applyExtensions();
-    if (!getSession()) { try { openDialog('login-dialog'); } catch {} }
   })();
   </script>
 </body>
