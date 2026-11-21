@@ -129,7 +129,8 @@
     body.search-fullscreen .search-form input{font-size:1.08rem;padding:1rem 1.05rem}
     body.search-fullscreen .logo{font-size:clamp(1.8rem,5vw,3rem);margin-bottom:.4rem}
     body.search-fullscreen #web-results{display:block!important}
-    body.search-fullscreen #web-results .embed-wrap iframe,.results-full-embed iframe{height:min(70vh,820px)}
+    .results-full-embed iframe{height:min(68vh,760px)}
+    body.search-fullscreen #web-results .embed-wrap iframe,body.search-fullscreen .results-full-embed iframe{height:calc(100vh - 260px);min-height:420px}
     .fs-controls{display:flex;justify-content:flex-end;margin-bottom:.6rem;gap:.4rem}
     .result-tabs{display:flex;flex-wrap:wrap;gap:.35rem;margin:.6rem 0}
     .result-tab{border:1px solid var(--border);background:var(--surface);color:var(--text);padding:.4rem .65rem;border-radius:999px;cursor:pointer;font-size:.82rem}
@@ -703,6 +704,18 @@
       if (type === 'github') return 'https://github.com/search?q=' + enc + '&type=repositories';
       return 'https://www.bing.com/search?q=' + enc;
     }
+    function looksLikeDirectUrl(q) {
+      const s = (q || '').trim();
+      if (!s || /\s/.test(s)) return false;
+      if (/^https?:\/\//i.test(s)) return true;
+      if (/^www\./i.test(s)) return true;
+      return /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+(?:[\/:?#].*)?$/i.test(s);
+    }
+    function toDirectUrl(q) {
+      const s = (q || '').trim();
+      if (!s) return '';
+      return /^https?:\/\//i.test(s) ? s : 'https://' + s;
+    }
     function getRecentSearches() { return read('developerhcr-recent-searches', []); }
     function addRecentSearch(q) {
       const list = getRecentSearches().filter(x => x && x.toLowerCase() !== q.toLowerCase());
@@ -719,6 +732,7 @@
       currentWebQuery = q; currentResultTab = tab || currentResultTab || 'web';
       const enc = encodeURIComponent(q);
       const src = resultUrl(currentResultTab, q);
+      const directUrl = looksLikeDirectUrl(q) ? toDirectUrl(q) : '';
       const tabs = [
         ['web','Web'],['images','Images'],['videos','Videos'],['news','News'],['maps','Maps'],['duck','DuckDuckGo'],['wiki','Wikipedia'],['github','GitHub']
       ];
@@ -727,20 +741,23 @@
       const recent = getRecentSearches().slice(0,6).map(s => `<button type="button" class="result-tab" data-rq="${esc(s)}">${esc(s)}</button>`).join('');
       const inner = findInnerMatches(q);
       const innerHtml = inner.length ? `<h4 style="margin:.9rem 0 .3rem;">On this website (inner pages)</h4><div class="onsite-list">${inner.map(p => `<a class="result-link" href="${p.url}"><strong>${esc(p.title)}</strong><span>Inner website page</span></a>`).join('')}</div>` : '';
+      const openSiteBtn = directUrl ? `<a class="pill-btn primary" href="${esc(directUrl)}" target="_blank" rel="noreferrer">Open website</a>` : '';
       $('web-results').innerHTML = `
         <div class="results-meta">
           <div>
             <h3 style="margin:0">Full screen results for "${esc(q)}"</h3>
-            <p class="muted" style="margin:.15rem 0 0">Shown on this website · no other tab · unlimited DeveloperHCR Engine search</p>
+            <p class="muted" style="margin:.15rem 0 0">Unlimited DeveloperHCR Engine search</p>
           </div>
           <div class="row">
+            ${openSiteBtn}
+            <a class="pill-btn" href="${esc(src)}" target="_blank" rel="noreferrer">Open source</a>
             <button type="button" class="pill-btn" id="results-fullscreen-toggle">Full screen</button>
             <button type="button" class="pill-btn" id="results-clear">Clear</button>
           </div>
         </div>
         <div class="result-tabs" aria-label="Result types">${tabHtml}</div>
         <div class="results-full-embed"><iframe name="results-frame" id="results-frame" title="Search results for ${esc(q)}" src="${src}" loading="eager" referrerpolicy="no-referrer"></iframe></div>
-        <p class="notice">If an embedded source blocks viewing in a frame, switch result type/source tabs above — results stay on this website (no other tab).</p>
+        <p class="notice">If the embedded source does not load (some sites block viewing in a frame), use <strong>Open source</strong>${directUrl ? ' or <strong>Open website</strong>' : ''} to view it directly.</p>
         <h4 style="margin:.7rem 0 .2rem;">Related searches</h4><div class="result-tabs">${suggestions}</div>
         ${recent ? `<h4 style="margin:.7rem 0 .2rem;">Recent searches</h4><div class="result-tabs">${recent}</div>` : ''}
         ${innerHtml}
