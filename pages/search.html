@@ -122,7 +122,7 @@
     .device-item span{display:block;word-break:break-word;font-size:.92rem}
     body.compact-mode .quick-links{gap:.4rem}.compact-mode .quick-link{padding:.55rem .6rem}
     body.search-fullscreen .topbar{position:static}
-    body.search-fullscreen .page-nav,body.search-fullscreen .stats-row,body.search-fullscreen #quick-links,body.search-fullscreen #account-section,body.search-fullscreen footer,body.search-fullscreen .tagline{display:none!important}
+    body.search-fullscreen .page-nav,body.search-fullscreen .stats-row,body.search-fullscreen #quick-links,body.search-fullscreen footer,body.search-fullscreen .tagline{display:none!important}
     body.search-fullscreen main{min-height:100vh;display:grid;place-items:center;align-content:center;width:min(1400px,calc(100% - 1rem));padding:.5rem 0}
     body.search-fullscreen .hero{padding:0;width:100%}
     body.search-fullscreen .engine-card{padding:1rem;width:100%}
@@ -161,8 +161,8 @@
             </div>
           </div>
           <div class="menu-actions">
-            <button class="pill-btn primary" id="menu-signin" type="button">Sign in / Sign up</button>
-            <button class="pill-btn hidden" id="menu-admin" type="button">Admin</button>
+            <a class="pill-btn primary" id="menu-signin" href="account.html">Sign in / Sign up</a>
+            <a class="pill-btn hidden" id="menu-admin" href="account.html">Account</a>
             <button class="pill-btn hidden" id="menu-signout" type="button">Sign out</button>
           </div>
         </div>
@@ -172,6 +172,7 @@
         <nav class="page-nav" aria-label="All pages">
           <a href="search.html" class="active" aria-current="page">Engine</a>
           <a href="home.html">Home</a>
+          <a href="account.html">Account</a>
           <a href="about.html">About</a>
           <a href="projects.html">Projects</a>
           <a href="services.html">Services</a>
@@ -225,6 +226,7 @@
       <div class="quick-links" id="quick-links" aria-label="All pages and shortcuts">
         <a class="quick-link" href="search.html"><strong>Engine</strong><span>First page / search</span></a>
         <a class="quick-link" href="home.html"><strong>Home</strong><span>Inner website home</span></a>
+        <a class="quick-link" href="account.html"><strong>Account</strong><span>Device account &amp; profile</span></a>
         <a class="quick-link" href="about.html"><strong>About</strong><span>Inner website</span></a>
         <a class="quick-link" href="projects.html"><strong>Projects</strong><span>Inner website</span></a>
         <a class="quick-link" href="services.html"><strong>Services</strong><span>Inner website</span></a>
@@ -242,82 +244,6 @@
         <a class="quick-link" href="https://github.com/DeveloperHCR/HCRAPP/releases" target="_blank" rel="noreferrer"><strong>Releases</strong><span>Outer website</span></a>
         <a class="quick-link" href="https://github.com/DeveloperHCR/HCRAPP/stargazers" target="_blank" rel="noreferrer"><strong>Stargazers</strong><span>Outer website</span></a>
         <a class="quick-link" href="https://www.google.com/" target="_blank" rel="noreferrer"><strong>Google</strong><span>Outer website</span></a>
-      </div>
-    </section>
-
-    <section class="panel" id="account-section">
-      <h2>Device account (Chrome/Google-style, no cloud)</h2>
-      <p class="muted">Sign in or create a local account on this browser only. Data is stored in localStorage and never uploaded. Admin account: <strong>DeveloperHCR</strong> (unlimited AI access).</p>
-      <div id="account-logged-out" class="grid-2">
-        <form id="login-form" autocomplete="off">
-          <h3>Sign in</h3>
-          <div class="field"><label for="login-user">Username</label><input id="login-user" required placeholder="DeveloperHCR or your username" autocomplete="username"></div>
-          <div class="field"><label for="login-pass">Password</label><input id="login-pass" type="password" required autocomplete="current-password"></div>
-          <div class="row">
-            <button class="pill-btn primary" type="submit">Sign in</button>
-            <button class="pill-btn" id="admin-quick-login" type="button">Sign in as Admin</button>
-          </div>
-          <p id="login-msg" class="notice" aria-live="polite"></p>
-          <div class="divider"></div>
-          <h3 style="font-size:.98rem;margin:.1rem 0 .4rem;">Continue with (local, no cloud)</h3>
-          <p class="notice" style="margin-top:0">Google-style sign-in options below are local/device demos only (no cloud, no real OAuth).</p>
-          <div class="row">
-            <button class="pill-btn" id="google-local-login" type="button">Continue with Google (local)</button>
-            <button class="pill-btn" id="guest-local-login" type="button">Continue as Guest (local)</button>
-          </div>
-        </form>
-        <form id="signup-form" autocomplete="off">
-          <h3>Create local account</h3>
-          <div class="field"><label for="signup-name">Display name</label><input id="signup-name" required maxlength="40"></div>
-          <div class="field"><label for="signup-user">Username</label><input id="signup-user" required maxlength="24" pattern="[A-Za-z0-9_\-]{3,24}" title="3-24 letters, numbers, _ or -"></div>
-          <div class="field"><label for="signup-pass">Password</label><input id="signup-pass" type="password" required minlength="4" autocomplete="new-password"></div>
-          <button class="pill-btn" type="submit">Create local account</button>
-          <p id="signup-msg" class="notice" aria-live="polite"></p>
-        </form>
-      </div>
-      <div id="account-logged-in" class="hidden">
-        <div class="profile-row">
-          <div class="avatar-lg" id="profile-avatar" aria-hidden="true">?</div>
-          <div>
-            <p style="margin:0">Signed in as <strong id="current-user-name"></strong> (<span id="current-user-handle"></span>) <span id="current-admin-badge" class="badge-admin hidden">ADMIN</span></p>
-            <p class="notice" id="account-status-note" style="margin:.2rem 0 0">Local-only session. No cloud sync.</p>
-          </div>
-        </div>
-        <div class="panel" style="margin-top:.7rem;padding:.85rem;">
-          <h3 style="margin:0 0 .45rem;font-size:1rem;color:var(--accent);">Profile picture (local)</h3>
-          <p class="notice" style="margin-top:0">Add or change your profile picture on this device only. It is saved in browser local storage (no cloud).</p>
-          <div class="row" style="margin-top:.5rem;">
-            <input id="profile-pic-input" type="file" accept="image/*" aria-label="Upload profile picture">
-            <button class="pill-btn" id="remove-pic-btn" type="button">Remove picture</button>
-          </div>
-          <p id="profile-pic-msg" class="notice" aria-live="polite"></p>
-        </div>
-
-        <div id="admin-panel" class="admin-card hidden">
-          <h3>Admin options</h3>
-          <p class="muted">Admin account has unlimited AI searches and access to local engine controls.</p>
-          <ul class="muted" style="margin:.4rem 0 .6rem 1.1rem;">
-            <li>AI search: <strong>Unlimited</strong></li>
-            <li>Local users stored: <strong id="admin-user-count">0</strong></li>
-            <li>Engine: <strong>DeveloperHCR Engine (first page)</strong></li>
-            <li>All pages: Home, Engine, About, Projects, Services, AI &amp; API, Downloads, Docs, Gallery, Contact, Privacy, Terms</li>
-          </ul>
-          <div class="row">
-            <button class="pill-btn" id="admin-reset-ai" type="button">Reset AI counter (local)</button>
-            <button class="pill-btn" id="admin-open-settings" type="button">Open settings</button>
-          </div>
-        </div>
-
-        <div class="panel" style="margin-top:.8rem;padding:.85rem;">
-          <h3 style="margin:0 0 .35rem;font-size:1rem;color:var(--accent);">Device info (on your device / CPU)</h3>
-          <p class="notice" style="margin-top:0">Shown locally from your browser — no cloud upload.</p>
-          <div class="device-grid" id="device-info-grid" aria-live="polite"></div>
-        </div>
-
-        <div class="row" style="margin-top:.7rem;">
-          <button class="pill-btn" id="logout-btn" type="button">Sign out</button>
-          <button class="pill-btn" id="delete-account-btn" type="button">Delete local account</button>
-        </div>
       </div>
     </section>
 
@@ -391,7 +317,7 @@
       <h3>Inner websites (all pages)</h3>
       <p class="notice">All DeveloperHCR pages on this website:</p>
       <div class="pages-list">
-        <a href="search.html">Engine (first page)</a><a href="home.html">Home</a><a href="about.html">About</a><a href="projects.html">Projects</a>
+        <a href="search.html">Engine (first page)</a><a href="home.html">Home</a><a href="account.html">Account</a><a href="about.html">About</a><a href="projects.html">Projects</a>
         <a href="services.html">Services</a><a href="api.html">AI &amp; API</a><a href="downloads.html">Downloads</a><a href="documentation.html">Docs</a>
         <a href="gallery.html">Gallery</a><a href="devx-os-demo.html">DevX OS Demo</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a>
       </div>
@@ -574,87 +500,36 @@
       const admin = isAdmin(session);
       const avatar = getAvatarForSession(session);
       const fallback = loggedIn ? (session.name || session.username).trim().charAt(0).toUpperCase() : '?';
-      $('account-logged-out').classList.toggle('hidden', loggedIn);
-      $('account-logged-in').classList.toggle('hidden', !loggedIn);
-      $('admin-panel').classList.toggle('hidden', !(loggedIn && admin));
-      $('current-admin-badge').classList.toggle('hidden', !admin);
-      $('delete-account-btn').classList.toggle('hidden', admin);
       const accountChip = $('account-chip'); if (accountChip) accountChip.textContent = loggedIn ? (session.name || session.username) + (admin ? ' (Admin)' : '') : 'Guest';
       renderAvatarEl($('avatar-btn'), avatar, fallback);
       renderAvatarEl($('menu-avatar'), avatar, fallback);
-      renderAvatarEl($('profile-avatar'), avatar, fallback);
-      $('menu-user-name').textContent = loggedIn ? (session.name || session.username) : 'Guest';
-      $('menu-user-sub').textContent = loggedIn ? ('@' + session.username + ' · device local') : 'Not signed in · device local';
-      $('menu-admin-badge').classList.toggle('hidden', !admin);
-      $('menu-signin').classList.toggle('hidden', loggedIn);
-      $('menu-signout').classList.toggle('hidden', !loggedIn);
-      $('menu-admin').classList.toggle('hidden', !admin);
-      const picInput = $('profile-pic-input'); if (picInput) picInput.disabled = !loggedIn;
-      const removePic = $('remove-pic-btn'); if (removePic) removePic.disabled = !loggedIn || !avatar;
-      if (loggedIn) {
-        $('current-user-name').textContent = session.name || session.username;
-        $('current-user-handle').textContent = '@' + session.username;
-        $('account-status-note').textContent = admin ? 'Admin session active on this device. AI searches are unlimited.' : 'Local-only session. No cloud sync.';
-        $('admin-user-count').textContent = String(getUsers().length);
-        renderDeviceInfo();
-        const devPanel = $('device-info-grid') ? $('device-info-grid').closest('.panel') : null;
-        if (devPanel) devPanel.classList.toggle('hidden', !getExtensions().show_device_info);
-      }
+      const menuUserName = $('menu-user-name'); if (menuUserName) menuUserName.textContent = loggedIn ? (session.name || session.username) : 'Guest';
+      const menuUserSub = $('menu-user-sub'); if (menuUserSub) menuUserSub.textContent = loggedIn ? ('@' + session.username + ' · device local') : 'Not signed in · device local';
+      const menuAdminBadge = $('menu-admin-badge'); if (menuAdminBadge) menuAdminBadge.classList.toggle('hidden', !admin);
+      const menuSignin = $('menu-signin'); if (menuSignin) menuSignin.classList.toggle('hidden', loggedIn);
+      const menuSignout = $('menu-signout'); if (menuSignout) menuSignout.classList.toggle('hidden', !loggedIn);
+      const menuAdmin = $('menu-admin'); if (menuAdmin) menuAdmin.classList.toggle('hidden', !loggedIn);
       refreshAiUi();
     }
 
-    $('avatar-btn').addEventListener('click', (e) => { e.stopPropagation(); const m=$('account-menu'); const open=m.classList.toggle('hidden')===false; $('avatar-btn').setAttribute('aria-expanded', open?'true':'false'); });
-    document.addEventListener('click', (e) => { if (!e.target.closest('.top-actions')) { $('account-menu').classList.add('hidden'); $('avatar-btn').setAttribute('aria-expanded','false'); } });
-    $('menu-signin').addEventListener('click', () => { $('account-menu').classList.add('hidden'); document.getElementById('account-section').scrollIntoView({behavior:'smooth'}); $('login-user').focus(); });
-    $('menu-signout').addEventListener('click', () => { setSession(null); $('account-menu').classList.add('hidden'); renderAccount(); });
-    $('menu-admin').addEventListener('click', () => { $('account-menu').classList.add('hidden'); document.getElementById('account-section').scrollIntoView({behavior:'smooth'}); });
-
-    $('login-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const usernameRaw = $('login-user').value.trim();
-      const username = usernameRaw.toLowerCase();
-      const pass = $('login-pass').value.trimEnd();
-      if (username === ADMIN_USER && (pass === ADMIN_PASS || $('login-pass').value === ADMIN_PASS)) {
+    function performLogin(usernameRaw, pass, msgEl) {
+      const username = (usernameRaw || '').trim().toLowerCase();
+      const passVal = pass || '';
+      if (username === ADMIN_USER && (passVal.trimEnd() === ADMIN_PASS || passVal === ADMIN_PASS)) {
         setSession({ name:'DeveloperHCR', username:'DeveloperHCR', admin:true });
-        $('login-msg').textContent = 'Admin signed in. Unlimited AI enabled on this device.'; $('login-msg').className='notice success';
-        $('login-form').reset(); closeLoginPrompt(); renderAccount(); return;
+        if (msgEl) { msgEl.textContent = 'Admin signed in. Unlimited AI enabled on this device.'; msgEl.className = 'notice success'; }
+        closeLoginPrompt(); renderAccount(); return true;
       }
-      const user = getUsers().find(u => (u.username || '').toLowerCase() === username && (u.pass === pass || u.pass === $('login-pass').value));
-      if (!user) { $('login-msg').textContent = 'Invalid username or password for this device. For admin use username: DeveloperHCR and the admin password.'; $('login-msg').className='notice danger'; return; }
+      const user = getUsers().find(u => (u.username || '').toLowerCase() === username && (u.pass === passVal || u.pass === passVal.trimEnd()));
+      if (!user) {
+        if (msgEl) { msgEl.textContent = 'Invalid username or password for this device.'; msgEl.className = 'notice danger'; }
+        return false;
+      }
       setSession({ name:user.name, username:user.username, admin:false, provider: user.provider || 'local' });
-      $('login-msg').textContent = 'Signed in locally.'; $('login-msg').className='notice success';
-      $('login-form').reset(); closeLoginPrompt(); renderAccount();
-    });
-
-    $('signup-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = $('signup-name').value.trim();
-      const username = $('signup-user').value.trim();
-      const lower = username.toLowerCase();
-      const pass = $('signup-pass').value;
-      if (lower === ADMIN_USER) { $('signup-msg').textContent = 'This username is reserved for admin sign-in.'; $('signup-msg').className='notice danger'; return; }
-      const users = getUsers();
-      if (users.find(u => (u.username||'').toLowerCase() === lower)) { $('signup-msg').textContent = 'That username already exists on this device.'; $('signup-msg').className='notice danger'; return; }
-      users.push({ name, username, pass });
-      saveUsers(users); setSession({ name, username, admin:false });
-      $('signup-msg').textContent = 'Local account created. You are signed in on this device.'; $('signup-msg').className='notice success';
-      $('signup-form').reset(); renderAccount();
-    });
-
-    $('logout-btn').addEventListener('click', () => { setSession(null); renderAccount(); });
-    $('delete-account-btn').addEventListener('click', () => { const s=getSession(); if(!s || isAdmin(s)) return; saveUsers(getUsers().filter(u => (u.username||'').toLowerCase() !== (s.username||'').toLowerCase())); setSession(null); renderAccount(); $('settings-msg').textContent='Local account deleted from this browser.'; });
-    $('admin-reset-ai').addEventListener('click', () => { setAiUsed(0); refreshAiUi(); $('settings-msg').textContent='AI search counter reset locally.'; });
-    $('admin-open-settings').addEventListener('click', () => openDialog('settings-dialog'));
-
-    function closeLoginPrompt() { try { closeDialog('login-dialog'); } catch {} }
-    $('close-login-dialog').addEventListener('click', () => closeLoginPrompt());
-    $('login-dialog').addEventListener('cancel', (e) => { e.preventDefault(); closeLoginPrompt(); });
-    $('admin-quick-login').addEventListener('click', () => {
-      $('login-user').value = 'DeveloperHCR';
-      $('login-pass').value = ADMIN_PASS;
-      $('login-form').requestSubmit ? $('login-form').requestSubmit() : $('login-form').dispatchEvent(new Event('submit', {cancelable:true,bubbles:true}));
-    });
-    $('google-local-login').addEventListener('click', () => {
+      if (msgEl) { msgEl.textContent = 'Signed in locally.'; msgEl.className = 'notice success'; }
+      closeLoginPrompt(); renderAccount(); return true;
+    }
+    function performGoogleLocal(msgEl) {
       const name = (prompt('Continue with Google (local demo, no cloud). Enter display name or email to save on this device:', 'Google User') || '').trim() || 'Google User';
       const base = name.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'').slice(0,16) || 'google_user';
       const username = base + '_local';
@@ -663,30 +538,41 @@
       if (!user) { user = { name, username, pass: 'google-local-demo', provider: 'google-local' }; users.push(user); saveUsers(users); }
       else { user.name = name; user.provider = 'google-local'; saveUsers(users); }
       setSession({ name: user.name, username: user.username, admin:false, provider:'google-local' });
-      $('login-msg').textContent = 'Signed in with Google-style local profile (no cloud).'; $('login-msg').className='notice success';
+      if (msgEl) { msgEl.textContent = 'Signed in with Google-style local profile (no cloud).'; msgEl.className = 'notice success'; }
       closeLoginPrompt(); renderAccount();
-    });
-    $('guest-local-login').addEventListener('click', () => {
+    }
+    function performGuestLocal(msgEl) {
       setSession({ name:'Guest', username:'guest_local', admin:false, provider:'guest' });
-      $('login-msg').textContent = 'Continuing as guest on this device (local only).'; $('login-msg').className='notice success';
+      if (msgEl) { msgEl.textContent = 'Continuing as guest on this device (local only).'; msgEl.className = 'notice success'; }
       closeLoginPrompt(); renderAccount();
-    });
+    }
 
-    $('dialog-login-form').addEventListener('submit', (e) => {
+    $('avatar-btn').addEventListener('click', (e) => { e.stopPropagation(); const m=$('account-menu'); const open=m.classList.toggle('hidden')===false; $('avatar-btn').setAttribute('aria-expanded', open?'true':'false'); });
+    document.addEventListener('click', (e) => { if (!e.target.closest('.top-actions')) { const m=$('account-menu'); if (m) m.classList.add('hidden'); const ab=$('avatar-btn'); if (ab) ab.setAttribute('aria-expanded','false'); } });
+    const menuSignin = $('menu-signin'); if (menuSignin) menuSignin.addEventListener('click', () => { const m=$('account-menu'); if (m) m.classList.add('hidden'); });
+    const menuAdmin = $('menu-admin'); if (menuAdmin) menuAdmin.addEventListener('click', () => { const m=$('account-menu'); if (m) m.classList.add('hidden'); });
+    const menuSignout = $('menu-signout'); if (menuSignout) menuSignout.addEventListener('click', () => { setSession(null); const m=$('account-menu'); if (m) m.classList.add('hidden'); renderAccount(); });
+
+    function closeLoginPrompt() { try { closeDialog('login-dialog'); } catch {} }
+    const closeLoginBtn = $('close-login-dialog'); if (closeLoginBtn) closeLoginBtn.addEventListener('click', () => closeLoginPrompt());
+    const loginDialog = $('login-dialog'); if (loginDialog) loginDialog.addEventListener('cancel', (e) => { e.preventDefault(); closeLoginPrompt(); });
+
+    const dialogLoginForm = $('dialog-login-form');
+    if (dialogLoginForm) dialogLoginForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      $('login-user').value = $('dialog-login-user').value;
-      $('login-pass').value = $('dialog-login-pass').value;
-      $('login-form').requestSubmit ? $('login-form').requestSubmit() : $('login-form').dispatchEvent(new Event('submit', {cancelable:true,bubbles:true}));
-      $('dialog-login-msg').textContent = $('login-msg').textContent || '';
-      $('dialog-login-msg').className = $('login-msg').className || 'notice';
+      const u = $('dialog-login-user') ? $('dialog-login-user').value : '';
+      const p = $('dialog-login-pass') ? $('dialog-login-pass').value : '';
+      performLogin(u, p, $('dialog-login-msg'));
     });
-    $('dialog-admin-login').addEventListener('click', () => {
-      $('dialog-login-user').value = 'DeveloperHCR'; $('dialog-login-pass').value = ADMIN_PASS;
-      $('dialog-login-form').requestSubmit ? $('dialog-login-form').requestSubmit() : $('dialog-login-form').dispatchEvent(new Event('submit', {cancelable:true,bubbles:true}));
+    const dialogAdminLogin = $('dialog-admin-login');
+    if (dialogAdminLogin) dialogAdminLogin.addEventListener('click', () => {
+      if ($('dialog-login-user')) $('dialog-login-user').value = 'DeveloperHCR';
+      if ($('dialog-login-pass')) $('dialog-login-pass').value = ADMIN_PASS;
+      performLogin('DeveloperHCR', ADMIN_PASS, $('dialog-login-msg'));
     });
-    $('dialog-google-login').addEventListener('click', () => $('google-local-login').click());
-    $('dialog-guest-login').addEventListener('click', () => $('guest-local-login').click());
-    $('dialog-create-account').addEventListener('click', () => { closeLoginPrompt(); document.getElementById('account-section').scrollIntoView({behavior:'smooth'}); $('signup-name').focus(); });
+    const dialogGoogleLogin = $('dialog-google-login'); if (dialogGoogleLogin) dialogGoogleLogin.addEventListener('click', () => performGoogleLocal($('dialog-login-msg')));
+    const dialogGuestLogin = $('dialog-guest-login'); if (dialogGuestLogin) dialogGuestLogin.addEventListener('click', () => performGuestLocal($('dialog-login-msg')));
+    const dialogCreateAccount = $('dialog-create-account'); if (dialogCreateAccount) dialogCreateAccount.addEventListener('click', () => { closeLoginPrompt(); window.location.href = 'account.html#signup'; });
 
     // Local extensions (browser-like features, no cloud)
     const EXT_KEY = 'developerhcr-extensions';
@@ -895,7 +781,7 @@
       { keys:['privacy','terms','legal'], answer: () => 'Privacy and Terms pages are available from the site navigation and settings all-pages list.', links:[['Privacy','privacy.html'],['Terms','terms.html']] },
       { keys:['doc','docs','documentation','guide'], answer: () => 'Documentation and project notes are on the Docs page and in the repository README.', links:[['Docs','documentation.html'],['README','https://github.com/DeveloperHCR/HCRAPP#readme']] },
       { keys:['gallery','logo','image','artwork'], answer: () => 'The Gallery page shows DeveloperHCR visual assets. The site logo uses the official DeveloperHCR logo image (from .backend/Main/data.png).', links:[['Gallery','gallery.html']] },
-      { keys:['login','sign up','signup','account','admin','password','chrome','google account'], answer: () => 'DeveloperHCR Engine supports local device login/sign-up (no cloud), Chrome/Google-style account menu, and an admin account (DeveloperHCR) with unlimited AI access.', links:[['Account section','#account-section'],['Settings','search.html']] },
+      { keys:['login','sign up','signup','account','admin','password','chrome','google account'], answer: () => 'DeveloperHCR Engine supports local device account sign-in/sign-up (no cloud), profile, and device info on the Account page. Admin account: DeveloperHCR (unlimited AI access).', links:[['Account','account.html'],['Settings','search.html']] },
       { keys:['setting','settings','all pages','navigation','upper'], answer: () => 'Use Settings to customize theme, default mode, quick links, accent, and web results view. Settings and the top bar show all DeveloperHCR pages.', links:[['Open Settings','search.html'],['Home','home.html']] }
     ];
 
