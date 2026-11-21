@@ -71,14 +71,40 @@
       padding: 0.4rem 0;
     }
     .brand { display: inline-flex; align-items: center; gap: 0.55rem; font-weight: 700; margin-right: 0.25rem; }
-    .brand-mark { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--border); color: var(--accent); font-size: 0.8rem; }
+    .brand-mark { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--border); color: var(--accent); font-size: 0.8rem; overflow: hidden; }
+    .brand-mark img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .page-nav { display: flex; flex-wrap: wrap; gap: 0.2rem; align-items: center; flex: 1 1 420px; }
     .page-nav a {
       padding: 0.42rem 0.62rem; border-radius: 999px; color: var(--muted); font-size: 0.86rem; white-space: nowrap;
     }
     .page-nav a:hover, .page-nav a.active { color: var(--accent); background: rgba(103,232,249,0.12); }
     body.light-mode .page-nav a:hover, body.light-mode .page-nav a.active { background: rgba(8,127,157,0.1); }
-    .top-actions { display: flex; gap: 0.4rem; align-items: center; margin-left: auto; flex-wrap: wrap; }
+    .top-actions { display: flex; gap: 0.45rem; align-items: center; margin-left: auto; flex-wrap: wrap; position: relative; }
+    .icon-btn {
+      width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      display: inline-grid; place-items: center; cursor: pointer; font-size: 1rem;
+    }
+    .icon-btn:hover, .icon-btn:focus-visible { border-color: var(--accent); outline: none; }
+    .avatar-btn {
+      width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #04151d; font-weight: 700; cursor: pointer; display: inline-grid; place-items: center; font-size: 0.95rem;
+    }
+    body.light-mode .avatar-btn { color: #fff; }
+    .avatar-btn.signed-out { background: var(--surface); color: var(--muted); }
+    .profile-menu {
+      position: absolute; top: calc(100% + 0.5rem); right: 0; width: min(320px, 92vw);
+      background: var(--surface); border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow);
+      padding: 0.9rem; z-index: 30;
+    }
+    .profile-menu.hidden { display: none; }
+    .profile-head { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.7rem; }
+    .profile-avatar-lg { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #04151d; }
+    body.light-mode .profile-avatar-lg { color: #fff; }
+    .profile-name { font-weight: 700; }
+    .profile-email { color: var(--muted); font-size: 0.85rem; }
+    .menu-list { display: grid; gap: 0.25rem; }
+    .menu-item { display: flex; align-items: center; gap: 0.5rem; width: 100%; text-align: left; padding: 0.6rem 0.7rem; border-radius: 12px; border: 1px solid transparent; background: transparent; color: var(--text); cursor: pointer; text-decoration: none; font-size: 0.92rem; }
+    .menu-item:hover { background: var(--surface-2); border-color: var(--border); }
     .pill-btn {
       border: 1px solid var(--border); background: var(--surface); color: var(--text);
       padding: 0.45rem 0.75rem; border-radius: 999px; cursor: pointer; font-size: 0.85rem;
@@ -121,6 +147,15 @@
     .ai-result .muted { color: var(--muted); }
     .ai-result ul { margin: 0.4rem 0 0.2rem 1.1rem; color: var(--muted); }
     .ai-result a { color: var(--accent); text-decoration: underline; }
+
+    .site-results { margin-top: 1rem; text-align: left; display: grid; gap: 0.7rem; }
+    .result-card { padding: 0.9rem 1rem; border: 1px solid var(--border); border-radius: 14px; background: var(--surface-2); }
+    .result-card h3 { margin: 0 0 0.2rem; font-size: 1rem; }
+    .result-card h3 a { color: var(--accent); text-decoration: none; }
+    .result-card h3 a:hover { text-decoration: underline; }
+    .result-card p { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.92rem; }
+    .result-url { font-size: 0.8rem; color: var(--success); margin-bottom: 0.15rem; }
+    .result-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.8rem; }
 
     .quick-links { margin-top: 1.4rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.7rem; }
     .quick-link { display: block; padding: 0.85rem 0.9rem; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); text-align: center; }
@@ -169,7 +204,7 @@
   <header class="topbar">
     <div class="topbar-inner">
       <a class="brand" href="search.html" aria-label="DeveloperHCR Engine home">
-        <span class="brand-mark">DH</span><span>DeveloperHCR</span>
+        <span class="brand-mark"><img src="../assets/images/developerhcr-logo.png" alt="DeveloperHCR logo"></span><span>DeveloperHCR</span>
       </a>
       <nav class="page-nav" aria-label="All pages">
         <a href="home.html">Home</a>
@@ -184,9 +219,24 @@
         <a href="contact.html">Contact</a>
       </nav>
       <div class="top-actions">
-        <button class="pill-btn" id="open-settings" type="button">Settings</button>
-        <button class="pill-btn" id="open-account" type="button">Account</button>
-        <span id="account-pill" class="stat-chip hidden" aria-live="polite"></span>
+        <button class="icon-btn" id="open-settings" type="button" title="Settings" aria-label="Settings">⚙</button>
+        <button class="avatar-btn signed-out" id="profile-btn" type="button" title="Account" aria-label="Account" aria-expanded="false" aria-controls="profile-menu">?</button>
+        <div class="profile-menu hidden" id="profile-menu" role="menu" aria-label="Account menu">
+          <div class="profile-head">
+            <div class="profile-avatar-lg" id="profile-avatar-lg">?</div>
+            <div>
+              <div class="profile-name" id="profile-name">Not signed in</div>
+              <div class="profile-email" id="profile-email">Local device account (no cloud)</div>
+            </div>
+          </div>
+          <div class="menu-list" id="profile-menu-list">
+            <button class="menu-item" id="menu-signin" type="button">Sign in / Sign up</button>
+            <a class="menu-item" href="#account-section" id="menu-account-page">Account settings</a>
+            <button class="menu-item" id="menu-open-settings" type="button">Engine settings (all pages)</button>
+            <button class="menu-item hidden" id="menu-logout" type="button">Sign out</button>
+          </div>
+          <p class="notice" style="margin-top:0.6rem;">Chrome/Google-style local profile on this browser only. No cloud sync.</p>
+        </div>
       </div>
     </div>
   </header>
@@ -210,16 +260,16 @@
         </div>
 
         <div id="panel-web" role="tabpanel" aria-labelledby="tab-web">
-          <form class="search-form" id="web-form" action="https://www.google.com/search" method="get" role="search">
-            <label class="sr-only" for="web-query">Search the web</label>
-            <input id="web-query" name="q" type="search" placeholder="Search Google like a pro…" autocomplete="off" required>
-            <input type="hidden" name="safe" id="safe-param" value="off">
-            <button type="submit">Google Search</button>
+          <form class="search-form" id="web-form" role="search">
+            <label class="sr-only" for="web-query">Search DeveloperHCR Engine</label>
+            <input id="web-query" name="q" type="search" placeholder="Search pages, projects, downloads, and more…" autocomplete="off" required>
+            <button type="submit">Search</button>
           </form>
           <div class="subnote">
-            <span>Unlimited DeveloperHCR Engine web search powered by Google. Customize behavior in Settings.</span>
-            <span id="web-target-note">Results open in this tab.</span>
+            <span>Results are shown on this website. Unlimited Google web search is also available below.</span>
+            <span id="web-target-note">On-site results + unlimited web option.</span>
           </div>
+          <div id="site-results" class="site-results hidden" aria-live="polite"></div>
         </div>
 
         <div id="panel-ai" role="tabpanel" aria-labelledby="tab-ai" class="hidden">
@@ -337,11 +387,26 @@
         </div>
       </div>
       <div class="divider"></div>
+      <h3>All pages</h3>
+      <p class="notice">Upper settings and navigation show all DeveloperHCR pages:</p>
+      <div class="menu-list" style="margin-top:0.5rem;">
+        <a class="menu-item" href="home.html">Home</a>
+        <a class="menu-item" href="search.html">DeveloperHCR Engine (first page)</a>
+        <a class="menu-item" href="about.html">About</a>
+        <a class="menu-item" href="projects.html">Projects</a>
+        <a class="menu-item" href="services.html">Services</a>
+        <a class="menu-item" href="api.html">AI &amp; API</a>
+        <a class="menu-item" href="downloads.html">Downloads</a>
+        <a class="menu-item" href="documentation.html">Docs</a>
+        <a class="menu-item" href="gallery.html">Gallery</a>
+        <a class="menu-item" href="contact.html">Contact</a>
+      </div>
+      <div class="divider"></div>
       <h3>Search limits</h3>
-      <p class="notice"><strong>DeveloperHCR Engine web search:</strong> unlimited. <strong>On-device AI search:</strong> limited to <strong>12 searches total</strong> per browser profile. Used: <strong id="settings-ai-used">0</strong> · Remaining: <strong id="settings-ai-left">12</strong>. No cloud is used for the AI counter.</p>
+      <p class="notice"><strong>DeveloperHCR Engine web search:</strong> unlimited (on-site results shown here, with unlimited Google web search option). <strong>On-device AI search:</strong> limited to <strong>12 searches total</strong> per browser profile. Used: <strong id="settings-ai-used">0</strong> · Remaining: <strong id="settings-ai-left">12</strong>. No cloud is used for the AI counter.</p>
       <div class="divider"></div>
       <h3>Device &amp; privacy</h3>
-      <p class="notice">Accounts, settings, and AI quota are stored in this browser only (localStorage). No cloud login, no server-side profile.</p>
+      <p class="notice">Accounts, settings, and AI quota are stored in this browser only (localStorage). No cloud login, no server-side profile. Login/profile works like a local Chrome/Google-style device account.</p>
       <div class="row" style="margin-top:0.6rem;">
         <button class="pill-btn" id="clear-local" type="button">Clear local engine data</button>
       </div>
@@ -391,10 +456,10 @@
 
     function applySettings() {
       applyTheme();
-      $('safe-param').value = settings.safe || 'off';
-      $('web-form').target = settings.target || '_self';
-      $('web-target-note').textContent = settings.target === '_blank' ? 'Results open in a new tab.' : 'Results open in this tab.';
-      $('quick-links').classList.toggle('hidden', settings.shortcuts === 'off');
+      const safe = $('safe-param'); if (safe) safe.value = settings.safe || 'off';
+      const targetNote = $('web-target-note');
+      if (targetNote) targetNote.textContent = settings.target === '_blank' ? 'On-site results shown here. Google web opens in a new tab.' : 'On-site results shown here. Google web opens in this tab.';
+      const quick = $('quick-links'); if (quick) quick.classList.toggle('hidden', settings.shortcuts === 'off');
       ['setting-theme','setting-mode','setting-target','setting-safe','setting-shortcuts','setting-accent'].forEach(id => {
         const key = id.replace('setting-','');
         const el = $(id); if (el) el.value = settings[key];
@@ -438,8 +503,22 @@
     function openDialog(id) { const d = $(id); if (d && d.showModal) d.showModal(); }
     function closeDialog(id) { const d = $(id); if (d && d.close) d.close(); }
     $('open-settings').addEventListener('click', () => { refreshAiUi(); openDialog('settings-dialog'); });
-    $('open-account').addEventListener('click', () => { renderAccount(); openDialog('account-dialog'); });
     document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', () => closeDialog(btn.getAttribute('data-close'))));
+
+    // Profile menu (Chrome/Google-like, local only)
+    const profileBtn = $('profile-btn');
+    const profileMenu = $('profile-menu');
+    function setProfileMenu(open) {
+      if (!profileMenu || !profileBtn) return;
+      profileMenu.classList.toggle('hidden', !open);
+      profileBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    if (profileBtn) profileBtn.addEventListener('click', (e) => { e.stopPropagation(); setProfileMenu(profileMenu.classList.contains('hidden')); });
+    document.addEventListener('click', (e) => { if (profileMenu && !profileMenu.classList.contains('hidden') && !profileMenu.contains(e.target) && e.target !== profileBtn) setProfileMenu(false); });
+    if ($('menu-open-settings')) $('menu-open-settings').addEventListener('click', () => { setProfileMenu(false); refreshAiUi(); openDialog('settings-dialog'); });
+    if ($('menu-signin')) $('menu-signin').addEventListener('click', () => { setProfileMenu(false); $('account-section').scrollIntoView({behavior:'smooth'}); $('login-user').focus(); });
+    if ($('menu-account-page')) $('menu-account-page').addEventListener('click', () => setProfileMenu(false));
+    if ($('menu-logout')) $('menu-logout').addEventListener('click', () => { setProfileMenu(false); setSession(null); renderAccount(); });
 
     ['theme','mode','target','safe','shortcuts','accent'].forEach(key => {
       const el = $('setting-' + key);
@@ -463,17 +542,22 @@
     function renderAccount() {
       const session = getSession();
       const loggedIn = !!(session && session.username);
+      const initial = loggedIn ? String(session.name || session.username || '?').trim().charAt(0).toUpperCase() || 'U' : '?';
       $('account-logged-out').classList.toggle('hidden', loggedIn);
       $('account-logged-in').classList.toggle('hidden', !loggedIn);
-      $('account-pill').classList.toggle('hidden', !loggedIn);
+      const pill = $('account-pill'); if (pill) pill.classList.add('hidden');
+      if (profileBtn) { profileBtn.textContent = initial; profileBtn.classList.toggle('signed-out', !loggedIn); profileBtn.title = loggedIn ? (session.name || session.username) : 'Sign in'; }
+      const avLg = $('profile-avatar-lg'); if (avLg) avLg.textContent = initial;
+      if ($('profile-name')) $('profile-name').textContent = loggedIn ? (session.name || session.username) : 'Not signed in';
+      if ($('profile-email')) $('profile-email').textContent = loggedIn ? ('@' + session.username + ' · local device account') : 'Local device account (no cloud)';
+      if ($('menu-signin')) $('menu-signin').classList.toggle('hidden', loggedIn);
+      if ($('menu-logout')) $('menu-logout').classList.toggle('hidden', !loggedIn);
       if (loggedIn) {
         $('current-user-name').textContent = session.name || session.username;
         $('current-user-handle').textContent = '@' + session.username;
-        $('account-pill').textContent = 'Signed in: ' + (session.name || session.username);
-        $('account-dialog-status').innerHTML = '<p>Signed in as <strong></strong> on this device.</p>';
-        $('account-dialog-status').querySelector('strong').textContent = session.name || session.username;
+        if ($('account-dialog-status')) { $('account-dialog-status').innerHTML = '<p>Signed in as <strong></strong> on this device.</p>'; $('account-dialog-status').querySelector('strong').textContent = session.name || session.username; }
       } else {
-        $('account-dialog-status').innerHTML = '<p>Not signed in. Use the account section to sign up or log in locally.</p>';
+        if ($('account-dialog-status')) $('account-dialog-status').innerHTML = '<p>Not signed in. Use the account section to sign up or log in locally.</p>';
       }
     }
 
@@ -555,6 +639,64 @@
       const box = $('ai-result');
       box.innerHTML = answerAi(q);
       box.classList.remove('hidden');
+    });
+
+    // On-site search results (shown on this website) + unlimited Google web search option
+    const sitePages = [
+      { title: 'Home', url: 'home.html', desc: 'DeveloperHCR introduction, featured projects, GitHub stars, commits applied, and demo links.', keys: ['home','developerhcr','intro','stars','commits','projects','hcrapp'] },
+      { title: 'DeveloperHCR Engine', url: 'search.html', desc: 'Unlimited web search, on-device AI limited to 12 searches, settings, local login/signup, and links to all pages.', keys: ['engine','search','ai','settings','login','signup','google','unlimited','12'] },
+      { title: 'About', url: 'about.html', desc: 'About DeveloperHCR, mission, focus areas, and browser-local demo status dashboard.', keys: ['about','brand','mission','status','dashboard'] },
+      { title: 'Projects', url: 'projects.html', desc: 'HCRAPP, DevX OS, and DevX Billing summaries, demos, tags, and release links.', keys: ['projects','hcrapp','devx os','devx billing','demo','release'] },
+      { title: 'Services', url: 'services.html', desc: 'What DeveloperHCR builds: web, Android, AI-assisted workflows, and developer tools.', keys: ['services','web','android','ai','tools','design'] },
+      { title: 'AI & API', url: 'api.html', desc: 'AI capabilities, integrations, and API-related information.', keys: ['ai','api','integration','assistant'] },
+      { title: 'Downloads', url: 'downloads.html', desc: 'Official DevX OS 3.0 Stable APK download and release information.', keys: ['download','downloads','apk','devx os','stable','release'] },
+      { title: 'Documentation', url: 'documentation.html', desc: 'Project notes, setup guidance, and documentation.', keys: ['docs','documentation','guide','setup','notes'] },
+      { title: 'Gallery', url: 'gallery.html', desc: 'DeveloperHCR visual assets including logo and digital artwork.', keys: ['gallery','logo','artwork','images','assets'] },
+      { title: 'Contact', url: 'contact.html', desc: 'Email, public location, map, and message form to contact DeveloperHCR.', keys: ['contact','email','map','location','message'] },
+      { title: 'Privacy Policy', url: 'privacy.html', desc: 'Website privacy information.', keys: ['privacy','policy','data'] },
+      { title: 'Terms & Conditions', url: 'terms.html', desc: 'Website terms and usage information.', keys: ['terms','conditions','usage'] }
+    ];
+
+    function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+    function renderSiteResults(query) {
+      const box = $('site-results'); if (!box) return;
+      const q = query.trim().toLowerCase();
+      const terms = q.split(/\s+/).filter(Boolean);
+      const matches = sitePages.map(p => {
+        const hay = (p.title + ' ' + p.desc + ' ' + p.keys.join(' ')).toLowerCase();
+        let score = 0;
+        terms.forEach(t => { if (hay.includes(t)) score += t.length; });
+        if (hay.includes(q)) score += 5;
+        return { p, score };
+      }).filter(x => x.score > 0).sort((a,b) => b.score - a.score).map(x => x.p);
+      const googleUrl = 'https://www.google.com/search?q=' + encodeURIComponent(query) + '&safe=' + encodeURIComponent(settings.safe || 'off');
+      const targetAttr = settings.target === '_blank' ? ' target="_blank" rel="noreferrer"' : '';
+      const cards = (matches.length ? matches : sitePages.slice(0, 6)).map(p => `
+        <article class="result-card">
+          <div class="result-url">developerhcr.github.io/HCRAPP/pages/${escapeHtml(p.url)}</div>
+          <h3><a href="${escapeHtml(p.url)}">${escapeHtml(p.title)}</a></h3>
+          <p>${escapeHtml(p.desc)}</p>
+        </article>`).join('');
+      box.innerHTML = `
+        <div class="ai-result" style="margin:0;">
+          <h3>DeveloperHCR Engine results on this website</h3>
+          <p>${matches.length ? `Found ${matches.length} matching page${matches.length===1?'':'s'} for <strong>${escapeHtml(query)}</strong>.` : `No exact on-site match for <strong>${escapeHtml(query)}</strong>. Showing suggested pages.`}</p>
+          <div class="result-actions">
+            <a class="pill-btn primary" href="${googleUrl}"${targetAttr}>Unlimited Google web search</a>
+            <a class="pill-btn" href="home.html">Browse Home</a>
+            <a class="pill-btn" href="downloads.html">Downloads</a>
+          </div>
+        </div>
+        ${cards}`;
+      box.classList.remove('hidden');
+    }
+
+    $('web-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const q = $('web-query').value.trim();
+      if (!q) return;
+      renderSiteResults(q);
     });
 
     // Live commit count
