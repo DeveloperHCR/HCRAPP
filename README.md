@@ -81,54 +81,52 @@ python3 -m http.server 8000
 
 Then open [http://localhost:8000](http://localhost:8000). For a more polished preview, refresh once the page is loaded and explore the page motion and UI details.
 
-### Termux / Linux terminal setup
+### Termux / local launcher
 
-Run the DeveloperHCR terminal helper from the repository root:
+`termux.py` is the **only** main launcher for the Termux/local version. Do not use `.backend/Main/Data/backend.py`; the Termux/local architecture runs through `termux.py` and `pages/notinwebsite/local.py`.
+
+Run it from the repository root:
 
 ```bash
 python3 termux.py
 ```
 
-On first run, `termux.py` opens a professional DeveloperHCR™ first-time setup screen directly in the terminal (centered branding, optional name/username/password, `PASSWORD: NOT REQUIRED`, local setup URL `http://localhost:3383`, and a **To setup more...** section). The interface detects terminal width, adapts to Termux and standard Linux terminals, and falls back to a simple text layout when colors, Unicode, or advanced formatting are unavailable.
+On startup, `termux.py` shows a professional centered terminal interface, completes first-time/local setup initialization, and initializes the localhost-only service when needed.
 
-After interactive setup completes, the helper:
-- prints a completion summary and prompts you to open **`http://localhost:3383`** to set up more,
-- tells you to fill **username and password** in the local web setup page (DeveloperHCR logo shown at top),
-- prints the command to start the local setup server,
-- makes a best-effort attempt to open the URL (e.g. `termux-open-url` on Termux or the system browser where available).
+**Terminal startup shows:**
+- `DeveloperHCR™`
+- `First Time Setup`
+- `Name: USER`
+- `Password: NOT REQUIRED / configurable`
+- `Local Server: http://127.0.0.1:3383`
+- `Admin: Protected`
 
-#### Terminal helper options (`termux.py`)
+The local Python service runs from `pages/notinwebsite/local.py` and binds to localhost only by default (`http://127.0.0.1:3383`). The public GitHub Pages website does **not** execute Python; it only provides the interface, links, and documentation. The actual Python service continues running locally in Termux/local environment.
 
-```bash
-python3 termux.py --show             # show setup/status without prompts
-python3 termux.py --setup            # run or re-run interactive setup
-python3 termux.py --reset-setup      # mark first-time setup as incomplete
-python3 termux.py --non-interactive  # show setup screen/status only (no prompts)
-```
-
-Local terminal setup state is stored at `~/.config/developerhcr/hcrapp_termux_setup.json` (or under `$XDG_CONFIG_HOME/developerhcr/` when set).
-
-#### Local web setup backend (`http://localhost:3383`)
-
-Start the local setup server from the repository root:
+#### Launcher options (`termux.py`)
 
 ```bash
-python3 .backend/Main/Data/backend.py
+python3 termux.py            # show startup interface and initialize/start local service
+python3 termux.py --show     # show interface/status without starting the service
+python3 termux.py --setup    # run setup and initialize/start the local service
+python3 termux.py --no-start # show/setup without starting the local service
+python3 termux.py --name "USER" --port 3383
 ```
 
-Then open [http://localhost:3383](http://localhost:3383) and complete the web setup form:
-- **Logo:** DeveloperHCR logo displayed at the top of the setup page.
-- **Form:** fill **username** and **password**, then save to complete local web setup.
-- **Logo location:** [`.backend/Main/data.png`](https://github.com/DeveloperHCR/HCRAPP/blob/main/.backend/Main/data.png)
+#### Local service (`pages/notinwebsite/local.py`)
 
-Backend options:
+The local service provides the localhost admin/setup dashboard and API used by the Termux flow and the About page admin entry.
 
 ```bash
-python3 .backend/Main/Data/backend.py --host 127.0.0.1   # bind host (default: 127.0.0.1)
-python3 .backend/Main/Data/backend.py --port 3383        # bind port (default: 3383)
+python3 pages/notinwebsite/local.py --host 127.0.0.1 --port 3383
+python3 pages/notinwebsite/local.py --status
 ```
 
-Web setup data is saved locally by `.backend/Main/Data/connecte.py` to `~/.config/developerhcr/hcrapp_web_setup/setup_data.json` (or under `$XDG_CONFIG_HOME/developerhcr/` when set) with restricted file permissions where supported. This is a local helper flow for development/setup convenience; keep the server bound to localhost unless you intentionally expose it.
+- Bind address is enforced as localhost-only for admin safety.
+- Admin authentication is validated server-side by the local service.
+- Admin password is **configurable** and **not required by default**; configure it locally via the Local Setup dashboard or environment (`HCRAPP_ADMIN_PASSWORD`) as needed. Passwords/secrets are stored locally (hashed in local config/state), not in README or public GitHub Pages files.
+- The About page (`pages/about.html`) includes an **ADMIN** section at the bottom that opens a protected local setup flow after successful local authentication (when the local service is running).
+- Local runtime/config/state files are stored under user config/state directories (for example under `$XDG_CONFIG_HOME` / `$XDG_STATE_HOME` or `~/.config` / `~/.local/state`).
 
 ## Deployment
 
@@ -138,20 +136,20 @@ The GitHub Actions workflow in [`.github/workflows/static.yml`](.github/workflow
 
 ```text
 .
-├── .backend/Main/       # Logo image, legacy setup note, and local setup backend
-│   ├── Data/
-│   │   ├── backend.py   # Local web setup server (http://localhost:3383)
-│   │   └── connecte.py  # Local web setup data/connection helpers
+├── .backend/Main/       # Logo image and local setup notes
 │   ├── Setup.md
 │   └── data.png         # DeveloperHCR logo
 ├── .github/workflows/   # GitHub Pages deployment workflow
 ├── assets/images/       # Website logo and artwork
 ├── data/web/            # Nested static backend-status page
 ├── js/                  # Site navigation and small UI behaviors
-├── pages/               # Site pages; index.html remains at the root
+├── pages/               # Site pages and local Termux service assets
+│   ├── notinwebsite/
+│   │   └── local.py     # Localhost-only Termux/local service and admin dashboard
+│   └── ...              # Public website pages
 ├── About.md             # About DeveloperHCR and project overview (served at /HCRAPP/About.md)
 ├── index.html           # Website homepage
-└── termux.py            # Termux/Linux terminal first-time setup helper
+└── termux.py            # Main Termux/local launcher and first-time setup initializer
 ```
 
 

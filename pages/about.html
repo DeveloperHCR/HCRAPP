@@ -594,79 +594,28 @@ textarea { min-height: 130px; resize: vertical; }
     <section class="page-content" aria-labelledby="admin-access-title">
         <div class="container">
             <section class="panel glass-panel">
-                <h2 id="admin-access-title">Admin access</h2>
-                <p class="muted">Your quick operational snapshot: check the public status page, review the hosting setup, and see when the last check ran. This panel is read-only and cannot control the hosting service.</p>
-                <button class="btn btn-secondary" id="open-admin" type="button">Open admin dashboard</button>
-                <p class="muted admin-warning">This static website cannot securely authenticate administrators. The password only gates this browser and does not protect server data.</p>
+                <h2 id="admin-access-title">ADMIN</h2>
+                <p class="muted">Open the protected local setup dashboard for DeveloperHCR HCRAPP. This public page does not run Python; it only connects to your local Termux service at <code>http://127.0.0.1:3383</code> when it is running.</p>
+                <button class="btn btn-secondary" id="open-admin" type="button">Open Admin</button>
+                <p class="muted admin-warning">Admin access is localhost-only and authenticated server-side by the local service. Start it with <code>python3 termux.py</code>.</p>
             </section>
         </div>
     </section>
 
     <dialog class="admin-dashboard" id="admin-dialog" aria-labelledby="admin-dialog-title">
         <div class="admin-dialog-header">
-            <h2 id="admin-dialog-title">Admin dashboard</h2>
-            <button class="btn btn-secondary" id="expand-admin" type="button" aria-controls="admin-dialog" aria-expanded="false"><span class="admin-label-expand">Expand dashboard</span><span class="admin-label-restore">Restore dashboard</span></button>
+            <h2 id="admin-dialog-title">ADMIN</h2>
+            <button class="btn btn-secondary" id="close-admin" type="button">Close</button>
         </div>
         <form id="admin-password-form">
-            <p id="admin-password-instructions" class="muted"></p>
-            <label for="admin-password">Admin password</label>
-            <input id="admin-password" type="password" autocomplete="current-password" minlength="12" required>
-            <div id="admin-confirmation-wrap" hidden>
-                <label for="admin-password-confirm">Confirm password</label>
-                <input id="admin-password-confirm" type="password" autocomplete="new-password" minlength="12">
-            </div>
+            <p class="muted">Enter the local admin password to open Local Setup.</p>
+            <label for="admin-password">Password</label>
+            <input id="admin-password" type="password" autocomplete="current-password" placeholder="Password (if configured)">
             <p id="admin-auth-status" class="muted" role="status" aria-live="polite"></p>
             <div class="admin-dialog-actions">
-                <button class="btn btn-primary" type="submit" id="admin-submit">Unlock dashboard</button>
-                <button class="btn btn-secondary" type="button" id="close-admin">Close</button>
+                <button class="btn btn-primary" type="submit" id="admin-submit">Open</button>
             </div>
         </form>
-        <section id="admin-status-panel" hidden aria-label="Website status">
-            <div class="admin-status-grid">
-                <article class="admin-status-card admin-server-card">
-                    <span class="muted">Website status</span>
-                    <strong id="admin-server-status" aria-live="polite">Checking...</strong>
-                    <p id="admin-server-message" class="muted">Checking whether the website is responding...</p>
-                </article>
-                <article class="admin-status-card">
-                    <span class="muted">Hosting</span>
-                    <strong>Static site (GitHub Pages)</strong>
-                </article>
-                <article class="admin-status-card">
-                    <span class="muted">Backend API</span>
-                    <strong>Not configured</strong>
-                </article>
-            </div>
-            <p id="admin-last-checked" class="muted" aria-live="polite">Not checked yet.</p>
-            <p class="muted">A successful check confirms the public page responded. GitHub Pages hosts this website, so your personal PC does not need to stay on. This check cannot report machine uptime, deployment logs, or backend health. If you run a separate local server, please keep your computer on while it serves that local site.</p>
-            <div class="admin-dialog-actions">
-                <button class="btn btn-primary" id="refresh-admin-status" type="button">Refresh status</button>
-                <button class="btn btn-secondary" id="lock-admin" type="button">Lock dashboard</button>
-            </div>
-            <section class="admin-page-links" aria-labelledby="admin-page-links-title">
-                <h3 id="admin-page-links-title">Site pages</h3>
-                <p class="muted">Quick links to published pages. These shortcuts do not change site content or hosting.</p>
-                <nav aria-label="Admin page shortcuts">
-                    <ul>
-                        <li><a href="home.html">Home</a></li>
-                    <li><a href="search.html">Engine</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="projects.html">Projects</a></li>
-                        <li><a href="services.html">Services</a></li>
-                        <li><a href="api.html">AI &amp; API</a></li>
-                        <li><a href="downloads.html">Downloads</a></li>
-                        <li><a href="documentation.html">Documentation</a></li>
-                        <li><a href="gallery.html">Gallery</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                        <li><a href="search.html">DeveloperHCR Engine</a></li>
-                        <li><a href="privacy.html">Privacy Policy</a></li>
-                        <li><a href="terms.html">Terms &amp; Conditions</a></li>
-                        <li><a href="Backend.html">Status page</a></li>
-                    </ul>
-                </nav>
-            </section>
-        </section>
-        <p class="admin-signature">DEVELOPERHCR - ABHIMANYU VERMA</p>
     </dialog>
 
     <footer class="site-footer">
@@ -719,6 +668,6 @@ textarea { min-height: 130px; resize: vertical; }
     </script>
     <script src="../js/navigation.js"></script>
     <script src="../js/language.js"></script>
-    <script src="../js/about-admin.js?v=20261116-engine-options"></script>
+    <script src="../js/about-admin.js?v=20261123-local-setup"></script>
 </body>
 </html>

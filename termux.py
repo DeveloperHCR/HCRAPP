@@ -1,47 +1,91 @@
 #!/usr/bin/env python3
-"""DeveloperHCR Termux/Linux terminal helper.
+"""DeveloperHCR HCRAPP Termux launcher.
 
-Provides a professional first-time setup screen for Termux and standard Linux
-terminals while keeping the script extensible for future setup actions.
+termux.py is the ONLY main launcher for the Termux/local version.
+It shows the startup interface and initializes the localhost-only local service.
 """
 
 from __future__ import annotations
 
 import argparse
-import getpass
+import hashlib
 import json
 import os
 import re
+import secrets
 import shutil
+import socket
+import subprocess
 import sys
-import textwrap
-from dataclasses import dataclass, asdict
+import time
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, Optional
 
 
-APP_NAME = "DeveloperHCR HCRAPP Termux Setup"
-DEFAULT_NAME = "USER"
+APP_NAME = "DeveloperHCR HCRAPP Termux Launcher"
+DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 3383
-DEFAULT_URL = f"http://localhost:{DEFAULT_PORT}"
-CONFIG_VERSION = 1
+DEFAULT_URL = f"http://{DEFAULT_HOST}:{DEFAULT_PORT}"
 
 
-@dataclass
-class SetupConfig:
-    version: int = CONFIG_VERSION
-    first_time_completed: bool = False
-    name: str = DEFAULT_NAME
-    username: str = ""
-    password_set: bool = False
-    # Password value is intentionally not stored by default in this repository
-    # helper. Local optional auth can be extended by future setup flows.
+def get_repo_root() -> Path:
+    return Path(__file__).resolve().parent
+
+
+def get_xdg_config_base() -> Path:
+    base = os.environ.get("XDG_CONFIG_HOME")
+    return Path(base) if base else (Path.home() / ".config")
+
+
+def get_xdg_state_base() -> Path:
+    base = os.environ.get("XDG_STATE_HOME")
+    return Path(base) if base else (Path.home() / ".local" / "state")
+
+
+def get_termux_config_path() -> Path:
+    return get_xdg_config_base() / "developerhcr" / "hcrapp_termux_setup.json"
+
+
+def get_local_dir() -> Path:
+    p = get_xdg_config_base() / "developerhcr" / "hcrapp_local"
+    p.mkdir(parents=True, exist_ok=True)
+    return p
+
+
+def get_local_admin_path() -> Path:
+    return get_local_dir() / "admin.json"
+
+
+def get_local_state_dir() -> Path:
+    p = get_xdg_state_base() / "developerhcr" / "hcrapp_local"
+    p.mkdir(parents=True, exist_ok=True)
+    return p
+
+
+def _safe_write_json(path: Path, data: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    os.replace(tmp, path)
+    try:
+        os.chmod(path, 0o600)
+    except Exception:
+        pass
+
+
+def _load_json(path: Path, default: Any) -> Any:
+    try:
+        if not path.exists():
+            return default
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return default
 
 
 def _stdout_supports_unicode() -> bool:
-    enc = getattr(sys.stdout, "encoding", None) or ""
+    enc = getattr(sys.stdout, "encoding", None) or "utf-8"
     try:
-        "DeveloperHCR™".encode(enc or "utf-8")
+        "DeveloperHCR™".encode(enc)
         return True
     except Exception:
         return False
@@ -55,377 +99,209 @@ def _supports_color() -> bool:
     return hasattr(sys.stdout, "isatty") and sys.stdout.isatty()
 
 
-def _supports_unicode_box() -> bool:
-    if not _stdout_supports_unicode():
-        return False
-    # Prefer simple ASCII on very limited environments; TERMUX_VERSION usually fine.
-    return True
-
-
 class UI:
     def __init__(self) -> None:
-        self.term_width = shutil.get_terminal_size((80, 24)).columns
-        self.max_width = max(40, min(self.term_width, 76))
-        self.color = _supports_color()
-        self.unicode = _supports_unicode_box()
         self.tm = "™" if _stdout_supports_unicode() else "(TM)"
-
-    def refresh(self) -> None:
-        self.term_width = shutil.get_terminal_size((80, 24)).columns
-        self.max_width = max(40, min(self.term_width, 76))
+        self.color = _supports_color()
+        self.width = max(40, min(shutil.get_terminal_size((80, 24)).columns, 92))
 
     def _ansi(self, code: str, text: str) -> str:
         if not self.color:
             return text
         return f"\033[{code}m{text}\033[0m"
 
-    def bold(self, text: str) -> str:
-        return self._ansi("1", text)
+    def bold(self, t: str) -> str:
+        return self._ansi("1", t)
 
-    def dim(self, text: str) -> str:
-        return self._ansi("2", text)
+    def cyan(self, t: str) -> str:
+        return self._ansi("36", t)
 
-    def cyan(self, text: str) -> str:
-        return self._ansi("36", text)
-
-    def bright_cyan(self, text: str) -> str:
-        return self._ansi("96", text)
-
-    def green(self, text: str) -> str:
-        return self._ansi("32", text)
-
-    def yellow(self, text: str) -> str:
-        return self._ansi("33", text)
-
-    def magenta(self, text: str) -> str:
-        return self._ansi("35", text)
+    def dim(self, t: str) -> str:
+        return self._ansi("2", t)
 
     @staticmethod
-    def _visible_len(text: str) -> int:
+    def _vlen(text: str) -> int:
         return len(re.sub(r"\033\[[0-9;]*m", "", text))
 
-    def center(self, text: str, width: Optional[int] = None) -> str:
-        w = width or self.max_width
-        pad = max(0, (w - self._visible_len(text)) // 2)
+    def center(self, text: str) -> str:
+        pad = max(0, (self.width - self._vlen(text)) // 2)
         return (" " * pad) + text
 
-    def hr(self, char: Optional[str] = None) -> str:
-        ch = char or ("─" if self.unicode else "-")
-        return ch * self.max_width
-
     def line(self, text: str = "", center: bool = False) -> None:
-        if center:
-            print(self.center(text))
-        else:
-            print(text)
+        print(self.center(text) if center else text)
 
     def blank(self, n: int = 1) -> None:
         for _ in range(n):
             print()
 
-    def banner_brand(self) -> List[str]:
-        # Prominent, professional branding compatible with limited terminals.
-        title = f"DeveloperHCR{self.tm}"
-        if self.unicode and self.max_width >= 54:
-            top = "╔" + "═" * (self.max_width - 2) + "╗"
-            bottom = "╚" + "═" * (self.max_width - 2) + "╝"
-            inner_pad = self.max_width - 2
-            mid = "║" + title.center(inner_pad) + "║"
-            return [
-                self.bright_cyan(self.bold(top)),
-                self.bright_cyan(self.bold(mid)),
-                self.bright_cyan(self.bold(bottom)),
-            ]
-        # Fallback: strong centered line with separators.
-        sep = "=" * min(len(title) + 8, self.max_width)
-        return [
-            self.bright_cyan(self.bold(self.center(sep))),
-            self.bright_cyan(self.bold(self.center(title))),
-            self.bright_cyan(self.bold(self.center(sep))),
-        ]
 
-    def banner_subtitle(self) -> str:
-        subtitle = "First Time Setup"
-        if self.unicode and self.max_width >= 40:
-            decorated = f"── {subtitle} ──"
-        else:
-            decorated = f"-- {subtitle} --"
-        return self.cyan(self.bold(self.center(decorated)))
-
-
-def get_config_path() -> Path:
-    # Works in Termux and standard Linux terminals.
-    xdg = os.environ.get("XDG_CONFIG_HOME")
-    if xdg:
-        base = Path(xdg)
-    else:
-        base = Path.home() / ".config"
-    return base / "developerhcr" / "hcrapp_termux_setup.json"
-
-
-def load_config(path: Path) -> SetupConfig:
-    if not path.exists():
-        return SetupConfig()
-    try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-        if not isinstance(data, dict):
-            return SetupConfig()
-        cfg = SetupConfig()
-        cfg.version = int(data.get("version", CONFIG_VERSION) or CONFIG_VERSION)
-        cfg.first_time_completed = bool(data.get("first_time_completed", False))
-        name = data.get("name", DEFAULT_NAME)
-        cfg.name = str(name).strip() or DEFAULT_NAME
-        cfg.username = str(data.get("username", "") or "").strip()
-        cfg.password_set = bool(data.get("password_set", False))
-        return cfg
-    except Exception:
-        return SetupConfig()
-
-
-def save_config(path: Path, cfg: SetupConfig) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    payload = asdict(cfg)
-    tmp = path.with_suffix(path.suffix + ".tmp")
-    tmp.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    os.replace(tmp, path)
-    try:
-        os.chmod(path, 0o600)
-    except Exception:
-        pass
-
-
-def format_kv(label: str, value: str, label_width: int = 24) -> str:
-    # Keep layout clean; avoid excessive width.
-    left = f"{label:<{label_width}}"
-    return left + value
-
-
-def render_setup_screen(ui: UI, cfg: SetupConfig) -> None:
-    ui.refresh()
-    ui.blank(1)
-    for line in ui.banner_brand():
-        print(line)
-    ui.blank(1)
-    print(ui.banner_subtitle())
-    ui.blank(1)
-
-    # Core setup information block.
-    lines = [
-        format_kv("Setup:", "-"),
-        "",
-        format_kv("Name:", f"{cfg.name or DEFAULT_NAME} (DEFAULT)        (Optional)"),
-        "",
-        format_kv("PASSWORD:", "NOT REQUIRED"),
-        "",
-        "Username:",
-        "Password:",
-        "",
-        ui.green(DEFAULT_URL),
-        "",
-        ui.bold("To setup more..."),
-    ]
-
-    # Render block centered as a whole when possible for a balanced look.
-    block_width = min(max((ui._visible_len(l) for l in lines if l), default=0), ui.max_width)
-    left_pad = max(0, (ui.max_width - block_width) // 2)
-    indent = " " * left_pad
-    for l in lines:
-        if l == "":
-            print()
-            continue
-        print(indent + l)
-
-    ui.blank(1)
-    # Extra helpful section under "To setup more..." while keeping UI clean.
-    tips = [
-        "- Optional: configure username/password for local setup preferences.",
-        "- URL shown above can be used by compatible local services/setup flows.",
-        "- Re-run anytime with: python3 termux.py --setup",
-    ]
-    tip_indent = indent
-    for t in tips:
-        wrapped = textwrap.wrap(t, width=max(30, ui.max_width - left_pad)) or [t]
-        for i, wline in enumerate(wrapped):
-            prefix = "" if i == 0 else "  "
-            print(tip_indent + ui.dim(prefix + wline))
-    ui.blank(1)
-
-
-def prompt_optional(label: str, default: str = "", secret: bool = False) -> Optional[str]:
-    try:
-        prompt = f"{label}" + (f" [{default}]" if default else "") + ": "
-        if secret:
-            value = getpass.getpass(prompt)
-        else:
-            value = input(prompt)
-    except EOFError:
-        return None
-    except KeyboardInterrupt:
-        print()
-        return None
-    value = (value or "").strip()
-    if value == "" and default:
-        return default
-    return value
-
-
-def interactive_setup(ui: UI, cfg: SetupConfig) -> SetupConfig:
-    print(ui.dim(ui.center("Press Enter to accept defaults. Username/Password are optional.")))
-    ui.blank(1)
-
-    name = prompt_optional("Display Name (optional)", default=cfg.name or DEFAULT_NAME, secret=False)
-    if name is not None and name.strip():
-        cfg.name = name.strip()
-    elif not (cfg.name or "").strip():
-        cfg.name = DEFAULT_NAME
-
-    username = prompt_optional("Username (optional)", default=cfg.username, secret=False)
-    if username is not None:
-        cfg.username = username.strip()
-
-    # Password optional and not required. Use hidden input when available.
-    try:
-        pw_prompt = "Password (optional, hidden input)"
-        password = getpass.getpass(f"{pw_prompt}: ")
-    except EOFError:
-        password = None
-    except KeyboardInterrupt:
-        print()
-        password = None
-    except Exception:
-        password = prompt_optional("Password (optional)", default="", secret=False)
-
-    if password is not None and password != "":
-        # Do not persist raw password in this helper's config; mark as configured.
-        cfg.password_set = True
-    # If left blank, keep previous state as-is (do not force-clear).
-
-    cfg.first_time_completed = True
+def load_termux_config() -> Dict[str, Any]:
+    cfg = _load_json(get_termux_config_path(), {})
+    if not isinstance(cfg, dict):
+        cfg = {}
+    cfg.setdefault("name", "USER")
+    cfg.setdefault("first_time_completed", False)
+    cfg.setdefault("admin_password_configurable", True)
     return cfg
 
 
-def _try_open_url(url: str) -> None:
-    """Best-effort URL open for Termux/Linux environments."""
+def save_termux_config(cfg: Dict[str, Any]) -> None:
+    _safe_write_json(get_termux_config_path(), cfg)
+
+
+def ensure_local_admin_config() -> None:
+    """Ensure local admin config exists (password configurable, not required by default)."""
+    path = get_local_admin_path()
+    data = _load_json(path, None)
+    if isinstance(data, dict) and "password_required" in data:
+        return
+    # Migrate/initialize: no hard-coded production password. Default = not required.
+    if isinstance(data, dict) and data.get("password_hash") and data.get("salt"):
+        # Preserve existing configured password state.
+        data.setdefault("password_required", True)
+        data.setdefault("updated_at", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
+        _safe_write_json(path, data)
+        return
+    init = {
+        "password_required": False,
+        "salt": "",
+        "password_hash": "",
+        "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "updated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "note": "Admin password is configurable. Set it from Local Setup if needed.",
+    }
+    _safe_write_json(path, init)
+
+
+def is_port_open(host: str, port: int, timeout: float = 0.4) -> bool:
     try:
-        if shutil.which("termux-open-url"):
-            import subprocess
-
-            subprocess.Popen(
-                ["termux-open-url", url],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            return
+        with socket.create_connection((host, port), timeout=timeout):
+            return True
     except Exception:
-        pass
+        return False
+
+
+def find_local_service_script() -> Path:
+    return get_repo_root() / "pages" / "notinwebsite" / "local.py"
+
+
+def start_local_service(port: int = DEFAULT_PORT) -> Dict[str, Any]:
+    script = find_local_service_script()
+    if not script.exists():
+        return {"ok": False, "message": f"Local service script not found: {script}"}
+    if is_port_open(DEFAULT_HOST, port):
+        return {"ok": True, "message": "Local service already running", "already_running": True}
+
+    log_path = get_local_state_dir() / "launcher.log"
+    log_path.parent.mkdir(parents=True, exist_ok=True)
     try:
-        import webbrowser
-
-        webbrowser.open(url)
+        log_f = open(log_path, "a", encoding="utf-8")
     except Exception:
-        pass
+        log_f = subprocess.DEVNULL
+
+    cmd = [sys.executable, str(script), "--host", DEFAULT_HOST, "--port", str(port)]
+    kwargs: Dict[str, Any] = {
+        "stdout": log_f if log_f is not subprocess.DEVNULL else subprocess.DEVNULL,
+        "stderr": subprocess.STDOUT if log_f is not subprocess.DEVNULL else subprocess.DEVNULL,
+        "cwd": str(get_repo_root()),
+        "close_fds": True,
+    }
+    if os.name == "nt":
+        kwargs["creationflags"] = getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0) | getattr(subprocess, "DETACHED_PROCESS", 0)
+    else:
+        kwargs["start_new_session"] = True
+
+    try:
+        proc = subprocess.Popen(cmd, **kwargs)
+        for _ in range(24):
+            if is_port_open(DEFAULT_HOST, port):
+                return {"ok": True, "message": "Local service started", "pid": proc.pid, "already_running": False}
+            if proc.poll() is not None:
+                return {"ok": False, "message": f"Local service exited early (code {proc.returncode}). Check {log_path}"}
+            time.sleep(0.15)
+        if is_port_open(DEFAULT_HOST, port):
+            return {"ok": True, "message": "Local service started", "pid": proc.pid, "already_running": False}
+        return {"ok": False, "message": f"Local service did not become ready on {DEFAULT_HOST}:{port}. Check {log_path}"}
+    except Exception as e:
+        return {"ok": False, "message": f"Failed to start local service: {e}"}
 
 
-def print_post_setup_summary(ui: UI, cfg: SetupConfig, config_path: Path) -> None:
-    ui.blank(1)
-    print(ui.green(ui.bold(ui.center("Setup complete."))))
-    ui.blank(1)
-    summary = [
-        f"Name: {cfg.name or DEFAULT_NAME}",
-        f"Username: {cfg.username or '(not set)'}",
-        f"Password: {'Configured locally (optional)' if cfg.password_set else 'NOT REQUIRED / not set'}",
-        f"Config: {config_path}",
+def render_interface(ui: UI, name: str, service_status: str, port: int = DEFAULT_PORT) -> None:
+    url = f"http://{DEFAULT_HOST}:{port}"
+    title = f"DeveloperHCR{ui.tm}"
+    rows = [
+        ui.bold(ui.cyan(title)),
+        ui.bold("First Time Setup"),
+        "",
+        f"Name: {name}",
+        "Password: NOT REQUIRED / configurable",
+        "",
+        f"Local Server: {url}",
+        "Admin: Protected",
+        "",
+        f"Service: {service_status}",
     ]
-    for s in summary:
-        print(ui.center(s))
     ui.blank(1)
-    print(ui.center(ui.green(ui.bold(f"Open {DEFAULT_URL} to set up more."))))
-    print(ui.center(ui.dim("Fill username and password in the web setup page (logo shown at top).")))
-    print(
-        ui.center(
-            ui.dim("Start local setup server: python3 .backend/Main/Data/backend.py")
-        )
-    )
-    print(ui.center(ui.dim("Tip: run with --show to view setup status without prompts.")))
-    _try_open_url(DEFAULT_URL)
+    content_width = max(ui._vlen(r) for r in rows if r)
+    pad = max(0, (ui.width - content_width) // 2)
+    indent = " " * pad
+    for r in rows:
+        if r == "":
+            ui.blank(1)
+        else:
+            print(indent + r)
+    ui.blank(1)
+    ui.line(ui.dim("Local service: pages/notinwebsite/local.py (localhost only)"), center=True)
+    ui.line(ui.dim("Public GitHub Pages provides interface/links only and does not execute Python."), center=True)
+    ui.blank(1)
 
 
-def show_status(ui: UI, cfg: SetupConfig, config_path: Path) -> None:
-    render_setup_screen(ui, cfg)
-    print(ui.center(ui.dim(f"First-time setup completed: {'yes' if cfg.first_time_completed else 'no'}")))
-    print(ui.center(ui.dim(f"Local config: {config_path}")))
+def parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
+    p = argparse.ArgumentParser(description="DeveloperHCR Termux launcher (local service initializer)")
+    p.add_argument("--show", action="store_true", help="Show interface/status without starting service")
+    p.add_argument("--setup", action="store_true", help="Run/setup and initialize local service")
+    p.add_argument("--no-start", action="store_true", help="Do not start local service")
+    p.add_argument("--port", type=int, default=DEFAULT_PORT, help="Local service port (default: 3383)")
+    p.add_argument("--name", default=None, help="Set display name for setup")
+    return p.parse_args(argv)
 
 
-def parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="DeveloperHCR first-time terminal setup for Termux/Linux."
-    )
-    parser.add_argument("--setup", action="store_true", help="Run interactive setup screen now.")
-    parser.add_argument("--show", action="store_true", help="Show setup/status screen without prompts.")
-    parser.add_argument(
-        "--reset-setup",
-        action="store_true",
-        help="Mark first-time setup as incomplete so the setup screen runs on next start.",
-    )
-    parser.add_argument(
-        "--non-interactive",
-        action="store_true",
-        help="Do not prompt for input; display the setup screen/status only.",
-    )
-    return parser.parse_args(argv)
-
-
-def main(argv: Optional[List[str]] = None) -> int:
+def main(argv: Optional[list[str]] = None) -> int:
     args = parse_args(argv)
+    port = int(args.port or DEFAULT_PORT)
     ui = UI()
-    config_path = get_config_path()
-    cfg = load_config(config_path)
+    cfg = load_termux_config()
+    if args.name:
+        cfg["name"] = (args.name or "USER").strip() or "USER"
+    if not cfg.get("name"):
+        cfg["name"] = "USER"
 
-    if args.reset_setup:
-        cfg.first_time_completed = False
-        save_config(config_path, cfg)
-        print(ui.yellow("First-time setup has been reset."))
-        print(ui.dim(f"Config: {config_path}"))
-        return 0
+    ensure_local_admin_config()
 
-    should_run_setup = args.setup or (not cfg.first_time_completed)
-    show_only = args.show or args.non_interactive or not sys.stdin.isatty()
+    service_result = {"ok": True, "message": "not started (--show/--no-start)"}
+    should_start = (not args.show) and (not args.no_start)
+    if should_start:
+        service_result = start_local_service(port=port)
 
-    if should_run_setup:
-        render_setup_screen(ui, cfg)
-        if show_only:
-            if not sys.stdin.isatty() and not args.show and not args.non_interactive:
-                print(ui.dim(ui.center("Non-interactive terminal detected; prompts skipped.")))
-            # Persist completion marker on first display in non-interactive mode only
-            # when explicitly requested via setup flow would be surprising; keep state.
-            return 0
+    running = is_port_open(DEFAULT_HOST, port)
+    if service_result.get("already_running"):
+        status_text = "already running"
+    elif should_start and service_result.get("ok"):
+        status_text = service_result.get("message", "running" if running else "started")
+    elif should_start and not service_result.get("ok"):
+        status_text = f"error: {service_result.get('message', 'unknown')}"
+    else:
+        status_text = "running" if running else "not running"
 
-        # Interactive first-time/setup flow.
-        try:
-            cfg = interactive_setup(ui, cfg)
-            save_config(config_path, cfg)
-            print_post_setup_summary(ui, cfg, config_path)
-        except Exception as exc:
-            print(ui.yellow(f"Setup encountered an issue: {exc}"))
-            print(ui.dim("You can re-run with: python3 termux.py --setup"))
-            return 1
-        return 0
+    render_interface(ui, name=str(cfg.get("name") or "USER"), service_status=status_text, port=port)
 
-    # Existing setup present: keep behavior working and provide status view.
-    if args.show:
-        show_status(ui, cfg, config_path)
-        return 0
+    cfg["first_time_completed"] = True
+    cfg["last_local_url"] = f"http://{DEFAULT_HOST}:{port}"
+    cfg["last_service_status"] = status_text
+    save_termux_config(cfg)
 
-    # Default run when setup already completed: show compact status and options.
-    ui.blank(1)
-    print(ui.bright_cyan(ui.bold(ui.center(f"DeveloperHCR{ui.tm}"))))
-    print(ui.center(ui.dim("Terminal setup is ready.")))
-    ui.blank(1)
-    print(ui.center(f"Name: {cfg.name or DEFAULT_NAME}"))
-    print(ui.center(f"URL: {DEFAULT_URL}"))
-    ui.blank(1)
-    print(ui.center(ui.dim("To setup more... run: python3 termux.py --setup")))
-    print(ui.center(ui.dim("For status: python3 termux.py --show")))
+    if should_start and not service_result.get("ok"):
+        return 1
     return 0
 
 
