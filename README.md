@@ -101,7 +101,7 @@ On startup, `termux.py` shows a professional centered terminal interface, comple
 - `Local Server: http://127.0.0.1:3383`
 - `Admin: Protected`
 
-The local Python service runs from `pages/notinwebsite/local.py` and binds to localhost only by default (`http://127.0.0.1:3383`). The public GitHub Pages website does **not** execute Python; it only provides the interface, links, and documentation. The actual Python service continues running locally in Termux/local environment.
+The local Python service runs from `pages/notinwebsite/local.py` and binds to localhost only by default (`http://127.0.0.1:3383`). The public GitHub Pages website does **not** execute Python; it only provides the interface, links, and documentation. If published, `pages/notinwebsite/local.py` may be available as static source on GitHub Pages, but it runs only on localhost via Termux/local Python. The actual Python service continues running locally in Termux/local environment.
 
 #### Launcher options (`termux.py`)
 
