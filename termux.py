@@ -304,6 +304,28 @@ def interactive_setup(ui: UI, cfg: SetupConfig) -> SetupConfig:
     return cfg
 
 
+def _try_open_url(url: str) -> None:
+    """Best-effort URL open for Termux/Linux environments."""
+    try:
+        if shutil.which("termux-open-url"):
+            import subprocess
+
+            subprocess.Popen(
+                ["termux-open-url", url],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            return
+    except Exception:
+        pass
+    try:
+        import webbrowser
+
+        webbrowser.open(url)
+    except Exception:
+        pass
+
+
 def print_post_setup_summary(ui: UI, cfg: SetupConfig, config_path: Path) -> None:
     ui.blank(1)
     print(ui.green(ui.bold(ui.center("Setup complete."))))
@@ -312,13 +334,20 @@ def print_post_setup_summary(ui: UI, cfg: SetupConfig, config_path: Path) -> Non
         f"Name: {cfg.name or DEFAULT_NAME}",
         f"Username: {cfg.username or '(not set)'}",
         f"Password: {'Configured locally (optional)' if cfg.password_set else 'NOT REQUIRED / not set'}",
-        f"Service URL: {DEFAULT_URL}",
         f"Config: {config_path}",
     ]
     for s in summary:
         print(ui.center(s))
     ui.blank(1)
+    print(ui.center(ui.green(ui.bold(f"Open {DEFAULT_URL} to set up more."))))
+    print(ui.center(ui.dim("Fill username and password in the web setup page (logo shown at top).")))
+    print(
+        ui.center(
+            ui.dim("Start local setup server: python3 .backend/Main/Data/backend.py")
+        )
+    )
     print(ui.center(ui.dim("Tip: run with --show to view setup status without prompts.")))
+    _try_open_url(DEFAULT_URL)
 
 
 def show_status(ui: UI, cfg: SetupConfig, config_path: Path) -> None:
