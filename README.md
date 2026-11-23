@@ -8,7 +8,7 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/DeveloperHCR/HCRAPP?style=for-the-badge&logo=github&label=GitHub%20stars)](https://github.com/DeveloperHCR/HCRAPP/stargazers)
 [![README views](https://visitor-badge.laobi.icu/badge?page_id=DeveloperHCR.HCRAPP-README&left_text=README%20views&logo=github&right_color=0891b2)](https://visitor-badge.laobi.icu/)
-[![Commits applied](https://img.shields.io/badge/commits_applied-94-0891b2?style=for-the-badge&logo=git&logoColor=white)](#commits-applied)
+[![Commits applied](https://img.shields.io/badge/commits_applied-97-0891b2?style=for-the-badge&logo=git&logoColor=white)](#commits-applied)
 
 DeveloperHCR designs premium digital experiences across web, Android, AI-assisted tools, and developer-first software. This repository contains the official static website, DevX OS release information, visual assets, and supporting documentation for the project ecosystem.
 
@@ -91,13 +91,44 @@ python3 termux.py
 
 On first run, `termux.py` opens a professional DeveloperHCR™ first-time setup screen directly in the terminal (centered branding, optional name/username/password, `PASSWORD: NOT REQUIRED`, local setup URL `http://localhost:3383`, and a **To setup more...** section). The interface detects terminal width, adapts to Termux and standard Linux terminals, and falls back to a simple text layout when colors, Unicode, or advanced formatting are unavailable.
 
-Useful commands:
+After interactive setup completes, the helper:
+- prints a completion summary and prompts you to open **`http://localhost:3383`** to set up more,
+- tells you to fill **username and password** in the local web setup page (DeveloperHCR logo shown at top),
+- prints the command to start the local setup server,
+- makes a best-effort attempt to open the URL (e.g. `termux-open-url` on Termux or the system browser where available).
+
+#### Terminal helper options (`termux.py`)
 
 ```bash
-python3 termux.py --show          # show setup/status without prompts
-python3 termux.py --setup         # run or re-run interactive setup
-python3 termux.py --reset-setup   # mark first-time setup as incomplete
+python3 termux.py --show             # show setup/status without prompts
+python3 termux.py --setup            # run or re-run interactive setup
+python3 termux.py --reset-setup      # mark first-time setup as incomplete
+python3 termux.py --non-interactive  # show setup screen/status only (no prompts)
 ```
+
+Local terminal setup state is stored at `~/.config/developerhcr/hcrapp_termux_setup.json` (or under `$XDG_CONFIG_HOME/developerhcr/` when set).
+
+#### Local web setup backend (`http://localhost:3383`)
+
+Start the local setup server from the repository root:
+
+```bash
+python3 .backend/Main/Data/backend.py
+```
+
+Then open [http://localhost:3383](http://localhost:3383) and complete the web setup form:
+- **Logo:** DeveloperHCR logo displayed at the top of the setup page.
+- **Form:** fill **username** and **password**, then save to complete local web setup.
+- **Logo location:** [`.backend/Main/data.png`](https://github.com/DeveloperHCR/HCRAPP/blob/main/.backend/Main/data.png)
+
+Backend options:
+
+```bash
+python3 .backend/Main/Data/backend.py --host 127.0.0.1   # bind host (default: 127.0.0.1)
+python3 .backend/Main/Data/backend.py --port 3383        # bind port (default: 3383)
+```
+
+Web setup data is saved locally by `.backend/Main/Data/connecte.py` to `~/.config/developerhcr/hcrapp_web_setup/setup_data.json` (or under `$XDG_CONFIG_HOME/developerhcr/` when set) with restricted file permissions where supported. This is a local helper flow for development/setup convenience; keep the server bound to localhost unless you intentionally expose it.
 
 ## Deployment
 
@@ -107,7 +138,12 @@ The GitHub Actions workflow in [`.github/workflows/static.yml`](.github/workflow
 
 ```text
 .
-├── .backend/Main/       # Logo image and legacy setup note
+├── .backend/Main/       # Logo image, legacy setup note, and local setup backend
+│   ├── Data/
+│   │   ├── backend.py   # Local web setup server (http://localhost:3383)
+│   │   └── connecte.py  # Local web setup data/connection helpers
+│   ├── Setup.md
+│   └── data.png         # DeveloperHCR logo
 ├── .github/workflows/   # GitHub Pages deployment workflow
 ├── assets/images/       # Website logo and artwork
 ├── data/web/            # Nested static backend-status page
@@ -121,10 +157,10 @@ The GitHub Actions workflow in [`.github/workflows/static.yml`](.github/workflow
 
 ## Commits applied
 
-**Total commits applied (all time): 94** — tracked alongside GitHub stars and README/website views. Latest: `2a3cd9c` (2026-11-21) — Improve header alignment, mobile comfort, and repo updates.
+**Total commits applied (all time): 97** — tracked alongside GitHub stars and README/website views. Latest: `afa4e0a` (2026-11-23) — Add local web setup backend and post-setup URL prompt.
 
 <details>
-<summary>All commits applied over time (chronological, 94 commits)</summary>
+<summary>All commits applied over time (chronological, 97 commits)</summary>
 
 - `9edfc87` (2026-10-07) — Initial commit
 - `5a06690` (2026-10-07) — Create README.md
@@ -220,6 +256,9 @@ The GitHub Actions workflow in [`.github/workflows/static.yml`](.github/workflow
 - `7069531` (2026-11-21) — Improve docs and About and refine Engine UI and AI limits
 - `f881020` (2026-11-21) — Add APK download passwords and make AI searches unlimited
 - `2a3cd9c` (2026-11-21) — Improve header alignment, mobile comfort, and repo updates
+- `1bd5912` (2026-11-21) — Update commit stats and latest repo snapshot after recent changes
+- `3bbc9ab` (2026-11-23) — Add Termux/Linux terminal setup helper and update README
+- `afa4e0a` (2026-11-23) — Add local web setup backend and post-setup URL prompt
 
 </details>
 
