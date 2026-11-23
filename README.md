@@ -81,6 +81,24 @@ python3 -m http.server 8000
 
 Then open [http://localhost:8000](http://localhost:8000). For a more polished preview, refresh once the page is loaded and explore the page motion and UI details.
 
+### Termux / Linux terminal setup
+
+Run the DeveloperHCR terminal helper from the repository root:
+
+```bash
+python3 termux.py
+```
+
+On first run, `termux.py` opens a professional DeveloperHCR™ first-time setup screen directly in the terminal (centered branding, optional name/username/password, `PASSWORD: NOT REQUIRED`, local setup URL `http://localhost:3383`, and a **To setup more...** section). The interface detects terminal width, adapts to Termux and standard Linux terminals, and falls back to a simple text layout when colors, Unicode, or advanced formatting are unavailable.
+
+Useful commands:
+
+```bash
+python3 termux.py --show          # show setup/status without prompts
+python3 termux.py --setup         # run or re-run interactive setup
+python3 termux.py --reset-setup   # mark first-time setup as incomplete
+```
+
 ## Deployment
 
 The GitHub Actions workflow in [`.github/workflows/static.yml`](.github/workflows/static.yml) deploys the repository to GitHub Pages whenever changes are pushed to `main`. The Pages build source should be set to **GitHub Actions** in the repository settings.
@@ -96,7 +114,8 @@ The GitHub Actions workflow in [`.github/workflows/static.yml`](.github/workflow
 ├── js/                  # Site navigation and small UI behaviors
 ├── pages/               # Site pages; index.html remains at the root
 ├── About.md             # About DeveloperHCR and project overview (served at /HCRAPP/About.md)
-└── index.html           # Website homepage
+├── index.html           # Website homepage
+└── termux.py            # Termux/Linux terminal first-time setup helper
 ```
 
 
