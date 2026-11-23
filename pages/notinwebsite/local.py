@@ -575,6 +575,225 @@ def get_status_payload(include_cpu_sample: bool = True) -> Dict[str, Any]:
     return payload
 
 
+def _runtime_report() -> Dict[str, Any]:
+    cfg = load_config()
+    return {
+        "ok": True,
+        "python": {
+            "version": sys.version,
+            "executable": sys.executable,
+            "platform": platform.platform(),
+        },
+        "paths": {
+            "repo_root": str(get_repo_root()),
+            "config": str(get_config_path()),
+            "admin": str(get_admin_path()),
+            "plugins": str(get_plugins_path()),
+            "log": str(get_log_path()),
+            "pid": str(get_pid_path()),
+            "state_dir": str(get_state_dir()),
+            "local_dir": str(get_local_dir()),
+            "backup_dir": str(get_backup_dir()),
+        },
+        "config_summary": {
+            "host": cfg.get("host"),
+            "port": cfg.get("port"),
+            "theme": cfg.get("theme"),
+            "log_level": cfg.get("log_level"),
+            "auto_start": cfg.get("auto_start"),
+        },
+        "time": utc_now_iso(),
+    }
+
+
+def _sessions_info() -> Dict[str, Any]:
+    now = time.time()
+    with SESSIONS._lock:
+        active = [s for s in SESSIONS._sessions.values() if s.expires_at > now]
+        expires = [int(s.expires_at - now) for s in active]
+    return {
+        "ok": True,
+        "active_sessions": len(active),
+        "soonest_expiry_seconds": min(expires) if expires else None,
+        "latest_expiry_seconds": max(expires) if expires else None,
+        "session_ttl_seconds": SESSION_TTL_SECONDS,
+        "time": utc_now_iso(),
+    }
+
+
+def _endpoint_inventory() -> Dict[str, Any]:
+    return {
+        "ok": True,
+        "public": ["/", "/admin", "/api/public/info", "/api/auth/session", "/api/auth/login", "/api/auth/logout"],
+        "protected_get": ["/api/status", "/api/config", "/api/logs", "/api/plugins", "/api/backup/list", "/api/files", "/api/health"],
+        "protected_post": [
+            "/api/config", "/api/admin/password", "/api/action", "/api/plugins", "/api/backup/create", "/api/backup/restore",
+            "/api/tools/dependency_check", "/api/tools/permission_check", "/api/tools/port_check", "/api/tools/network_status",
+            "/api/tools/process_info", "/api/tools/config_validate", "/api/tools/integrity_check", "/api/tools/log_analyze",
+            "/api/tools/runtime_report", "/api/tools/sessions_info", "/api/tools/endpoint_inventory", "/api/tools/readiness_check",
+            "/api/tools/git_status", "/api/tools/path_report", "/api/tools/auth_log_summary", "/api/tools/config_snapshot",
+            "/api/tools/diagnostics_bundle", "/api/tools/log_rotate", "/api/tools/self_test",
+        ],
+        "localhost_only": True,
+    }
+
+
+def _readiness_check() -> Dict[str, Any]:
+    cfg = load_config()
+    checks = {
+        "service_script_exists": (get_repo_root() / "pages" / "notinwebsite" / "local.py").exists(),
+        "termux_launcher_exists": (get_repo_root() / "termux.py").exists(),
+        "config_readable": isinstance(cfg, dict),
+        "admin_config_exists": get_admin_path().exists(),
+        "log_parent_exists": get_log_path().parent.exists(),
+        "backup_dir_exists": get_backup_dir().exists(),
+        "localhost_bind": (cfg.get("host") == DEFAULT_HOST),
+        "valid_port": isinstance(cfg.get("port"), int) and 1 <= int(cfg.get("port", 0)) <= 65535,
+    }
+    return {"ok": all(checks.values()), "checks": checks, "local_url": f"http://{DEFAULT_HOST}:{int(cfg.get('port', DEFAULT_PORT))}", "time": utc_now_iso()}
+
+
+def _git_status_summary() -> Dict[str, Any]:
+    repo = get_repo_root()
+    if not (repo / ".git").exists():
+        return {"ok": False, "error": "Not a git repository"}
+    branch = _run_safe_command(["git", "-C", str(repo), "--no-pager", "rev-parse", "--abbrev-ref", "HEAD"], timeout=2.0)
+    head = _run_safe_command(["git", "-C", str(repo), "--no-pager", "log", "-1", "--oneline"], timeout=2.0)
+    status = _run_safe_command(["git", "-C", str(repo), "--no-pager", "status", "--short"], timeout=3.0)
+    lines = [ln for ln in (status.get("stdout") or "").splitlines() if ln.strip()]
+    return {
+        "ok": bool(branch.get("ok") or head.get("ok")),
+        "branch": (branch.get("stdout") or "").strip() or None,
+        "head": (head.get("stdout") or "").strip() or None,
+        "changed_entries": len(lines),
+        "changes_preview": lines[:40],
+        "read_only": True,
+    }
+
+
+def _path_report() -> Dict[str, Any]:
+    targets = [
+        ("repo_root", get_repo_root()),
+        ("local_dir", get_local_dir()),
+        ("state_dir", get_state_dir()),
+        ("backup_dir", get_backup_dir()),
+    ]
+    rows = []
+    for label, p in targets:
+        info = {"label": label, "path": str(p), "exists": p.exists()}
+        try:
+            if p.exists():
+                info["is_dir"] = p.is_dir()
+                info["is_file"] = p.is_file()
+                info["writable"] = os.access(p, os.W_OK)
+                if p.is_dir():
+                    # Shallow size/count for safety/performance.
+                    total = 0
+                    count = 0
+                    for child in p.rglob("*"):
+                        if child.is_file():
+                            count += 1
+                            try:
+                                total += child.stat().st_size
+                            except Exception:
+                                pass
+                            if count >= 2000:
+                                break
+                    info["approx_file_count"] = count
+                    info["approx_size_bytes"] = total
+        except Exception as e:
+            info["error"] = str(e)
+        rows.append(info)
+    return {"ok": True, "paths": rows, "time": utc_now_iso()}
+
+
+def _auth_log_summary() -> Dict[str, Any]:
+    lines = read_log_lines(500)
+    events = {"login_success": 0, "login_failed": 0, "logout": 0, "unauthorized": 0}
+    recent = []
+    for line in lines:
+        low = line.lower()
+        matched = None
+        if "admin login successful" in low:
+            events["login_success"] += 1; matched = "login_success"
+        elif "admin login failed" in low:
+            events["login_failed"] += 1; matched = "login_failed"
+        elif "admin logout" in low:
+            events["logout"] += 1; matched = "logout"
+        elif "unauthorized" in low:
+            events["unauthorized"] += 1; matched = "unauthorized"
+        if matched:
+            recent.append(line)
+    return {"ok": True, "events": events, "recent": recent[-20:], "time": utc_now_iso()}
+
+
+def _config_snapshot() -> Dict[str, Any]:
+    cfg = load_config()
+    plugins = load_plugins()
+    raw = json.dumps({"config": cfg, "plugins": plugins}, sort_keys=True, ensure_ascii=False).encode("utf-8")
+    return {
+        "ok": True,
+        "config": cfg,
+        "plugins_count": len(plugins),
+        "enabled_plugins": [p.get("id") for p in plugins if isinstance(p, dict) and p.get("enabled")],
+        "snapshot_sha256": hashlib.sha256(raw).hexdigest(),
+        "admin_password_required": admin_password_required(),
+        "time": utc_now_iso(),
+    }
+
+
+def _diagnostics_bundle() -> Dict[str, Any]:
+    return {
+        "ok": True,
+        "time": utc_now_iso(),
+        "status": get_status_payload(include_cpu_sample=False),
+        "health": _health_check(),
+        "config_validation": _config_validation(),
+        "dependency_check": _dependency_check(),
+        "permission_check": _permission_check(),
+        "runtime_report": _runtime_report(),
+        "sessions_info": _sessions_info(),
+        "readiness_check": _readiness_check(),
+        "log_analysis": _analyze_logs(),
+        "auth_log_summary": _auth_log_summary(),
+        "path_report": _path_report(),
+        "git_status": _git_status_summary(),
+    }
+
+
+def _rotate_log() -> Dict[str, Any]:
+    log_path = get_log_path()
+    try:
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        rotated = None
+        if log_path.exists() and log_path.stat().st_size > 0:
+            ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+            rotated = log_path.with_name(f"local.log.{ts}")
+            shutil.copy2(log_path, rotated)
+            log_path.write_text("", encoding="utf-8")
+            append_log("info", f"Rotated local log to {rotated.name}")
+        else:
+            log_path.write_text("", encoding="utf-8")
+        return {"ok": True, "rotated_to": str(rotated) if rotated else None, "active_log": str(log_path)}
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
+
+
+def _self_test() -> Dict[str, Any]:
+    tests = {}
+    tests["runtime_report"] = bool(_runtime_report().get("ok"))
+    tests["sessions_info"] = bool(_sessions_info().get("ok"))
+    tests["readiness_check"] = bool(_readiness_check().get("checks"))
+    tests["config_validation"] = "ok" in _config_validation()
+    tests["dependency_check"] = "ok" in _dependency_check()
+    tests["permission_check"] = "ok" in _permission_check()
+    tests["log_analysis"] = "ok" in _analyze_logs()
+    tests["path_report"] = bool(_path_report().get("ok"))
+    tests["endpoint_inventory"] = bool(_endpoint_inventory().get("ok"))
+    tests["health_check"] = "ok" in _health_check()
+    return {"ok": all(tests.values()), "tests": tests, "passed": sum(1 for v in tests.values() if v), "total": len(tests), "time": utc_now_iso()}
+
+
 def _json_bytes(obj: Any) -> bytes:
     return json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
 
@@ -946,6 +1165,23 @@ a{color:var(--primary)}
     </div>
 
     <div class="two section">
+      <div class="card"><h3>More Safe Utilities (Local-only)</h3>
+        <div class="row">
+          <button onclick="tool('runtime_report')">Runtime Report</button>
+          <button onclick="tool('sessions_info')">Sessions Info</button>
+          <button onclick="tool('endpoint_inventory')">Endpoint Inventory</button>
+          <button onclick="tool('readiness_check')">Readiness Check</button>
+          <button onclick="tool('git_status')">Git Status (Read-only)</button>
+          <button onclick="tool('path_report')">Path/Storage Report</button>
+          <button onclick="tool('auth_log_summary')">Auth/Log Summary</button>
+          <button onclick="tool('config_snapshot')">Config Snapshot</button>
+          <button onclick="tool('diagnostics_bundle')">Diagnostics Bundle</button>
+          <button onclick="tool('log_rotate')">Rotate/Trim Logs</button>
+          <button onclick="tool('self_test')">Safe Self-Test</button>
+        </div>
+        <div class="small muted">Defensive local diagnostics and maintenance tools only. No hacking, bombing, or unauthorized-access tools.</div>
+        <pre id="extra-tool-out"></pre>
+      </div>
       <div class="card">
         <h3>Admin Security Settings</h3>
         <p class="small muted">Password is configurable and stored locally (hashed) by the localhost service. Leave new password empty to disable password requirement.</p>
@@ -981,6 +1217,17 @@ a{color:var(--primary)}
         <li>Theme preference saved in local configuration</li>
         <li>Quick local URL copy and environment path summary</li>
         <li>Health-check aggregation for service/readiness</li>
+        <li>Runtime environment report (Python, platform, paths)</li>
+        <li>Active admin session diagnostics and expiry info</li>
+        <li>Local API endpoint inventory (read-only reference)</li>
+        <li>Readiness checklist for launcher, config, and paths</li>
+        <li>Read-only repository git status summary</li>
+        <li>Key path/storage usage report for local directories</li>
+        <li>Auth/log event summary (success/fail/logout/unauthorized)</li>
+        <li>Configuration snapshot hash and plugin summary</li>
+        <li>Exportable diagnostics bundle for local troubleshooting</li>
+        <li>Safe log rotation/trim utility for local maintenance</li>
+        <li>Local self-test of safe diagnostic checks</li>
       </ul>
     </div>
   </div>
@@ -1062,8 +1309,17 @@ function togglePlugin(id, enabled){ const p=pluginsCache.find(x=>x.id===id); if(
 async function savePlugins(){ const r = await api('/api/plugins', {method:'POST', body: JSON.stringify({plugins: pluginsCache})}); if(r.ok) pluginsCache=r.data.plugins||pluginsCache; document.getElementById('tool-out').textContent = JSON.stringify(r.data,null,2); }
 async function browse(path){ currentPath=path||''; const r = await api('/api/files?path='+encodeURIComponent(currentPath)); document.getElementById('fb-path').textContent = currentPath || '(root)'; document.getElementById('fb-out').textContent = JSON.stringify(r.data,null,2); }
 async function tool(name){ let body={}; if(name==='integrity_check'){ body.path=document.getElementById('integrity-path').value||''; }
-  const map={dependency_check:'/api/tools/dependency_check',permission_check:'/api/tools/permission_check',port_check:'/api/tools/port_check',network_status:'/api/tools/network_status',process_info:'/api/tools/process_info',health_check:'/api/health',config_validate:'/api/tools/config_validate',integrity_check:'/api/tools/integrity_check',log_analyze:'/api/tools/log_analyze'};
-  const url = map[name]; if(!url) return; const r = await api(url, {method: url==='/api/health'?'GET':'POST', body: url==='/api/health'?undefined:JSON.stringify(body)}); document.getElementById('tool-out').textContent = JSON.stringify(r.data,null,2); }
+  const map={
+    dependency_check:'/api/tools/dependency_check',permission_check:'/api/tools/permission_check',port_check:'/api/tools/port_check',network_status:'/api/tools/network_status',process_info:'/api/tools/process_info',health_check:'/api/health',config_validate:'/api/tools/config_validate',integrity_check:'/api/tools/integrity_check',log_analyze:'/api/tools/log_analyze',
+    runtime_report:'/api/tools/runtime_report',sessions_info:'/api/tools/sessions_info',endpoint_inventory:'/api/tools/endpoint_inventory',readiness_check:'/api/tools/readiness_check',git_status:'/api/tools/git_status',path_report:'/api/tools/path_report',auth_log_summary:'/api/tools/auth_log_summary',config_snapshot:'/api/tools/config_snapshot',diagnostics_bundle:'/api/tools/diagnostics_bundle',log_rotate:'/api/tools/log_rotate',self_test:'/api/tools/self_test'
+  };
+  const url = map[name]; if(!url) return;
+  const method = (url==='/api/health') ? 'GET' : 'POST';
+  const r = await api(url, {method, body: method==='GET'?undefined:JSON.stringify(body)});
+  const outId = (name==='runtime_report'||name==='sessions_info'||name==='endpoint_inventory'||name==='readiness_check'||name==='git_status'||name==='path_report'||name==='auth_log_summary'||name==='config_snapshot'||name==='diagnostics_bundle'||name==='log_rotate'||name==='self_test') ? 'extra-tool-out' : 'tool-out';
+  document.getElementById(outId).textContent = JSON.stringify(r.data,null,2);
+  if(name==='log_rotate'){ await loadLogs(); await analyzeLogs(); }
+}
 async function updateAdminPassword(){
   const body = { current_password: document.getElementById('admin-current-pw').value || '', new_password: document.getElementById('admin-new-pw').value || '' };
   const r = await api('/api/admin/password', {method:'POST', body: JSON.stringify(body)});
@@ -1379,6 +1635,28 @@ class LocalHandler(BaseHTTPRequestHandler):
             return self._send_json(HTTPStatus.OK, _hash_file(str(data.get("path") or "")))
         if path == "/api/tools/log_analyze":
             return self._send_json(HTTPStatus.OK, _analyze_logs())
+        if path == "/api/tools/runtime_report":
+            return self._send_json(HTTPStatus.OK, _runtime_report())
+        if path == "/api/tools/sessions_info":
+            return self._send_json(HTTPStatus.OK, _sessions_info())
+        if path == "/api/tools/endpoint_inventory":
+            return self._send_json(HTTPStatus.OK, _endpoint_inventory())
+        if path == "/api/tools/readiness_check":
+            return self._send_json(HTTPStatus.OK, _readiness_check())
+        if path == "/api/tools/git_status":
+            return self._send_json(HTTPStatus.OK, _git_status_summary())
+        if path == "/api/tools/path_report":
+            return self._send_json(HTTPStatus.OK, _path_report())
+        if path == "/api/tools/auth_log_summary":
+            return self._send_json(HTTPStatus.OK, _auth_log_summary())
+        if path == "/api/tools/config_snapshot":
+            return self._send_json(HTTPStatus.OK, _config_snapshot())
+        if path == "/api/tools/diagnostics_bundle":
+            return self._send_json(HTTPStatus.OK, _diagnostics_bundle())
+        if path == "/api/tools/log_rotate":
+            return self._send_json(HTTPStatus.OK, _rotate_log())
+        if path == "/api/tools/self_test":
+            return self._send_json(HTTPStatus.OK, _self_test())
         if path == "/api/health":
             return self._send_json(HTTPStatus.OK, _health_check())
 
